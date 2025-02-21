@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="02/12/2025 22:48:46" ReportInfo.Modified="02/13/2025 18:14:37" ReportInfo.CreatorVersion="2025.1.0.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqAFHGp6KQj27H4qUwAIR20hSnyrpNtgmeY+I5zyTmYE0HuZfX1hs9fAqnt4DRtzHmmDD0hrqTMIUyrD1wz+VPPDmmUxAnZDtqEJJmueCh6q90Lb6ELBkKESUPchV5QlQhlV6fTUdAfNZ8QaQlzWPhcTi5bys4I6wgAFs5THJs9B9MCVoDDox4NPj7ozX93PKS">
+      <TableDataSource Name="Table1" Alias="Itens" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;PEDIDO.CD_PEDIDO&#13;&#10;, ITENSPEDIDO.CD_MATERIAL&#13;&#10;, MATERIAIS.DS_MATERIAL&#13;&#10;, MATERIAIS.CD_MARCA&#13;&#10;, MATERIAIS.CD_SUBGRUPO&#13;&#10;, MATERIAIS.CD_TIPO_EMBALAGEM&#13;&#10;, MATERIAIS.CD_FORNECEDOR&#13;&#10;, MATERIAIS.CD_TIPO&#13;&#10;, ITENSPEDIDO.NR_QUANTIDADE AS QUANTPEDIDA&#13;&#10;, IIF(CONTROLEENTREGA.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA.NR_QUANTIDADE)  AS EMSEPARACAO&#13;&#10;, IIF(CONTROLEENTREGA2.NR_QUANTIDADE IS NULL , 0 , CONTROLEENTREGA2.NR_QUANTIDADE) AS SEPARADO&#13;&#10;from TBL_PEDIDOS PEDIDO&#13;&#10;LEFT JOIN TBL_PEDIDOS_ITENS ITENSPEDIDO ON&#13;&#10;ITENSPEDIDO.CD_PEDIDO = PEDIDO.CD_PEDIDO&#13;&#10;LEFT JOIN TBL_MATERIAIS MATERIAIS ON &#13;&#10;MATERIAIS.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL&#13;&#10;LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA CONTROLEENTREGA&#13;&#10;ON CONTROLEENTREGA.CD_PEDIDO = PEDIDO.CD_PEDIDO&#13;&#10;AND CONTROLEENTREGA.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL&#13;&#10;AND CONTROLEENTREGA.X_ENTREGUE = 0&#13;&#10;LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA CONTROLEENTREGA2&#13;&#10;ON CONTROLEENTREGA2.CD_PEDIDO = PEDIDO.CD_PEDIDO&#13;&#10;AND CONTROLEENTREGA2.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL&#13;&#10;AND CONTROLEENTREGA2.X_ENTREGUE = 1&#13;&#10;Where PEDIDO.CD_STATUS IN (8,9)&#13;&#10;AND ITENSPEDIDO.CD_MATERIAL IS NOT NULL&#13;&#10;ORDER BY PEDIDO.CD_PEDIDO, PEDIDO.CD_CLIENTE, ITENSPEDIDO.CD_MATERIAL&#13;&#10;">
+        <Column Name="CD_PEDIDO" DataType="System.Int32"/>
+        <Column Name="CD_MATERIAL" DataType="System.Int32"/>
+        <Column Name="DS_MATERIAL" DataType="System.String"/>
+        <Column Name="QUANTPEDIDA" DataType="System.Decimal"/>
+        <Column Name="EMSEPARACAO" DataType="System.Decimal"/>
+        <Column Name="SEPARADO" DataType="System.Decimal"/>
+        <Column Name="CD_MARCA" DataType="System.Int32"/>
+        <Column Name="CD_SUBGRUPO" DataType="System.Int32"/>
+        <Column Name="CD_TIPO_EMBALAGEM" DataType="System.Int32"/>
+        <Column Name="CD_FORNECEDOR" DataType="System.Int32"/>
+        <Column Name="CD_TIPO" DataType="System.Int32"/>
+      </TableDataSource>
+      <TableDataSource Name="Table" Alias="Pedido" DataType="System.Int32" Enabled="true" SelectCommand="select &#13;&#10;PEDIDO.CD_PEDIDO&#13;&#10;, PEDIDO.CD_EMPRESA&#13;&#10;, EMPRESA.DS_EMPRESA&#13;&#10;, PEDIDO.CD_FILIAL&#13;&#10;, FILIAL.DS_FILIAL&#13;&#10;, CLIENTE.CD_ENTIDADE&#13;&#10;, CLIENTE.DS_ENTIDADE&#13;&#10;, CLIENTE.CD_REGIAO&#13;&#10;, CLIENTE.CD_CIDADE&#13;&#10;, CIDADE.DS_UF&#13;&#10;, PEDIDO.DT_EMISSAO&#13;&#10;, PEDIDO.DT_ENTREGA&#13;&#10;, PEDIDO.CD_TIPO_PEDIDO&#13;&#10;, PEDIDO.CD_CARTEIRA&#13;&#10;, PEDIDO.CD_FORMA_PAGAMENTO&#13;&#10;, CLIENTE.CD_CLASSIFICACAO&#13;&#10;, PEDIDO.CD_VENDEDOR&#13;&#10;, PEDIDO.CD_OBRA&#13;&#10;, PEDIDO.CD_TRANSPORTADOR&#13;&#10;, PEDIDO.CD_FRETE&#13;&#10;from TBL_PEDIDOS PEDIDO&#13;&#10;LEFT JOIN  TBL_EMPRESAS EMPRESA &#13;&#10;ON EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA&#13;&#10;LEFT JOIN TBL_EMPRESAS_FILIAIS FILIAL&#13;&#10;ON FILIAL.CD_FILIAL = PEDIDO.CD_FILIAL&#13;&#10;LEFT JOIN TBL_ENTIDADES CLIENTE&#13;&#10;ON CLIENTE.CD_ENTIDADE = PEDIDO.CD_CLIENTE&#13;&#10;AND CLIENTE.X_CLIENTE = 1&#13;&#10;LEFT JOIN TBL_ENDERECO_CIDADES CIDADE&#13;&#10;ON CIDADE.CD_CIDADE = CLIENTE.CD_CIDADE&#13;&#10;Where PEDIDO.CD_STATUS IN (8,9)&#13;&#10;ORDER BY  PEDIDO.CD_CLIENTE, PEDIDO.CD_PEDIDO&#13;&#10;">
+        <Column Name="CD_PEDIDO" DataType="System.Int32"/>
+        <Column Name="CD_EMPRESA" DataType="System.Int32"/>
+        <Column Name="DS_EMPRESA" DataType="System.String"/>
+        <Column Name="CD_FILIAL" DataType="System.Int32"/>
+        <Column Name="DS_FILIAL" DataType="System.String"/>
+        <Column Name="CD_ENTIDADE" DataType="System.Int32"/>
+        <Column Name="DS_ENTIDADE" DataType="System.String"/>
+        <Column Name="DT_EMISSAO" DataType="System.DateTime"/>
+        <Column Name="DT_ENTREGA" DataType="System.DateTime"/>
+        <Column Name="CD_REGIAO" DataType="System.Int32"/>
+        <Column Name="CD_CIDADE" DataType="System.Int32"/>
+        <Column Name="DS_UF" DataType="System.String"/>
+        <Column Name="CD_TIPO_PEDIDO" DataType="System.Int32"/>
+        <Column Name="CD_CARTEIRA" DataType="System.Int32"/>
+        <Column Name="CD_FORMA_PAGAMENTO" DataType="System.Int32"/>
+        <Column Name="CD_CLASSIFICACAO" DataType="System.Int32"/>
+        <Column Name="CD_VENDEDOR" DataType="System.Int32"/>
+        <Column Name="CD_OBRA" DataType="System.Int32"/>
+        <Column Name="CD_TRANSPORTADOR" DataType="System.Int32"/>
+        <Column Name="CD_FRETE" DataType="System.Int32"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+    <Relation Name="Table_Table1" ParentDataSource="Table" ChildDataSource="Table1" ParentColumns="CD_PEDIDO" ChildColumns="CD_PEDIDO" Enabled="true"/>
+    <Parameter Name="DataeHorra" DataType="System.String" AsString=""/>
+    <Parameter Name="Periodo" DataType="System.String" AsString=""/>
+  </Dictionary>
+  <ReportPage Name="Page1" Guides="9.45,103.95,113.4,207.9,141.75,576.45" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <PageHeaderBand Name="PageHeader1" Top="4" Width="718.2" Height="151.2" Guides="0,18.9">
+      <TextObject Name="Text9" Width="718.2" Height="37.8" Text="Relatório de Pedidos por Clientes&#13;&#10;" HorzAlign="Center" VertAlign="Center" Font="Arial, 22pt"/>
+      <TextObject Name="Text10" Left="614.25" Top="66.15" Width="94.5" Height="18.9" Text="[DataeHorra]" HorzAlign="Right" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text11" Left="519.75" Top="94.5" Width="189" Height="18.9" Text="Página: [Page#] de [TotalPages#]" HorzAlign="Right" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text12" Left="9.45" Top="122.85" Width="699.3" Height="18.9" Text="[Periodo]" AutoWidth="true" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt"/>
+      <TextObject Name="Text14" Top="47.25" Width="718.2" Height="18.9" Text="[Pedido.DS_EMPRESA]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
+    </PageHeaderBand>
+    <DataBand Name="DataBandPedidos" Top="159.2" Width="718.2" Height="103.95" Guides="9.450012,28.35001" DataSource="Table">
+      <ShapeObject Name="Shape1" Left="9.45" Top="15.12" Width="103.95" Height="75.6" Border.Color="WhiteSmoke" Fill.Color="WhiteSmoke"/>
+      <TextObject Name="Text1" Left="18.9" Top="37.8" Width="85.05" Height="47.25" Text="[Pedido.CD_PEDIDO]" HorzAlign="Center" VertAlign="Center" Font="Arial, 14pt"/>
+      <TextObject Name="Text13" Left="122.85" Top="18.9" Width="56.7" Height="18.9" Text="Cliente:" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text5" Left="122.85" Top="73.71" Width="557.55" Height="18.9" Text="[Pedido.DS_ENTIDADE]" Font="Arial, 9pt"/>
+      <TextObject Name="Text20" Left="18.9" Top="18.9" Width="75.6" Height="18.9" Text="Pedido" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+      <TextObject Name="Text21" Left="122.85" Top="47.25" Width="56.7" Height="18.9" Text="[Pedido.CD_ENTIDADE]" VertAlign="Center" Font="Arial, 9pt"/>
+      <TextObject Name="Text22" Left="510.3" Top="18.9" Width="94.5" Height="28.35" Text="Data Emissão: [Itens.Pedido.DT_EMISSAO]" Format="Date" Format.Format="d" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text23" Left="614.25" Top="18.9" Width="94.5" Height="28.35" Text="Data de Entrega: [Itens.Pedido.DT_ENTREGA]" Format="Date" Format.Format="d" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+      <LineObject Name="Line2" Top="9.45" Width="718.2" Border.Width="2"/>
+      <DataBand Name="DataBandItens" Top="299.5" Width="718.2" Height="28.35" FirstRowStartsNewPage="true" Guides="9.449982,28.35001" DataSource="Table1">
+        <TextObject Name="Text6" Left="66.15" Width="56.7" Height="18.9" Text="[Itens.CD_MATERIAL]" HorzAlign="Right" Font="Arial, 8pt"/>
+        <TextObject Name="Text7" Left="122.85" Width="340.2" Height="18.9" Text="[Itens.DS_MATERIAL]" Font="Arial, 8pt"/>
+        <TextObject Name="Text15" Left="9.45" Width="47.25" Height="18.9" Text="[Pedido.CD_FILIAL]" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt"/>
+        <TextObject Name="Text16" Left="463.05" Width="75.6" Height="18.9" Text="[Itens.QUANTPEDIDA]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="4" HorzAlign="Right" VertAlign="Center" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text17" Left="548.1" Width="75.6" Height="18.9" Text="[Itens.EMSEPARACAO]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="4" HorzAlign="Right" VertAlign="Center" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text18" Left="633.15" Width="75.6" Height="18.9" Text="[Itens.SEPARADO]" Format="Number" Format.UseLocale="true" Format.DecimalDigits="4" HorzAlign="Right" VertAlign="Center" WordWrap="false" Font="Arial, 8pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text24" Left="1426.95" Top="311.85" Width="94.5" Height="18.9" Text="DataBandPedidos" Font="Arial, 10pt"/>
+        <DataHeaderBand Name="DataHeader1" Top="267.15" Width="718.2" Height="28.35" Guides="0,18.89999">
+          <TextObject Name="Text2" Left="9.45" Width="47.25" Height="18.9" Text="Filial&#13;&#10;" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text3" Left="66.15" Width="396.9" Height="18.9" Text="Produto" HorzAlign="Center" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text4" Left="463.05" Width="75.6" Height="28.35" Text="Quat. Pedida" HorzAlign="Right" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text8" Left="557.55" Width="66.15" Height="28.35" Text="Em Separação" HorzAlign="Center" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+          <TextObject Name="Text19" Left="633.15" Width="75.6" Height="28.35" Text="Separado" HorzAlign="Right" VertAlign="Center" Font="Arial, 8pt, style=Bold"/>
+        </DataHeaderBand>
+      </DataBand>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="331.85" Width="718.2"/>
+    <PageFooterBand Name="PageFooter1" Top="335.85" Width="718.2"/>
+  </ReportPage>
+</Report>
