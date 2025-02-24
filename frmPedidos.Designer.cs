@@ -40,17 +40,21 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lblAviso = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.lblAviso = new System.Windows.Forms.Label();
             this.bntEntregar = new System.Windows.Forms.Button();
             this.btnDesmarcar = new System.Windows.Forms.Button();
             this.btnMarcar = new System.Windows.Forms.Button();
             this.btnMarcarDevolver = new System.Windows.Forms.Button();
             this.btnSubir = new System.Windows.Forms.Button();
             this.btnDesmarcarDevolver = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.grade)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradeEntregue)).BeginInit();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // usBarraTitulo1
@@ -70,18 +74,19 @@
             // 
             // grade
             // 
-            this.grade.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.grade.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grade.BackgroundColor = System.Drawing.SystemColors.Control;
             this.grade.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grade.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clmPedido});
-            this.grade.Location = new System.Drawing.Point(14, 204);
+            this.grade.Location = new System.Drawing.Point(10, 116);
             this.grade.Name = "grade";
             this.grade.RowHeadersVisible = false;
             this.grade.RowHeadersWidth = 51;
             this.grade.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grade.Size = new System.Drawing.Size(1410, 287);
+            this.grade.Size = new System.Drawing.Size(1423, 322);
             this.grade.TabIndex = 4;
             this.grade.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grade_CellContentClick);
             // 
@@ -101,12 +106,12 @@
             this.gradeEntregue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gradeEntregue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1});
-            this.gradeEntregue.Location = new System.Drawing.Point(14, 527);
+            this.gradeEntregue.Location = new System.Drawing.Point(19, 54);
             this.gradeEntregue.Name = "gradeEntregue";
             this.gradeEntregue.RowHeadersVisible = false;
             this.gradeEntregue.RowHeadersWidth = 51;
             this.gradeEntregue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gradeEntregue.Size = new System.Drawing.Size(1410, 143);
+            this.gradeEntregue.Size = new System.Drawing.Size(1417, 49);
             this.gradeEntregue.TabIndex = 5;
             // 
             // dataGridViewTextBoxColumn1
@@ -170,7 +175,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(17, 161);
+            this.label2.Location = new System.Drawing.Point(12, 59);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(130, 17);
             this.label2.TabIndex = 10;
@@ -179,7 +184,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 188);
+            this.label3.Location = new System.Drawing.Point(16, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(113, 13);
             this.label3.TabIndex = 11;
@@ -188,7 +193,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 506);
+            this.label4.Location = new System.Drawing.Point(12, 30);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(112, 13);
             this.label4.TabIndex = 12;
@@ -196,40 +201,40 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.lblAviso);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.txtPedido);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.lblCliente);
-            this.panel2.Location = new System.Drawing.Point(0, 106);
+            this.panel2.Location = new System.Drawing.Point(6, 6);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1448, 47);
+            this.panel2.Size = new System.Drawing.Size(1435, 51);
             this.panel2.TabIndex = 13;
-            // 
-            // lblAviso
-            // 
-            this.lblAviso.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblAviso.AutoSize = true;
-            this.lblAviso.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAviso.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblAviso.Location = new System.Drawing.Point(1080, 7);
-            this.lblAviso.Name = "lblAviso";
-            this.lblAviso.Size = new System.Drawing.Size(242, 30);
-            this.lblAviso.TabIndex = 13;
-            this.lblAviso.Text = "Aguarde Processando....";
-            this.lblAviso.Visible = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(7, 3);
+            this.label5.Location = new System.Drawing.Point(12, 7);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 12;
             this.label5.Text = "Filtro:";
+            // 
+            // lblAviso
+            // 
+            this.lblAviso.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblAviso.AutoSize = true;
+            this.lblAviso.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lblAviso.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAviso.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblAviso.Location = new System.Drawing.Point(1163, 20);
+            this.lblAviso.Name = "lblAviso";
+            this.lblAviso.Size = new System.Drawing.Size(242, 30);
+            this.lblAviso.TabIndex = 13;
+            this.lblAviso.Text = "Aguarde Processando....";
+            this.lblAviso.Visible = false;
             // 
             // bntEntregar
             // 
@@ -240,7 +245,7 @@
             this.bntEntregar.FlatAppearance.BorderSize = 0;
             this.bntEntregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bntEntregar.Image = global::ControlePedido.Properties.Resources.descer1;
-            this.bntEntregar.Location = new System.Drawing.Point(1387, 173);
+            this.bntEntregar.Location = new System.Drawing.Point(1396, 72);
             this.bntEntregar.Name = "bntEntregar";
             this.bntEntregar.Size = new System.Drawing.Size(37, 25);
             this.bntEntregar.TabIndex = 17;
@@ -256,7 +261,7 @@
             this.btnDesmarcar.FlatAppearance.BorderSize = 0;
             this.btnDesmarcar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDesmarcar.Image = global::ControlePedido.Properties.Resources.desmarcar;
-            this.btnDesmarcar.Location = new System.Drawing.Point(1344, 173);
+            this.btnDesmarcar.Location = new System.Drawing.Point(1353, 72);
             this.btnDesmarcar.Name = "btnDesmarcar";
             this.btnDesmarcar.Size = new System.Drawing.Size(37, 25);
             this.btnDesmarcar.TabIndex = 16;
@@ -272,7 +277,7 @@
             this.btnMarcar.FlatAppearance.BorderSize = 0;
             this.btnMarcar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMarcar.Image = global::ControlePedido.Properties.Resources.marcar1;
-            this.btnMarcar.Location = new System.Drawing.Point(1301, 173);
+            this.btnMarcar.Location = new System.Drawing.Point(1310, 72);
             this.btnMarcar.Name = "btnMarcar";
             this.btnMarcar.Size = new System.Drawing.Size(37, 25);
             this.btnMarcar.TabIndex = 18;
@@ -288,7 +293,7 @@
             this.btnMarcarDevolver.FlatAppearance.BorderSize = 0;
             this.btnMarcarDevolver.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMarcarDevolver.Image = global::ControlePedido.Properties.Resources.marcar1;
-            this.btnMarcarDevolver.Location = new System.Drawing.Point(1285, 497);
+            this.btnMarcarDevolver.Location = new System.Drawing.Point(1310, 24);
             this.btnMarcarDevolver.Name = "btnMarcarDevolver";
             this.btnMarcarDevolver.Size = new System.Drawing.Size(37, 25);
             this.btnMarcarDevolver.TabIndex = 21;
@@ -304,7 +309,7 @@
             this.btnSubir.FlatAppearance.BorderSize = 0;
             this.btnSubir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSubir.Image = global::ControlePedido.Properties.Resources.subir;
-            this.btnSubir.Location = new System.Drawing.Point(1371, 497);
+            this.btnSubir.Location = new System.Drawing.Point(1396, 24);
             this.btnSubir.Name = "btnSubir";
             this.btnSubir.Size = new System.Drawing.Size(37, 25);
             this.btnSubir.TabIndex = 20;
@@ -320,53 +325,69 @@
             this.btnDesmarcarDevolver.FlatAppearance.BorderSize = 0;
             this.btnDesmarcarDevolver.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDesmarcarDevolver.Image = global::ControlePedido.Properties.Resources.desmarcar;
-            this.btnDesmarcarDevolver.Location = new System.Drawing.Point(1328, 497);
+            this.btnDesmarcarDevolver.Location = new System.Drawing.Point(1353, 24);
             this.btnDesmarcarDevolver.Name = "btnDesmarcarDevolver";
             this.btnDesmarcarDevolver.Size = new System.Drawing.Size(37, 25);
             this.btnDesmarcarDevolver.TabIndex = 19;
             this.btnDesmarcarDevolver.UseVisualStyleBackColor = false;
             this.btnDesmarcarDevolver.Click += new System.EventHandler(this.btnDesmarcarDevolver_Click);
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.panel3.Controls.Add(this.label2);
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.grade);
+            this.panel3.Controls.Add(this.btnDesmarcar);
+            this.panel3.Controls.Add(this.bntEntregar);
+            this.panel3.Controls.Add(this.panel2);
+            this.panel3.Controls.Add(this.btnMarcar);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 106);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1448, 453);
+            this.panel3.TabIndex = 22;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.panel4.Controls.Add(this.label4);
+            this.panel4.Controls.Add(this.btnDesmarcarDevolver);
+            this.panel4.Controls.Add(this.btnSubir);
+            this.panel4.Controls.Add(this.btnMarcarDevolver);
+            this.panel4.Controls.Add(this.gradeEntregue);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(0, 559);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1448, 117);
+            this.panel4.TabIndex = 23;
+            // 
             // frmPedidos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1448, 726);
-            this.Controls.Add(this.btnMarcarDevolver);
-            this.Controls.Add(this.btnSubir);
-            this.Controls.Add(this.btnDesmarcarDevolver);
-            this.Controls.Add(this.btnMarcar);
-            this.Controls.Add(this.bntEntregar);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.btnDesmarcar);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.gradeEntregue);
-            this.Controls.Add(this.grade);
+            this.Controls.Add(this.lblAviso);
+            this.Controls.Add(this.panel4);
+            this.Controls.Add(this.panel3);
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "frmPedidos";
             this.Text = "frmPedidos";
             this.Load += new System.EventHandler(this.frmPedidos_Load);
-            this.Controls.SetChildIndex(this.grade, 0);
-            this.Controls.SetChildIndex(this.gradeEntregue, 0);
-            this.Controls.SetChildIndex(this.label2, 0);
-            this.Controls.SetChildIndex(this.label3, 0);
-            this.Controls.SetChildIndex(this.label4, 0);
-            this.Controls.SetChildIndex(this.btnDesmarcar, 0);
-            this.Controls.SetChildIndex(this.panel2, 0);
-            this.Controls.SetChildIndex(this.bntEntregar, 0);
-            this.Controls.SetChildIndex(this.btnMarcar, 0);
-            this.Controls.SetChildIndex(this.btnDesmarcarDevolver, 0);
-            this.Controls.SetChildIndex(this.btnSubir, 0);
-            this.Controls.SetChildIndex(this.btnMarcarDevolver, 0);
             this.Controls.SetChildIndex(this.usBarraTitulo1, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.usMenu1, 0);
+            this.Controls.SetChildIndex(this.panel3, 0);
+            this.Controls.SetChildIndex(this.panel4, 0);
+            this.Controls.SetChildIndex(this.lblAviso, 0);
             ((System.ComponentModel.ISupportInitialize)(this.grade)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradeEntregue)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,5 +415,7 @@
         private System.Windows.Forms.Button btnSubir;
         private System.Windows.Forms.Button btnDesmarcarDevolver;
         private System.Windows.Forms.Label lblAviso;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
     }
 }

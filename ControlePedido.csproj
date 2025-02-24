@@ -471,6 +471,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="iconAzul.ico" />
+    <None Include="img\png\crane.png" />
     <None Include="img\png\xlsx.png" />
     <None Include="img\png\csv24.png" />
     <None Include="img\png\pdf.png" />
