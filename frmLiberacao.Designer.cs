@@ -67,6 +67,7 @@
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(338, 22);
             this.txtLogin.TabIndex = 0;
+            this.txtLogin.TextChanged += new System.EventHandler(this.txtLogin_TextChanged);
             this.txtLogin.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtLogin_KeyDown);
             // 
             // button2

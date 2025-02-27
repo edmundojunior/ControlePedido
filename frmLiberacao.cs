@@ -52,6 +52,9 @@ namespace ControlePedido
         {
             if (e.KeyCode == Keys.Enter)
             {
+                txtLogin.Text = txtLogin.Text.ToUpper();
+
+                
                 txtSenha.Focus();
             }
         }
@@ -96,6 +99,11 @@ namespace ControlePedido
             }
             
 
+
+        }
+
+        private void txtLogin_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }

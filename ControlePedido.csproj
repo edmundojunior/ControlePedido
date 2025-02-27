@@ -387,6 +387,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relatorios.cs" />
+    <Compile Include="RelEstoque.cs" />
     <Compile Include="usBarraTitulo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -471,6 +472,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="iconAzul.ico" />
+    <None Include="img\png\logoHidotam.png" />
     <None Include="img\png\crane.png" />
     <None Include="img\png\xlsx.png" />
     <None Include="img\png\csv24.png" />

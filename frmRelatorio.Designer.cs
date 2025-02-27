@@ -130,18 +130,18 @@
             // 
             // usBarraTitulo1
             // 
-            this.usBarraTitulo1.Size = new System.Drawing.Size(894, 72);
+            this.usBarraTitulo1.Size = new System.Drawing.Size(1241, 72);
             this.usBarraTitulo1.valor = "Relatório";
             this.usBarraTitulo1.Load += new System.EventHandler(this.usBarraTitulo1_Load);
             // 
             // panel1
             // 
             this.panel1.Location = new System.Drawing.Point(0, 634);
-            this.panel1.Size = new System.Drawing.Size(894, 30);
+            this.panel1.Size = new System.Drawing.Size(1241, 30);
             // 
             // usMenu1
             // 
-            this.usMenu1.Size = new System.Drawing.Size(894, 34);
+            this.usMenu1.Size = new System.Drawing.Size(1241, 34);
             this.usMenu1.Load += new System.EventHandler(this.usMenu1_Load);
             // 
             // groupData
@@ -152,7 +152,7 @@
             this.groupData.Controls.Add(this.label6);
             this.groupData.Controls.Add(this.label1);
             this.groupData.Font = new System.Drawing.Font("Segoe UI Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupData.Location = new System.Drawing.Point(29, 139);
+            this.groupData.Location = new System.Drawing.Point(12, 165);
             this.groupData.Name = "groupData";
             this.groupData.Size = new System.Drawing.Size(228, 107);
             this.groupData.TabIndex = 25;
@@ -216,12 +216,13 @@
             this.chkDatas.AutoSize = true;
             this.chkDatas.Checked = true;
             this.chkDatas.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDatas.Location = new System.Drawing.Point(29, 119);
+            this.chkDatas.Location = new System.Drawing.Point(382, 499);
             this.chkDatas.Name = "chkDatas";
             this.chkDatas.Size = new System.Drawing.Size(103, 17);
             this.chkDatas.TabIndex = 17;
             this.chkDatas.Text = "FIltrar Por Data";
             this.chkDatas.UseVisualStyleBackColor = true;
+            this.chkDatas.Visible = false;
             this.chkDatas.CheckedChanged += new System.EventHandler(this.chkDatas_CheckedChanged);
             // 
             // btnStatus
@@ -953,104 +954,99 @@
             // btnFilial
             // 
             this.btnFilial.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFilial.Location = new System.Drawing.Point(447, 147);
+            this.btnFilial.Location = new System.Drawing.Point(140, 136);
             this.btnFilial.Name = "btnFilial";
             this.btnFilial.Size = new System.Drawing.Size(25, 23);
             this.btnFilial.TabIndex = 5;
             this.btnFilial.Text = "...";
             this.btnFilial.UseVisualStyleBackColor = true;
-            this.btnFilial.Visible = false;
             this.btnFilial.Click += new System.EventHandler(this.btnFilial_Click);
             // 
             // txtFilial
             // 
             this.txtFilial.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtFilial.Enabled = false;
-            this.txtFilial.Location = new System.Drawing.Point(382, 147);
+            this.txtFilial.Location = new System.Drawing.Point(75, 136);
             this.txtFilial.Name = "txtFilial";
             this.txtFilial.Size = new System.Drawing.Size(63, 22);
             this.txtFilial.TabIndex = 4;
-            this.txtFilial.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(346, 151);
+            this.label3.Location = new System.Drawing.Point(39, 140);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Filial:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label3.Visible = false;
             // 
             // btmEmpresa
             // 
             this.btmEmpresa.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btmEmpresa.Location = new System.Drawing.Point(447, 123);
+            this.btmEmpresa.Location = new System.Drawing.Point(140, 112);
             this.btmEmpresa.Name = "btmEmpresa";
             this.btmEmpresa.Size = new System.Drawing.Size(25, 23);
             this.btmEmpresa.TabIndex = 2;
             this.btmEmpresa.Text = "...";
             this.btmEmpresa.UseVisualStyleBackColor = true;
-            this.btmEmpresa.Visible = false;
             this.btmEmpresa.Click += new System.EventHandler(this.btmEmpresa_Click);
             // 
             // txtEmpresa
             // 
             this.txtEmpresa.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmpresa.Enabled = false;
-            this.txtEmpresa.Location = new System.Drawing.Point(382, 123);
+            this.txtEmpresa.Location = new System.Drawing.Point(75, 112);
             this.txtEmpresa.Name = "txtEmpresa";
             this.txtEmpresa.Size = new System.Drawing.Size(63, 22);
             this.txtEmpresa.TabIndex = 1;
-            this.txtEmpresa.Visible = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(327, 127);
+            this.label2.Location = new System.Drawing.Point(20, 116);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Empresa:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label2.Visible = false;
             // 
             // lblEmpresa
             // 
             this.lblEmpresa.AutoSize = true;
-            this.lblEmpresa.Location = new System.Drawing.Point(482, 131);
+            this.lblEmpresa.Location = new System.Drawing.Point(175, 120);
             this.lblEmpresa.Name = "lblEmpresa";
             this.lblEmpresa.Size = new System.Drawing.Size(16, 13);
             this.lblEmpresa.TabIndex = 27;
             this.lblEmpresa.Text = "...";
-            this.lblEmpresa.Visible = false;
             // 
             // lblFilial
             // 
             this.lblFilial.AutoSize = true;
-            this.lblFilial.Location = new System.Drawing.Point(482, 152);
+            this.lblFilial.Location = new System.Drawing.Point(175, 141);
             this.lblFilial.Name = "lblFilial";
             this.lblFilial.Size = new System.Drawing.Size(16, 13);
             this.lblFilial.TabIndex = 28;
             this.lblFilial.Text = "...";
-            this.lblFilial.Visible = false;
             // 
             // groupEstoqque
             // 
             this.groupEstoqque.Controls.Add(this.chkEmSeparacao);
             this.groupEstoqque.Controls.Add(this.chkSeparado);
-            this.groupEstoqque.Location = new System.Drawing.Point(29, 249);
+            this.groupEstoqque.Location = new System.Drawing.Point(488, 536);
             this.groupEstoqque.Name = "groupEstoqque";
             this.groupEstoqque.Size = new System.Drawing.Size(233, 92);
             this.groupEstoqque.TabIndex = 29;
             this.groupEstoqque.TabStop = false;
             this.groupEstoqque.Text = "Apresentar Estoque:";
+            this.groupEstoqque.Visible = false;
             // 
             // chkEmSeparacao
             // 
             this.chkEmSeparacao.AutoSize = true;
+            this.chkEmSeparacao.Checked = true;
+            this.chkEmSeparacao.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkEmSeparacao.Location = new System.Drawing.Point(14, 21);
             this.chkEmSeparacao.Name = "chkEmSeparacao";
             this.chkEmSeparacao.Size = new System.Drawing.Size(97, 17);
@@ -1061,6 +1057,8 @@
             // chkSeparado
             // 
             this.chkSeparado.AutoSize = true;
+            this.chkSeparado.Checked = true;
+            this.chkSeparado.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSeparado.Location = new System.Drawing.Point(15, 67);
             this.chkSeparado.Name = "chkSeparado";
             this.chkSeparado.Size = new System.Drawing.Size(120, 17);
@@ -1151,7 +1149,7 @@
             this.groupPedido.Controls.Add(this.label16);
             this.groupPedido.Controls.Add(this.label10);
             this.groupPedido.Controls.Add(this.button5);
-            this.groupPedido.Location = new System.Drawing.Point(324, 187);
+            this.groupPedido.Location = new System.Drawing.Point(736, 236);
             this.groupPedido.Name = "groupPedido";
             this.groupPedido.Size = new System.Drawing.Size(539, 440);
             this.groupPedido.TabIndex = 31;
@@ -1164,7 +1162,7 @@
             this.lblAviso.AutoSize = true;
             this.lblAviso.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAviso.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblAviso.Location = new System.Drawing.Point(646, 5);
+            this.lblAviso.Location = new System.Drawing.Point(993, 5);
             this.lblAviso.Name = "lblAviso";
             this.lblAviso.Size = new System.Drawing.Size(242, 30);
             this.lblAviso.TabIndex = 32;
@@ -1185,7 +1183,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 664);
+            this.ClientSize = new System.Drawing.Size(1241, 664);
             this.Controls.Add(this.lbltotais);
             this.Controls.Add(this.lblAviso);
             this.Controls.Add(this.chkDatas);

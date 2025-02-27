@@ -795,8 +795,7 @@ namespace ControlePedido
                                         " FROM TBL_PEDIDOS_ITENS TPI  " +
                                         " LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TPICE ON " +
                                         " TPICE.CD_PEDIDO = TPI.CD_PEDIDO " +
-                                        " where TPI.CD_PEDIDO = {0} " +
-                                        //" AND TPICE.X_ENTREGUE = 1 " +
+                                        " where TPI.CD_PEDIDO = {0} " +                                        
                                         " GROUP BY TPI.CD_PEDIDO "  , Pedido);
 
 
@@ -830,11 +829,11 @@ namespace ControlePedido
             }
             else if ((valorEntregar - valorEntregue) == 0)
             {
-                 Status = retornoCodigoStatus("SEPARADO");                
+                 Status = retornoCodigoStatus("PARCIAL");                
             }
             else
             {
-                Status = retornoCodigoStatus("EM SEPARAÇÃO");
+                Status = retornoCodigoStatus("PARCIAL");
             }
                         
             string sql = String.Format("update TBL_PEDIDOS set  " +
@@ -909,7 +908,7 @@ namespace ControlePedido
             return retorno;
 
         }
-        public int retornoCodigoStatus(string status = "EM SEPARAÇÃO")
+        public int retornoCodigoStatus(string status = "PARCIAL")
         {
             int retorno = 0;
             DataTable retornado = new DataTable();

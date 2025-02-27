@@ -1,4 +1,5 @@
-﻿using FastReport.Utils;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using FastReport.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -68,14 +69,17 @@ namespace ControlePedido
 
         private void imprimirEstoque()
         {
+            var filtros = new Dictionary<string, object>();
+
             Cursor.Current = Cursors.WaitCursor;
             lblAviso.Visible = true;
             lblAviso.Refresh();
+            RelEstoque rel_estoque = new RelEstoque();
 
             Impressao impressao = new Impressao();
-            var listas = estoque.retornarEstoqueRelatorio(retornaFiltroEstoque(), chkEmSeparacao.Checked, chkSeparado.Checked, lbltotais);
+            //var listas = estoque.retornarEstoqueRelatorio(retornaFiltroEstoque(), chkEmSeparacao.Checked, chkSeparado.Checked, lbltotais);
 
-                DateTime dt_inicial = DateTime.Now;
+            DateTime dt_inicial = DateTime.Now;
             DateTime dt_final = DateTime.Now;
 
             if (chkDatas.Checked)
@@ -85,8 +89,19 @@ namespace ControlePedido
 
             }
 
+            DataTable dt = new DataTable();
 
-            impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
+
+
+            if (!string.IsNullOrWhiteSpace(txtEmpresa.Text))
+                filtros.Add("CD_EMPRESA", txtEmpresa.Text);
+
+
+            dt = rel_estoque.retornaEmpresa(filtros); 
+
+            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final, dt);
+
+            //impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
 
             Cursor.Current = Cursors.Default;
             lblAviso.Visible = false;
@@ -169,8 +184,41 @@ namespace ControlePedido
             txtVendedor.Text = "";
             txtStatus.Text = "";
 
+            var filtros = new Dictionary<string, object>();
+
             
-            
+            RelEstoque impressao = new RelEstoque();
+          
+            DataTable dt = new DataTable();
+
+                     
+            filtros.Add("CD_EMPRESA", "1");
+
+
+            dt = impressao.retornaEmpresa(filtros);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+
+                txtEmpresa.Text = dr["CD_EMPRESA"].ToString();
+                lblEmpresa.Text = dr["DS_EMPRESA"].ToString();
+
+            }
+
+            filtros.Clear();
+            filtros.Add("CD_EMPRESA", "1");
+            filtros.Add("CD_FILIAL", "1");
+
+            dt = impressao.retornaFilial(filtros);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                txtFilial.Text = dr["CD_FILIAL"].ToString();
+                lblFilial.Text = dr["DS_FILIAL"].ToString();
+
+            }
+
+
             groupData.Enabled = chkDatas.Checked;
 
             if (_estoque)

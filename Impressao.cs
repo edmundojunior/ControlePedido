@@ -369,7 +369,7 @@ namespace ControlePedido
                                     AND CLIENTE.X_CLIENTE = 1
                                     LEFT JOIN TBL_ENDERECO_CIDADES CIDADE
                                     ON CIDADE.CD_CIDADE = CLIENTE.CD_CIDADE
-                                    WHERE PEDIDO.CD_STATUS IN (8,9)                                    
+                                    WHERE PEDIDO.CD_STATUS IN (7)                                    
                                 ";
 
 
@@ -459,7 +459,7 @@ namespace ControlePedido
                                     AND CONTROLEENTREGA2.X_ENTREGUE = 1								
                                     LEFT JOIN TBL_EMPRESAS_FILIAIS FILIAL
                                     ON FILIAL.CD_FILIAL = PEDIDO.CD_FILIAL
-                                    WHERE PEDIDO.CD_STATUS IN (8,9)
+                                    WHERE PEDIDO.CD_STATUS IN (7)
                                 AND PEDIDO.CD_PEDIDO IN ({0})
                                 AND ITENSPEDIDO.CD_MATERIAL IS NOT NULL
                                  ";

@@ -176,7 +176,7 @@ namespace ControlePedido
                                     AND CLIENTE.X_CLIENTE = 1
                                     LEFT JOIN TBL_ENDERECO_CIDADES CIDADE
                                     ON CIDADE.CD_CIDADE = CLIENTE.CD_CIDADE
-                                    Where PEDIDO.CD_STATUS IN (8,9)
+                                    Where PEDIDO.CD_STATUS IN (7)
                                     ORDER BY  PEDIDO.CD_CLIENTE, PEDIDO.CD_PEDIDO
                                 ";
 
@@ -287,7 +287,7 @@ namespace ControlePedido
                                                 ON CONTROLEENTREGA2.CD_PEDIDO = PEDIDO.CD_PEDIDO
                                                 AND CONTROLEENTREGA2.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL
                                                 AND CONTROLEENTREGA2.X_ENTREGUE = 1
-                                                Where PEDIDO.CD_STATUS IN (8,9)
+                                                Where PEDIDO.CD_STATUS IN (7)
                                                 AND PEDIDO.CD_PEDIDO IN ({0})
                                                 AND ITENSPEDIDO.CD_MATERIAL IS NOT NULL
                                                 ORDER BY PEDIDO.CD_PEDIDO, PEDIDO.CD_CLIENTE, ITENSPEDIDO.CD_MATERIAL
