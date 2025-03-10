@@ -735,7 +735,7 @@ namespace ControlePedido
                                     {
                                         sql = String.Format("Update TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA  SET " +
                                                             " NR_QUANTIDADE = NR_QUANTIDADE - " + quantidade.ToString("N4").Replace(".", "").Replace(",", ".") +
-                                                            " , X_ENTREGUE = 0 " +
+                                                            " , X_ENTREGUE = 1 " +
                                                             " WHERE CD_PEDIDO = {0} " +
                                                             " AND CD_MATERIAL = {1}  " +
                                                             " AND CD_ID_ITEM = {2} AND X_ENTREGUE = 1",
@@ -829,11 +829,11 @@ namespace ControlePedido
             }
             else if ((valorEntregar - valorEntregue) == 0)
             {
-                 Status = retornoCodigoStatus("PARCIAL");                
+                 Status = retornoCodigoStatus("SEPARADO");                
             }
             else
             {
-                Status = retornoCodigoStatus("PARCIAL");
+                Status = retornoCodigoStatus("EM SEPARAÇÃO");
             }
                         
             string sql = String.Format("update TBL_PEDIDOS set  " +
@@ -908,7 +908,7 @@ namespace ControlePedido
             return retorno;
 
         }
-        public int retornoCodigoStatus(string status = "PARCIAL")
+        public int retornoCodigoStatus(string status = "SEPARADO")
         {
             int retorno = 0;
             DataTable retornado = new DataTable();

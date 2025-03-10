@@ -65,8 +65,8 @@
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(0, 676);
-            this.panel1.Size = new System.Drawing.Size(1448, 50);
+            this.panel1.Location = new System.Drawing.Point(0, 666);
+            this.panel1.Size = new System.Drawing.Size(1448, 60);
             // 
             // usMenu1
             // 
@@ -86,7 +86,7 @@
             this.grade.RowHeadersVisible = false;
             this.grade.RowHeadersWidth = 51;
             this.grade.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grade.Size = new System.Drawing.Size(1423, 322);
+            this.grade.Size = new System.Drawing.Size(1423, 308);
             this.grade.TabIndex = 4;
             this.grade.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grade_CellContentClick);
             // 
@@ -106,12 +106,12 @@
             this.gradeEntregue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gradeEntregue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1});
-            this.gradeEntregue.Location = new System.Drawing.Point(19, 54);
+            this.gradeEntregue.Location = new System.Drawing.Point(12, 46);
             this.gradeEntregue.Name = "gradeEntregue";
             this.gradeEntregue.RowHeadersVisible = false;
             this.gradeEntregue.RowHeadersWidth = 51;
             this.gradeEntregue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gradeEntregue.Size = new System.Drawing.Size(1417, 49);
+            this.gradeEntregue.Size = new System.Drawing.Size(1419, 53);
             this.gradeEntregue.TabIndex = 5;
             // 
             // dataGridViewTextBoxColumn1
@@ -125,7 +125,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(33, 20);
+            this.label1.Location = new System.Drawing.Point(33, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 6;
@@ -135,7 +135,7 @@
             // 
             this.txtPedido.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPedido.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPedido.Location = new System.Drawing.Point(80, 17);
+            this.txtPedido.Location = new System.Drawing.Point(80, 21);
             this.txtPedido.Name = "txtPedido";
             this.txtPedido.Size = new System.Drawing.Size(100, 22);
             this.txtPedido.TabIndex = 0;
@@ -152,9 +152,9 @@
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(186, 14);
+            this.button1.Location = new System.Drawing.Point(181, 21);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(29, 23);
+            this.button1.Size = new System.Drawing.Size(29, 21);
             this.button1.TabIndex = 8;
             this.button1.TabStop = false;
             this.button1.Text = "...";
@@ -165,7 +165,7 @@
             // 
             this.lblCliente.AutoSize = true;
             this.lblCliente.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCliente.Location = new System.Drawing.Point(224, 22);
+            this.lblCliente.Location = new System.Drawing.Point(213, 26);
             this.lblCliente.Name = "lblCliente";
             this.lblCliente.Size = new System.Drawing.Size(19, 13);
             this.lblCliente.TabIndex = 9;
@@ -193,7 +193,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 30);
+            this.label4.Location = new System.Drawing.Point(12, 17);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(112, 13);
             this.label4.TabIndex = 12;
@@ -216,7 +216,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 7);
+            this.label5.Location = new System.Drawing.Point(4, 3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 12;
@@ -293,7 +293,7 @@
             this.btnMarcarDevolver.FlatAppearance.BorderSize = 0;
             this.btnMarcarDevolver.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMarcarDevolver.Image = global::ControlePedido.Properties.Resources.marcar1;
-            this.btnMarcarDevolver.Location = new System.Drawing.Point(1310, 24);
+            this.btnMarcarDevolver.Location = new System.Drawing.Point(1310, 11);
             this.btnMarcarDevolver.Name = "btnMarcarDevolver";
             this.btnMarcarDevolver.Size = new System.Drawing.Size(37, 25);
             this.btnMarcarDevolver.TabIndex = 21;
@@ -309,7 +309,7 @@
             this.btnSubir.FlatAppearance.BorderSize = 0;
             this.btnSubir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSubir.Image = global::ControlePedido.Properties.Resources.subir;
-            this.btnSubir.Location = new System.Drawing.Point(1396, 24);
+            this.btnSubir.Location = new System.Drawing.Point(1396, 11);
             this.btnSubir.Name = "btnSubir";
             this.btnSubir.Size = new System.Drawing.Size(37, 25);
             this.btnSubir.TabIndex = 20;
@@ -325,7 +325,7 @@
             this.btnDesmarcarDevolver.FlatAppearance.BorderSize = 0;
             this.btnDesmarcarDevolver.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDesmarcarDevolver.Image = global::ControlePedido.Properties.Resources.desmarcar;
-            this.btnDesmarcarDevolver.Location = new System.Drawing.Point(1353, 24);
+            this.btnDesmarcarDevolver.Location = new System.Drawing.Point(1353, 11);
             this.btnDesmarcarDevolver.Name = "btnDesmarcarDevolver";
             this.btnDesmarcarDevolver.Size = new System.Drawing.Size(37, 25);
             this.btnDesmarcarDevolver.TabIndex = 19;
@@ -345,7 +345,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 106);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1448, 453);
+            this.panel3.Size = new System.Drawing.Size(1448, 439);
             this.panel3.TabIndex = 22;
             // 
             // panel4
@@ -357,9 +357,9 @@
             this.panel4.Controls.Add(this.btnMarcarDevolver);
             this.panel4.Controls.Add(this.gradeEntregue);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 559);
+            this.panel4.Location = new System.Drawing.Point(0, 545);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1448, 117);
+            this.panel4.Size = new System.Drawing.Size(1448, 121);
             this.panel4.TabIndex = 23;
             // 
             // frmPedidos
@@ -372,7 +372,7 @@
             this.Controls.Add(this.panel3);
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "frmPedidos";
-            this.Text = "frmPedidos";
+            this.Text = "Controle de Pedidos - Usuário: ";
             this.Load += new System.EventHandler(this.frmPedidos_Load);
             this.Controls.SetChildIndex(this.usBarraTitulo1, 0);
             this.Controls.SetChildIndex(this.panel1, 0);

@@ -99,7 +99,7 @@ namespace ControlePedido
 
             dt = rel_estoque.retornaEmpresa(filtros); 
 
-            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final, dt);
+            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , txtFilial.Text );
 
             //impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
 

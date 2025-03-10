@@ -122,6 +122,7 @@
             this.groupPedido = new System.Windows.Forms.GroupBox();
             this.lblAviso = new System.Windows.Forms.Label();
             this.lbltotais = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
             this.groupData.SuspendLayout();
             this.groupEstoqque.SuspendLayout();
             this.groupFiltroProduto.SuspendLayout();
@@ -130,18 +131,19 @@
             // 
             // usBarraTitulo1
             // 
-            this.usBarraTitulo1.Size = new System.Drawing.Size(1241, 72);
+            this.usBarraTitulo1.Size = new System.Drawing.Size(875, 72);
             this.usBarraTitulo1.valor = "Relatório";
             this.usBarraTitulo1.Load += new System.EventHandler(this.usBarraTitulo1_Load);
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(0, 634);
-            this.panel1.Size = new System.Drawing.Size(1241, 30);
+            this.panel1.Controls.Add(this.lbltotais);
+            this.panel1.Location = new System.Drawing.Point(0, 589);
+            this.panel1.Size = new System.Drawing.Size(875, 30);
             // 
             // usMenu1
             // 
-            this.usMenu1.Size = new System.Drawing.Size(1241, 34);
+            this.usMenu1.Size = new System.Drawing.Size(875, 34);
             this.usMenu1.Load += new System.EventHandler(this.usMenu1_Load);
             // 
             // groupData
@@ -1092,7 +1094,7 @@
             this.groupFiltroProduto.Controls.Add(this.txtTipoProduto);
             this.groupFiltroProduto.Controls.Add(this.label7);
             this.groupFiltroProduto.Controls.Add(this.button2);
-            this.groupFiltroProduto.Location = new System.Drawing.Point(29, 361);
+            this.groupFiltroProduto.Location = new System.Drawing.Point(12, 288);
             this.groupFiltroProduto.Name = "groupFiltroProduto";
             this.groupFiltroProduto.Size = new System.Drawing.Size(236, 240);
             this.groupFiltroProduto.TabIndex = 30;
@@ -1149,9 +1151,9 @@
             this.groupPedido.Controls.Add(this.label16);
             this.groupPedido.Controls.Add(this.label10);
             this.groupPedido.Controls.Add(this.button5);
-            this.groupPedido.Location = new System.Drawing.Point(736, 236);
+            this.groupPedido.Location = new System.Drawing.Point(309, 163);
             this.groupPedido.Name = "groupPedido";
-            this.groupPedido.Size = new System.Drawing.Size(539, 440);
+            this.groupPedido.Size = new System.Drawing.Size(539, 358);
             this.groupPedido.TabIndex = 31;
             this.groupPedido.TabStop = false;
             this.groupPedido.Text = "Filtro Pedido";
@@ -1162,7 +1164,7 @@
             this.lblAviso.AutoSize = true;
             this.lblAviso.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAviso.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblAviso.Location = new System.Drawing.Point(993, 5);
+            this.lblAviso.Location = new System.Drawing.Point(627, 5);
             this.lblAviso.Name = "lblAviso";
             this.lblAviso.Size = new System.Drawing.Size(242, 30);
             this.lblAviso.TabIndex = 32;
@@ -1171,20 +1173,19 @@
             // 
             // lbltotais
             // 
-            this.lbltotais.Location = new System.Drawing.Point(559, 45);
+            this.lbltotais.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lbltotais.Location = new System.Drawing.Point(26, 8);
             this.lbltotais.Name = "lbltotais";
             this.lbltotais.Size = new System.Drawing.Size(319, 13);
             this.lbltotais.TabIndex = 33;
             this.lbltotais.Text = "0 de 0";
             this.lbltotais.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbltotais.Visible = false;
             // 
             // frmRelatorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1241, 664);
-            this.Controls.Add(this.lbltotais);
+            this.ClientSize = new System.Drawing.Size(875, 619);
             this.Controls.Add(this.lblAviso);
             this.Controls.Add(this.chkDatas);
             this.Controls.Add(this.groupPedido);
@@ -1220,7 +1221,7 @@
             this.Controls.SetChildIndex(this.groupPedido, 0);
             this.Controls.SetChildIndex(this.chkDatas, 0);
             this.Controls.SetChildIndex(this.lblAviso, 0);
-            this.Controls.SetChildIndex(this.lbltotais, 0);
+            this.panel1.ResumeLayout(false);
             this.groupData.ResumeLayout(false);
             this.groupData.PerformLayout();
             this.groupEstoqque.ResumeLayout(false);

@@ -78,7 +78,6 @@
             this.lblquantidadeOriginal.Size = new System.Drawing.Size(49, 20);
             this.lblquantidadeOriginal.TabIndex = 10;
             this.lblquantidadeOriginal.Text = "00000";
-            this.lblquantidadeOriginal.Visible = false;
             // 
             // btnConfirmar
             // 

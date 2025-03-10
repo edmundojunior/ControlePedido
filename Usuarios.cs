@@ -67,9 +67,11 @@ namespace ControlePedido
             return retorno;
         }
 
-        public bool retornaPermissao(string ds_login, string ds_senha)
+        public (bool, string, string) retornaPermissao(string ds_login, string ds_senha)
         {
             bool retorno = false;
+            string codigo = string.Empty;
+            string nome = string.Empty;
 
             DataTable retornado = new DataTable();
 
@@ -100,10 +102,17 @@ namespace ControlePedido
                 if (retornado.Rows.Count > 0)
                 {
                     retorno = true;
+                    foreach (DataRow row in retornado.Rows) { 
+                        codigo = row["CD_CODUSUARIO"].ToString();
+                        nome = row["DS_USUARIO"].ToString();
+                    
+                    }
                 }
                 else
                 {
                     retorno = false;
+                    codigo = "";
+                    nome = "";
                 }
             }
             catch(Exception ex) 
@@ -113,7 +122,7 @@ namespace ControlePedido
                 retorno = false;
             }
 
-            return retorno;
+            return (retorno,codigo,nome);
         } 
     }
 }

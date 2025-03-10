@@ -14,6 +14,8 @@ namespace ControlePedido
     {
         public int usuario = 0;
         public bool liberado = false;
+        public string codigo = string.Empty;
+        public string nome = string.Empty;
 
         Usuarios usuarios = new Usuarios();
 
@@ -77,18 +79,25 @@ namespace ControlePedido
                 return;
             }
 
-            if (usuarios.retornaPermissao(txtLogin.Text.ToUpper(), txtSenha.Text))
+            var retorno = usuarios.retornaPermissao(txtLogin.Text.ToUpper(), txtSenha.Text);
+
+            if (retorno.Item1)
             {
                 lblAviso.Visible = false;
 
                 if (usuarios.retornaAutorizacao(txtLogin.Text, txtSenha.Text))
                 {
                     liberado = true;
+                    codigo = retorno.Item2.ToString();
+                    nome = retorno.Item3.ToString();
+
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show("Usuário não possui Permissão para Entregar Produto, \n verificar com Administrador ");
+                    MessageBox.Show("Usuário não possui Permissão para Entregar Produto,verificar com Administrador ");
+                    codigo = "";
+                    nome = "";
                     liberado = false;
                 }
             }

@@ -430,7 +430,7 @@ namespace ControlePedido
                                 );
 
                 }
-
+                
 
                 lista_estoque = preenchendoALista(dadosEstoque(sqlPedidos, filtroEstoque, Ehemseparacao, Ehseparado,2), 2, contar);
                                 
@@ -444,7 +444,7 @@ namespace ControlePedido
             catch (Exception ex)
             {
 
-                MessageBox.Show("Não foi possível encontrar o estoque do produto solicitado!\n" + ex.Message, "Aviso Importante");
+                MessageBox.Show("Não foi possível encontrar o estoque do produto solicitado!" + ex.Message, "Aviso Importante");
                 lista_estoque.Clear();
 
             }
@@ -813,7 +813,7 @@ namespace ControlePedido
                                        , Convert.ToDouble(lista[item].EstoqueAtual).ToString("N4")
                                        , Convert.ToDouble((lista[item].OrdemCompra +
                                                           lista[item].EstoqueAtual +
-                                                          lista_estoque[item].OrdemProducao +
+                                                          lista[item].OrdemProducao + lista[item].Separado + 
                                                           (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
                                                          -
                                                          (
@@ -824,7 +824,7 @@ namespace ControlePedido
                                                          )).ToString("N4")
                                         , Convert.ToDouble((lista[item].OrdemCompra +
                                                           lista[item].EstoqueAtual +
-                                                          lista_estoque[item].OrdemProducao +
+                                                          lista[item].OrdemProducao + lista[item].Separado +
                                                           (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
                                                          -
                                                          (
