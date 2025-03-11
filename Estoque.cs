@@ -393,9 +393,9 @@ namespace ControlePedido
                                         "  ON TIPCE.CD_PEDIDO = TP.CD_PEDIDO " +                                        
                                         "  LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA " +
                                         "  LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL " +
-                                        "  WHERE TP.CD_STATUS = 8 " +
+                                        "  WHERE TP.CD_STATUS = 7 " +
                                         "  AND TP.CD_EMPRESA is not null " +
-                                        "  AND TIPCE.X_ENTREGUE = 1 ");
+                                        "  AND TIPCE.X_ENTREGUE = 0 ");
                 }
 
                 if (Ehseparado) { 
@@ -424,19 +424,19 @@ namespace ControlePedido
                                 "  ON TIPCE.CD_PEDIDO = TP.CD_PEDIDO " +
                                 "  LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA " +
                                 "  LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL " +
-                                "  WHERE TP.CD_STATUS = 9 " +
+                                "  WHERE TP.CD_STATUS = 7 " +
                                 "  AND TP.CD_EMPRESA is not null " +
                                 "  AND TIPCE.X_ENTREGUE = 1 " 
                                 );
 
                 }
-
+                
 
                 lista_estoque = preenchendoALista(dadosEstoque(sqlPedidos, filtroEstoque, Ehemseparacao, Ehseparado,2), 2, contar);
                                 
                 lista_estoque = preenchendoALista(dadosEstoque(sqlSeparado, filtroEstoque, Ehemseparacao, Ehseparado,8), 8, contar);
 
-                lista_estoque = preenchendoALista(dadosEstoque(sqlEmSeparacao, filtroEstoque, Ehemseparacao, Ehseparado,9), 9, contar);
+                //lista_estoque = preenchendoALista(dadosEstoque(sqlEmSeparacao, filtroEstoque, Ehemseparacao, Ehseparado,9), 9, contar);
 
                 lista_estoque = preenchendoALista(dadosEstoque(sqlEstoqueAtual, filtroEstoque, Ehemseparacao, Ehseparado, 0), 0, contar);
 
@@ -444,7 +444,7 @@ namespace ControlePedido
             catch (Exception ex)
             {
 
-                MessageBox.Show("Não foi possível encontrar o estoque do produto solicitado!\n" + ex.Message, "Aviso Importante");
+                MessageBox.Show("Não foi possível encontrar o estoque do produto solicitado!" + ex.Message, "Aviso Importante");
                 lista_estoque.Clear();
 
             }
@@ -680,36 +680,38 @@ namespace ControlePedido
 
                 sqlOrdemServico = String.Format("", CodProduto);
 
-                sqlEmSeparacao = String.Format("SELECT " +
-                                            " TP.CD_EMPRESA, " +
-                                            " TP.CD_FILIAL, " +
-                                            " TEF.DS_FILIAL, " +
-                                            " TIPCE.CD_MATERIAL  AS CODIGO " +
-                                            " ,'' AS Descricao " +
-                                            " , '' As Idenfiticadao " +
-                                            " ,0 AS OrdemCompra " +
-                                            " ,0 AS OrdemProducaoo  " +
-                                            " ,0 AS OrdemProducaoConsumo " +
-                                            " ,0 AS Orcamento  " +
-                                            " ,0 AS OrdemServico  " +
-                                            " ,0 AS Pedidos  " +
-                                            " ,0 AS Requisicao  " +
-                                            " ,0 AS EstoqueAtual " +
-                                            " ,0 AS Separado  " +
-                                            " ,0 AS Disponivel  " +
-                                            " ,0 AS Almoxarifado   " +
-                                            " , 0 AS Separaco " +
-                                            " ,SUM(TIPCE.NR_QUANTIDADE) AS EmSeparacao " +
-                                            " FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TIPCE " +
-                                            " LEFT JOIN TBL_PEDIDOS TP " +
-                                            " ON TIPCE.CD_PEDIDO = TP.CD_PEDIDO " +
-                                            " AND TP.CD_STATUS = 8  " +
-                                            " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA " +
-                                            " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL " +
-                                            " WHERE CD_MATERIAL = {0}  " +
-                                            " AND TP.CD_EMPRESA is not null  " +
-                                            " AND TIPCE.X_ENTREGUE = 1 " +
-                                            " GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL,TEF.DS_FILIAL, TIPCE.CD_MATERIAL ", CodProduto);
+                sqlEmSeparacao = String.Format(" SELECT  " +
+                                                " TP.CD_EMPRESA,  " +
+                                                "  TP.CD_FILIAL,  " +
+                                                "  TEF.DS_FILIAL,  " +
+                                                "  TPI.CD_MATERIAL  AS CODIGO  " +
+                                                "  ,'' AS Descricao  " +
+                                                "  , '' As Idenfiticadao   " +
+                                                "  ,0 AS OrdemCompra    " +
+                                                "  ,0 AS OrdemProducao   " +
+                                                "  ,0 AS OrdemProducaoConsumo  " +
+                                                "  ,0 AS Orcamento  " +
+                                                "  ,0 AS OrdemServico  " +
+                                                "  ,0 AS Pedidos  " +
+                                                "  ,0 AS Requisicao   " +
+                                                "  ,0 AS EstoqueAtual    " +
+                                                "  ,0 AS Separado   " +
+                                                "  ,0 AS Disponivel  "+ 
+                                                "  ,0 AS Almoxarifado  " +
+                                                "  , 0 AS Separaco   " +
+                                                "  ,SUM(TPI.NR_QUANTIDADE-(IIF(TIPCE.NR_QUANTIDADE IS NULL, 0 , TIPCE.NR_QUANTIDADE))) AS EmSeparacao   " +
+                                                "  FROM TBL_PEDIDOS_ITENS TPI   " +
+                                                "  LEFT JOIN TBL_PEDIDOS TP    " +
+                                                "  ON TPI.CD_PEDIDO = TP.CD_PEDIDO    " +
+                                                "  LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TIPCE  " +
+                                                "  ON TIPCE.CD_PEDIDO = TPI.CD_PEDIDO  " +
+                                                "  AND TIPCE.CD_MATERIAL = TPI.CD_MATERIAL  " +
+                                                "  LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA  " +
+                                                "  LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL   " +
+                                                "  WHERE TPI.CD_MATERIAL = {0}     " +
+                                                "  AND TP.CD_EMPRESA is not null   " +
+                                                "  AND TP.CD_STATUS = 7   " +
+                                                "  GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL,TEF.DS_FILIAL, TPI.CD_MATERIAL", CodProduto);
 
 
                 sqlSeparado = String.Format("SELECT " +
@@ -727,7 +729,7 @@ namespace ControlePedido
                                             " ,0 AS Pedidos  " +
                                             " ,0 AS Requisicao  " +
                                             " ,0 AS EstoqueAtual " +
-                                            " ,0 AS Separado  " +
+                                            " ,0 AS Separa  " +
                                             " ,0 AS Disponivel  " +
                                             " ,0 AS Almoxarifado   " +
                                             " 		,0 AS EmSeparacao " +
@@ -735,7 +737,7 @@ namespace ControlePedido
                                             " FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TIPCE " +
                                             " INNER JOIN TBL_PEDIDOS TP    " +
                                             " ON TIPCE.CD_PEDIDO = TP.CD_PEDIDO " +
-                                            " AND TP.CD_STATUS = 9  " +
+                                            " AND TP.CD_STATUS = 7  " +
                                             " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA " +
                                             " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL " +
                                             " WHERE CD_MATERIAL = {0}  " +
@@ -805,57 +807,39 @@ namespace ControlePedido
                                        , Convert.ToDouble(lista[item].OrdemProducao).ToString("N4")
                                        , Convert.ToDouble(lista[item].Orcamento).ToString("N4")
                                        , Convert.ToDouble(lista[item].OrdemServico).ToString("N4")
-                                       , Convert.ToDouble(lista[item].Pedidos - (lista[item].EmSeparacao - lista[item].Separado)).ToString("N4")
+                                       , Convert.ToDouble(lista[item].Pedidos).ToString("N4")
                                        , Convert.ToDouble(lista[item].EmSeparacao).ToString("N4")
                                        , Convert.ToDouble(lista[item].Separado).ToString("N4")
-                                       , Convert.ToDouble("0").ToString("N4")
                                        , Convert.ToDouble(lista[item].EstoqueAtual).ToString("N4")
                                        , Convert.ToDouble((lista[item].OrdemCompra +
-                                                           lista[item].EstoqueAtual +
-                                                           lista_estoque[item].OrdemProducao +
-                                                           (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
-                                                            -
-                                                            (
-                                                             lista[item].Pedidos +
-                                                             (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0) +
-                                                             lista[item].OrdemProducaoConsumo +
-                                                             lista[item].Orcamento
-                                                            )).ToString("N4")
-                                       , Convert.ToDouble("0").ToString("N4")
-                                       , Convert.ToDouble(lista[item].OrdemCompra + (
-                                                           (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0))).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].OrdemProducaoConsumo).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].OrdemProducao).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].Orcamento).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].OrdemServico).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].Pedidos - (lista[item].EmSeparacao - lista[item].Separado)).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].EmSeparacao).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].Separado).ToString("N4"),
-                                                           Convert.ToDouble(lista[item].EstoqueAtual).ToString("N4"),
-                                                           Convert.ToDouble("0").ToString("N4"),
-                                                           Convert.ToDouble((
-                                                                             lista[item].OrdemCompra +
-                                                                             lista[item].EstoqueAtual +
-                                                                             lista_estoque[item].OrdemProducao +
-                                                                             (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
-                                                                            -
-                                                                            (
-                                                                             lista[item].Pedidos +
-                                                                             (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0) +
-                                                                             lista[item].OrdemProducaoConsumo +
-                                                                             lista[item].Orcamento
-                                                                            )
-                                                           ).ToString("N4")
-                                       , "Almoxarifa"                                       
+                                                          lista[item].EstoqueAtual +
+                                                          lista[item].OrdemProducao + lista[item].Separado + 
+                                                          (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
+                                                         -
+                                                         (
+                                                          lista[item].Pedidos +
+                                                          (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0) +
+                                                          lista[item].OrdemProducaoConsumo +
+                                                          lista[item].Orcamento
+                                                         )).ToString("N4")
+                                        , Convert.ToDouble((lista[item].OrdemCompra +
+                                                          lista[item].EstoqueAtual +
+                                                          lista[item].OrdemProducao + lista[item].Separado +
+                                                          (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
+                                                         -
+                                                         (
+                                                          lista[item].Pedidos +
+                                                          (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0) +
+                                                          lista[item].OrdemProducaoConsumo +
+                                                          lista[item].Orcamento
+                                                         )).ToString("N4")
                                       );
 
                         
 
                         item++;
                     }
-                    item = 0;
-
-                    
+                    item = 0;                   
 
                 }else
                 {

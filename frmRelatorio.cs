@@ -1,4 +1,5 @@
-﻿using FastReport.Utils;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using FastReport.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -68,14 +69,17 @@ namespace ControlePedido
 
         private void imprimirEstoque()
         {
+            var filtros = new Dictionary<string, object>();
+
             Cursor.Current = Cursors.WaitCursor;
             lblAviso.Visible = true;
             lblAviso.Refresh();
+            RelEstoque rel_estoque = new RelEstoque();
 
             Impressao impressao = new Impressao();
-            var listas = estoque.retornarEstoqueRelatorio(retornaFiltroEstoque(), chkEmSeparacao.Checked, chkSeparado.Checked, lbltotais);
+            //var listas = estoque.retornarEstoqueRelatorio(retornaFiltroEstoque(), chkEmSeparacao.Checked, chkSeparado.Checked, lbltotais);
 
-                DateTime dt_inicial = DateTime.Now;
+            DateTime dt_inicial = DateTime.Now;
             DateTime dt_final = DateTime.Now;
 
             if (chkDatas.Checked)
@@ -85,8 +89,50 @@ namespace ControlePedido
 
             }
 
+            DataTable dt = new DataTable();
 
-            impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
+
+            //filtros
+            if (!string.IsNullOrWhiteSpace(txtEmpresa.Text))
+                filtros.Add("CD_EMPRESA", txtEmpresa.Text);
+
+
+            //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+            dt = rel_estoque.retornaEmpresa(filtros);
+
+            filtros.Clear();
+
+            //FILTROS
+            if (!string.IsNullOrWhiteSpace(txtProduto.Text))
+                filtros.Add("PI.CD_MATERIAL", txtProduto.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtMarca.Text))
+                filtros.Add("M.CD_MARCA", txtMarca.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtSubGrupo.Text))
+                filtros.Add("M.CD_SUBGRUPO", txtSubGrupo.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtTipoEmbalagem.Text))
+                filtros.Add("M.CD_TIPO_EMBALAGEM", txtTipoEmbalagem.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtFornecedor.Text))
+                filtros.Add("M.CD_FORNECEDOR", txtFornecedor.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtTipoProduto.Text))
+                filtros.Add("M.CD_TIPO", txtTipoProduto.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtTipoPedido.Text))
+                filtros.Add("P.CD_TIPO_PEDIDO", txtTipoPedido.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtCliente.Text))
+                filtros.Add("P.CD_CLIENTE", txtCliente.Text);
+
+            //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , txtFilial.Text, filtros);
+
+            //impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
 
             Cursor.Current = Cursors.Default;
             lblAviso.Visible = false;
@@ -140,8 +186,11 @@ namespace ControlePedido
 
             var primeiroUltimoDia = datahora.ObterPrimeiroEUltimoDiaDoMes();
 
-            dataInicial.Value = primeiroUltimoDia.PrimeiroDia;
-            dataFinal.Value = primeiroUltimoDia.UltimoDia;
+            //dataInicial.Value = primeiroUltimoDia.PrimeiroDia;
+            //dataFinal.Value = primeiroUltimoDia.UltimoDia;
+
+            dataInicial.Value = Convert.ToDateTime("01/01/2021");
+            dataFinal.Value = Convert.ToDateTime("31/12/2030");
 
             txtEmpresa.Text = "";
             txtFilial.Text = "";
@@ -169,13 +218,47 @@ namespace ControlePedido
             txtVendedor.Text = "";
             txtStatus.Text = "";
 
+            var filtros = new Dictionary<string, object>();
+
             
-            
+            RelEstoque impressao = new RelEstoque();
+          
+            DataTable dt = new DataTable();
+
+                     
+            filtros.Add("CD_EMPRESA", "1");
+
+
+            dt = impressao.retornaEmpresa(filtros);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+
+                txtEmpresa.Text = dr["CD_EMPRESA"].ToString();
+                lblEmpresa.Text = dr["DS_EMPRESA"].ToString();
+
+            }
+
+            filtros.Clear();
+            filtros.Add("CD_EMPRESA", "1");
+            filtros.Add("CD_FILIAL", "1");
+
+            dt = impressao.retornaFilial(filtros);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                txtFilial.Text = dr["CD_FILIAL"].ToString();
+                lblFilial.Text = dr["DS_FILIAL"].ToString();
+
+            }
+
+
             groupData.Enabled = chkDatas.Checked;
 
             if (_estoque)
             {
                 usBarraTitulo1.valor = "Estoque ";
+                groupPedido.Enabled = false; 
                 groupData.Enabled = true;
                 chkDatas.Checked = true;
                 chkDatas.Enabled = true;
@@ -184,6 +267,7 @@ namespace ControlePedido
             }
             else {
                 usBarraTitulo1.valor = "Pedidos ";
+                groupPedido.Enabled = true;
                 groupData.Enabled = true;
                 chkDatas.Checked = true;
                 chkDatas.Enabled = true;

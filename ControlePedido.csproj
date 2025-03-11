@@ -387,6 +387,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relatorios.cs" />
+    <Compile Include="RelEstoque.cs" />
     <Compile Include="usBarraTitulo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -398,6 +399,12 @@
     </Compile>
     <Compile Include="usMenu.Designer.cs">
       <DependentUpon>usMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="usPesquisa.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="usPesquisa.Designer.cs">
+      <DependentUpon>usPesquisa.cs</DependentUpon>
     </Compile>
     <Compile Include="UsuarioLogado.cs" />
     <Compile Include="Usuarios.cs" />
@@ -454,6 +461,9 @@
     <EmbeddedResource Include="usMenu.resx">
       <DependentUpon>usMenu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="usPesquisa.resx">
+      <DependentUpon>usPesquisa.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="CertificadoMAPFRE01.rpt" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -471,6 +481,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="iconAzul.ico" />
+    <None Include="img\png\lancamento.png" />
+    <None Include="img\png\banco.png" />
+    <None Include="img\png\engrenagem.png" />
+    <None Include="img\png\logoHidotam.png" />
+    <None Include="img\png\crane.png" />
     <None Include="img\png\xlsx.png" />
     <None Include="img\png\csv24.png" />
     <None Include="img\png\pdf.png" />

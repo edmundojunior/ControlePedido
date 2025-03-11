@@ -18,14 +18,24 @@ namespace ControlePedido
 
         private bool _fechadoPorCodigo = false;
 
+        private string _CodigoUsuario = string.Empty;
+        private string _NomeDoUsuario = string.Empty;
+
+        private bool liberar = false;
+
         Util.FormatacaoGrade formatarGrade = new Util.FormatacaoGrade();
-        public frmPedidos()
+        public frmPedidos(string CodigoUsuario = null, string NomedoUsuario = null)
         {
             InitializeComponent();
+            _CodigoUsuario = CodigoUsuario;
+            _NomeDoUsuario = NomedoUsuario;            
             reset();
             usMenu1.CloseButtonClicked += UsMenu1_CloseButtonClicked;
             usMenu1.FiltroButtonClicked += UsMenu1_FiltroButtonClicked;
             usMenu1.CancelarButtonClicked += UsMenu1_CancelarButtonClicked;
+
+
+
         }
 
         private void UsMenu1_CancelarButtonClicked(object sender, EventArgs e)
@@ -49,7 +59,26 @@ namespace ControlePedido
         }
         private void frmPedidos_Load(object sender, EventArgs e)
         {
+            frmLiberacao frm = new frmLiberacao();
+            frm.ShowDialog();
 
+            liberar = frm.liberado;
+
+
+            if (liberar)
+            {
+                _CodigoUsuario = frm.codigo;
+                _NomeDoUsuario = frm.nome;
+
+                this.Text = $"Controle de Pedidos - Usuário: {_CodigoUsuario} - {_NomeDoUsuario}";
+            }
+            else
+            {
+                MessageBox.Show("Acesso não permitido ","Aviso Importante");
+                
+                this.Close();
+
+            }
         }
 
         private void reset()
@@ -86,7 +115,7 @@ namespace ControlePedido
             bntEntregar.Enabled = false;
 
             txtPedido.Text = "";
-            lblCliente.Text = "...";
+            lblCliente.Text = "...";           
 
             txtPedido.Focus();
         }
@@ -150,9 +179,10 @@ namespace ControlePedido
                 }
             }
             else {
+
                 btnMarcar.Enabled = false;
                 btnDesmarcar.Enabled = false;
-                bntEntregar.Enabled = false;
+                bntEntregar.Enabled = false;               
 
             }
             
@@ -286,14 +316,14 @@ namespace ControlePedido
             {
 
                 int usuario = 0;
-                bool liberado = false;
+                //bool liberado = false;
 
-                frmLiberacao frmlib = new frmLiberacao();
-                frmlib.ShowDialog();
-                liberado = frmlib.liberado;
+                //frmLiberacao frmlib = new frmLiberacao();
+                //frmlib.ShowDialog();
+                //liberado = frmlib.liberado;
 
-                if (liberado)
-                {
+                //if (liberado)
+                //{
                     frmMovimentacao frm = new frmMovimentacao(true, txtPedido.Text, ped.listaEntregar, usuario);
                     frm.ShowDialog();
 
@@ -308,7 +338,7 @@ namespace ControlePedido
                     listarEntregues();
 
                     ped.listaEntregar.Clear();
-                }
+                //}
 
             }
             else
@@ -343,7 +373,7 @@ namespace ControlePedido
                         descricao = row.Cells["Produto"].Value.ToString(),
                         unidade = row.Cells["Unidade"].Value.ToString(),
                         Quantidade = Convert.ToDouble(row.Cells["Qtde"].Value),
-                        //QuantOriginal = Convert.ToDouble(row.Cells["QuantOriginal"].Value),
+                        QuantOriginal = Convert.ToDouble(row.Cells["Qtde"].Value),
                         dtEntrega = Convert.ToDateTime(row.Cells["DtEntrega"].Value)
 
 
@@ -364,18 +394,18 @@ namespace ControlePedido
             {
 
                 int usuario = 0;
-                bool liberado = false;
+                //bool liberado = false;
 
-                frmLiberacao frmlib = new frmLiberacao();
-                frmlib.ShowDialog();
-                liberado = frmlib.liberado;
+                //frmLiberacao frmlib = new frmLiberacao();
+                //frmlib.ShowDialog();
+                //liberado = frmlib.liberado;
 
-                if (!liberado)
-                {
+                //if (!liberado)
+                //{
                     MessageBox.Show("Usuário não liberado para realizar a Movimentação!", "Aviso Importante");
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     frmMovimentacao frm = new frmMovimentacao(false, txtPedido.Text, ped.listaDevolucao, usuario);
                     frm.ShowDialog();
 
@@ -390,7 +420,7 @@ namespace ControlePedido
                     listarEntregues();
 
                     ped.listaEntregar.Clear();
-                }
+                //}
 
             }
             else

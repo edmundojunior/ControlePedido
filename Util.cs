@@ -261,18 +261,16 @@ namespace ControlePedido
                 grade.Columns.Add("CodIdentific", "Cód. Identific."); //1
                 grade.Columns.Add("Descricao", "Descrição"); //2
                 grade.Columns.Add("Unidade", "Unid");//3
-                grade.Columns.Add("OPProducao", "O.P. Produção");//5
-                grade.Columns.Add("Orc", "Orçamento");//6
-                grade.Columns.Add("Servico", "Or. Serviço");//7
+                grade.Columns.Add("OPProducao", "O.P. Produção");//4
+                grade.Columns.Add("Orc", "Orçamento");//5
+                grade.Columns.Add("Servico", "Or. Serviço");//6
                 grade.Columns.Add("Pedidos", "Pedidos");//7
-                grade.Columns.Add("Requisicao", "Requisição");//8
-                grade.Columns.Add("Estoque", "Estoque Total");//9
-                grade.Columns.Add("Separado", "Separado");//10
-                grade.Columns.Add("Disponivel", "Disponível");//11
-                grade.Columns.Add("SolicTransf", "Solic Transferencia");//12
-                grade.Columns.Add("Total", "Total");//13
-                grade.Columns.Add("Almoxarifado", "Almox.Ded.");//13
-
+                grade.Columns.Add("EmSeparacao", "Em Separação");                                       //
+                grade.Columns.Add("Separado", "Separado");//8
+                grade.Columns.Add("Disponivel", "Disponível");//9
+                grade.Columns.Add("SolicTransf", "Solic Transferencia");//10
+                grade.Columns.Add("Total", "Total");//11
+                grade.Columns.Add("Almoxarifado", "Almox.Ded.");//12
 
 
                 // Configurando o estilo geral do DataGridView
@@ -293,7 +291,7 @@ namespace ControlePedido
                 grade.Columns[4].Width = 70; // Descrição do Produto
                 grade.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[5].Width = 70; // Unidade
-                grade.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                grade.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;               
                 grade.Columns[6].Width = 70; //Quantidade
                 grade.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[7].Width = 70; //Origem
@@ -310,8 +308,6 @@ namespace ControlePedido
                 grade.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[13].Width = 70; //Quantidade
                 grade.Columns[13].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[14].Width = 70; //Quantidade
-                grade.Columns[14].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 //// Configurando as linhas
                 grade.DefaultCellStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
@@ -326,22 +322,19 @@ namespace ControlePedido
             {
                 grade.Columns.Clear();
 
-                grade.Columns.Add("Filial", "Filial"); //1
-                grade.Columns.Add("CodIdentific", "Cód. Identific."); //2
-                grade.Columns.Add("OdCompra", "Ordem Compra"); //3
-                grade.Columns.Add("OPConsumo", "O.P. Consumo");//4
-                grade.Columns.Add("OPProducao", "O.P. Produção");//5
-                grade.Columns.Add("Orc", "Orçamento");//6
-                grade.Columns.Add("Servico", "Or. Serviço");//7
-                grade.Columns.Add("Pedidos", "Pedidos");//8
-                grade.Columns.Add("EmSepracao", "Em Separação");//9
+                grade.Columns.Add("Filial", "Filial"); //0
+                grade.Columns.Add("CodIdentific", "Cód. Identific."); //1
+                grade.Columns.Add("OdCompra", "Ordem Compra"); //2
+                grade.Columns.Add("OPConsumo", "O.P. Consumo");//3
+                grade.Columns.Add("OPProducao", "O.P. Produção");//4
+                grade.Columns.Add("Orc", "Orçamento");//5
+                grade.Columns.Add("Servico", "Or. Serviço");//6
+                grade.Columns.Add("Pedidos", "Pedidos");//7
+                grade.Columns.Add("EmSeparacao", "Em Separação");//9
                 grade.Columns.Add("Separado", "Separado");//10
-                grade.Columns.Add("Requisicao", "Requisição");//11
-                grade.Columns.Add("Estoque", "Estoque Total");//12                
-                grade.Columns.Add("Disponivel", "Disponível");//13
-                grade.Columns.Add("SolicTransf", "Solic Transferencia");//14
-                grade.Columns.Add("Total", "Total");//15
-                grade.Columns.Add("Almoxarifado", "Almox.Ded.");//16
+                grade.Columns.Add("Disponivel", "Disponível");//11
+                grade.Columns.Add("Total", "Total");//12
+                grade.Columns.Add("Almoxarifado", "Almox.Ded.");//13
 
 
 
@@ -362,29 +355,30 @@ namespace ControlePedido
                 grade.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[4].Width = 70; // Producao
                 grade.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[5].Width = 70; // Orcamento
+                grade.Columns[5].Width = 0; // Orcamento
                 grade.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                grade.Columns[5].Visible = false;
                 grade.Columns[6].Width = 70; //Serviço
                 grade.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[7].Width = 70; //Pedidos
                 grade.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[8].Width = 70; //Em Separação
+                grade.Columns[8].Visible = false;
                 grade.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[9].Width = 70; //Separado
                 grade.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                
                 grade.Columns[10].Width = 70; //Requisição
                 grade.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[11].Width = 70; //Estoque Total
                 grade.Columns[11].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[12].Width = 70; //Disponivel
                 grade.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[13].Width = 70; //Solitação Transf.
-                grade.Columns[13].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[14].Width = 70; //Total
-                grade.Columns[14].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[14].Width = 70; //Almoxarifado
-                grade.Columns[14].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
+                //grade.Columns[13].Width = 70; //Solitação Transf.
+                //grade.Columns[13].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                //grade.Columns[14].Width = 70; //Total
+                //grade.Columns[14].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                
                 //// Configurando as linhas
                 grade.DefaultCellStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
                 grade.DefaultCellStyle.BackColor = Color.White;

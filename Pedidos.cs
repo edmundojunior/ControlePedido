@@ -735,7 +735,7 @@ namespace ControlePedido
                                     {
                                         sql = String.Format("Update TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA  SET " +
                                                             " NR_QUANTIDADE = NR_QUANTIDADE - " + quantidade.ToString("N4").Replace(".", "").Replace(",", ".") +
-                                                            " , X_ENTREGUE = 0 " +
+                                                            " , X_ENTREGUE = 1 " +
                                                             " WHERE CD_PEDIDO = {0} " +
                                                             " AND CD_MATERIAL = {1}  " +
                                                             " AND CD_ID_ITEM = {2} AND X_ENTREGUE = 1",
@@ -795,8 +795,7 @@ namespace ControlePedido
                                         " FROM TBL_PEDIDOS_ITENS TPI  " +
                                         " LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TPICE ON " +
                                         " TPICE.CD_PEDIDO = TPI.CD_PEDIDO " +
-                                        " where TPI.CD_PEDIDO = {0} " +
-                                        //" AND TPICE.X_ENTREGUE = 1 " +
+                                        " where TPI.CD_PEDIDO = {0} " +                                        
                                         " GROUP BY TPI.CD_PEDIDO "  , Pedido);
 
 
@@ -909,7 +908,7 @@ namespace ControlePedido
             return retorno;
 
         }
-        public int retornoCodigoStatus(string status = "EM SEPARAÇÃO")
+        public int retornoCodigoStatus(string status = "SEPARADO")
         {
             int retorno = 0;
             DataTable retornado = new DataTable();

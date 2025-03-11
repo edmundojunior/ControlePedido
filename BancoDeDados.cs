@@ -88,7 +88,7 @@ namespace ControlePedido
                                         new XElement("server", bcoDados.server),
                                         new XElement("database", bcoDados.database),
                                         new XElement("user_id", bcoDados.user_id),
-                                        new XElement("password", crypto.Criptografar(bcoDados.password))
+                                        new XElement("password", bcoDados.password)
                                         );
 
                     BcoDados.Save(arquivoConfg);

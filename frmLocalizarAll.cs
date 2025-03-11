@@ -86,6 +86,20 @@ namespace ControlePedido
                 {
                     Codigo = Convert.ToInt32(codPedidos);
 
+                    if (_oQueLocalizar == 11)
+                    {
+                        EstadoSelecionado = grade.CurrentRow.Cells[0].Value.ToString();
+                    }
+                    else
+                    {
+                        Codigo = Convert.ToInt32(grade.CurrentRow.Cells[0].Value);
+                    }
+                    // Captura o valor da primeira coluna da linha clicada
+
+                    if (-_oQueLocalizar == 0 || _oQueLocalizar == 1)
+                    {
+                        descricao = grade.CurrentRow.Cells[1].Value.ToString();
+                    }
                     Close();
                 }
                 else
