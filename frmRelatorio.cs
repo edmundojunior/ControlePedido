@@ -92,14 +92,45 @@ namespace ControlePedido
             DataTable dt = new DataTable();
 
 
-
+            //filtros
             if (!string.IsNullOrWhiteSpace(txtEmpresa.Text))
                 filtros.Add("CD_EMPRESA", txtEmpresa.Text);
 
 
-            dt = rel_estoque.retornaEmpresa(filtros); 
+            //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , txtFilial.Text );
+            dt = rel_estoque.retornaEmpresa(filtros);
+
+            filtros.Clear();
+
+            //FILTROS
+            if (!string.IsNullOrWhiteSpace(txtProduto.Text))
+                filtros.Add("PI.CD_MATERIAL", txtProduto.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtMarca.Text))
+                filtros.Add("M.CD_MARCA", txtMarca.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtSubGrupo.Text))
+                filtros.Add("M.CD_SUBGRUPO", txtSubGrupo.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtTipoEmbalagem.Text))
+                filtros.Add("M.CD_TIPO_EMBALAGEM", txtTipoEmbalagem.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtFornecedor.Text))
+                filtros.Add("M.CD_FORNECEDOR", txtFornecedor.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtTipoProduto.Text))
+                filtros.Add("M.CD_TIPO", txtTipoProduto.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtTipoPedido.Text))
+                filtros.Add("P.CD_TIPO_PEDIDO", txtTipoPedido.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtCliente.Text))
+                filtros.Add("P.CD_CLIENTE", txtCliente.Text);
+
+            //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , txtFilial.Text, filtros);
 
             //impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
 
@@ -155,8 +186,11 @@ namespace ControlePedido
 
             var primeiroUltimoDia = datahora.ObterPrimeiroEUltimoDiaDoMes();
 
-            dataInicial.Value = primeiroUltimoDia.PrimeiroDia;
-            dataFinal.Value = primeiroUltimoDia.UltimoDia;
+            //dataInicial.Value = primeiroUltimoDia.PrimeiroDia;
+            //dataFinal.Value = primeiroUltimoDia.UltimoDia;
+
+            dataInicial.Value = Convert.ToDateTime("01/01/2021");
+            dataFinal.Value = Convert.ToDateTime("31/12/2030");
 
             txtEmpresa.Text = "";
             txtFilial.Text = "";
@@ -224,6 +258,7 @@ namespace ControlePedido
             if (_estoque)
             {
                 usBarraTitulo1.valor = "Estoque ";
+                groupPedido.Enabled = false; 
                 groupData.Enabled = true;
                 chkDatas.Checked = true;
                 chkDatas.Enabled = true;
@@ -232,6 +267,7 @@ namespace ControlePedido
             }
             else {
                 usBarraTitulo1.valor = "Pedidos ";
+                groupPedido.Enabled = true;
                 groupData.Enabled = true;
                 chkDatas.Checked = true;
                 chkDatas.Enabled = true;

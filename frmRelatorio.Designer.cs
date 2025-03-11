@@ -138,7 +138,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.lbltotais);
-            this.panel1.Location = new System.Drawing.Point(0, 589);
+            this.panel1.Location = new System.Drawing.Point(0, 596);
             this.panel1.Size = new System.Drawing.Size(875, 30);
             // 
             // usMenu1
@@ -657,7 +657,7 @@
             // button2
             // 
             this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.Location = new System.Drawing.Point(186, 213);
+            this.button2.Location = new System.Drawing.Point(186, 154);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(25, 23);
             this.button2.TabIndex = 14;
@@ -668,7 +668,7 @@
             // txtTipoProduto
             // 
             this.txtTipoProduto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTipoProduto.Location = new System.Drawing.Point(122, 213);
+            this.txtTipoProduto.Location = new System.Drawing.Point(122, 154);
             this.txtTipoProduto.Name = "txtTipoProduto";
             this.txtTipoProduto.Size = new System.Drawing.Size(63, 22);
             this.txtTipoProduto.TabIndex = 13;
@@ -677,7 +677,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(43, 217);
+            this.label7.Location = new System.Drawing.Point(43, 158);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(77, 13);
             this.label7.TabIndex = 12;
@@ -717,7 +717,7 @@
             // btnCliente
             // 
             this.btnCliente.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCliente.Location = new System.Drawing.Point(193, 57);
+            this.btnCliente.Location = new System.Drawing.Point(192, 54);
             this.btnCliente.Name = "btnCliente";
             this.btnCliente.Size = new System.Drawing.Size(25, 23);
             this.btnCliente.TabIndex = 8;
@@ -728,7 +728,7 @@
             // txtCliente
             // 
             this.txtCliente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtCliente.Location = new System.Drawing.Point(124, 57);
+            this.txtCliente.Location = new System.Drawing.Point(123, 54);
             this.txtCliente.Name = "txtCliente";
             this.txtCliente.Size = new System.Drawing.Size(63, 22);
             this.txtCliente.TabIndex = 7;
@@ -737,7 +737,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(75, 61);
+            this.label4.Location = new System.Drawing.Point(74, 58);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 6;
@@ -747,7 +747,7 @@
             // button22
             // 
             this.button22.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button22.Location = new System.Drawing.Point(186, 186);
+            this.button22.Location = new System.Drawing.Point(186, 126);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(25, 23);
             this.button22.TabIndex = 77;
@@ -758,7 +758,7 @@
             // txtFornecedor
             // 
             this.txtFornecedor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtFornecedor.Location = new System.Drawing.Point(122, 186);
+            this.txtFornecedor.Location = new System.Drawing.Point(122, 126);
             this.txtFornecedor.Name = "txtFornecedor";
             this.txtFornecedor.Size = new System.Drawing.Size(63, 22);
             this.txtFornecedor.TabIndex = 76;
@@ -767,7 +767,7 @@
             // 
             this.label27.AutoSize = true;
             this.label27.ForeColor = System.Drawing.Color.Black;
-            this.label27.Location = new System.Drawing.Point(49, 190);
+            this.label27.Location = new System.Drawing.Point(49, 130);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(66, 13);
             this.label27.TabIndex = 75;
@@ -777,7 +777,7 @@
             // button15
             // 
             this.button15.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button15.Location = new System.Drawing.Point(186, 159);
+            this.button15.Location = new System.Drawing.Point(186, 98);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(25, 23);
             this.button15.TabIndex = 53;
@@ -788,7 +788,7 @@
             // txtTipoEmbalagem
             // 
             this.txtTipoEmbalagem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTipoEmbalagem.Location = new System.Drawing.Point(122, 159);
+            this.txtTipoEmbalagem.Location = new System.Drawing.Point(122, 98);
             this.txtTipoEmbalagem.Name = "txtTipoEmbalagem";
             this.txtTipoEmbalagem.Size = new System.Drawing.Size(63, 22);
             this.txtTipoEmbalagem.TabIndex = 52;
@@ -797,7 +797,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.ForeColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(11, 163);
+            this.label20.Location = new System.Drawing.Point(11, 102);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(111, 13);
             this.label20.TabIndex = 51;
@@ -837,36 +837,39 @@
             // button8
             // 
             this.button8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button8.Location = new System.Drawing.Point(186, 51);
+            this.button8.Location = new System.Drawing.Point(198, 545);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(25, 23);
             this.button8.TabIndex = 32;
             this.button8.Text = "...";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Visible = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // txtServico
             // 
             this.txtServico.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtServico.Location = new System.Drawing.Point(122, 51);
+            this.txtServico.Location = new System.Drawing.Point(134, 545);
             this.txtServico.Name = "txtServico";
             this.txtServico.Size = new System.Drawing.Size(63, 22);
             this.txtServico.TabIndex = 31;
+            this.txtServico.Visible = false;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.ForeColor = System.Drawing.Color.Black;
-            this.label13.Location = new System.Drawing.Point(73, 55);
+            this.label13.Location = new System.Drawing.Point(85, 549);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(46, 13);
             this.label13.TabIndex = 30;
             this.label13.Text = "Serviço:";
+            this.label13.Visible = false;
             // 
             // button7
             // 
             this.button7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button7.Location = new System.Drawing.Point(186, 132);
+            this.button7.Location = new System.Drawing.Point(186, 72);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(25, 23);
             this.button7.TabIndex = 29;
@@ -877,7 +880,7 @@
             // txtSubGrupo
             // 
             this.txtSubGrupo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSubGrupo.Location = new System.Drawing.Point(122, 132);
+            this.txtSubGrupo.Location = new System.Drawing.Point(122, 72);
             this.txtSubGrupo.Name = "txtSubGrupo";
             this.txtSubGrupo.Size = new System.Drawing.Size(63, 22);
             this.txtSubGrupo.TabIndex = 28;
@@ -886,7 +889,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(56, 136);
+            this.label12.Location = new System.Drawing.Point(56, 76);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(63, 13);
             this.label12.TabIndex = 27;
@@ -896,37 +899,40 @@
             // button4
             // 
             this.button4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button4.Location = new System.Drawing.Point(186, 105);
+            this.button4.Location = new System.Drawing.Point(192, 573);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(25, 23);
             this.button4.TabIndex = 20;
             this.button4.Text = "...";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // txtGrupoProduto
             // 
             this.txtGrupoProduto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtGrupoProduto.Location = new System.Drawing.Point(122, 105);
+            this.txtGrupoProduto.Location = new System.Drawing.Point(128, 573);
             this.txtGrupoProduto.Name = "txtGrupoProduto";
             this.txtGrupoProduto.Size = new System.Drawing.Size(63, 22);
             this.txtGrupoProduto.TabIndex = 19;
+            this.txtGrupoProduto.Visible = false;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(32, 109);
+            this.label9.Location = new System.Drawing.Point(38, 577);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(88, 13);
             this.label9.TabIndex = 18;
             this.label9.Text = "Grupo Produto:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label9.Visible = false;
             // 
             // button3
             // 
             this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button3.Location = new System.Drawing.Point(186, 78);
+            this.button3.Location = new System.Drawing.Point(186, 48);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(25, 23);
             this.button3.TabIndex = 17;
@@ -937,7 +943,7 @@
             // txtMarca
             // 
             this.txtMarca.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtMarca.Location = new System.Drawing.Point(122, 78);
+            this.txtMarca.Location = new System.Drawing.Point(122, 48);
             this.txtMarca.Name = "txtMarca";
             this.txtMarca.Size = new System.Drawing.Size(63, 22);
             this.txtMarca.TabIndex = 16;
@@ -946,7 +952,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(79, 82);
+            this.label8.Location = new System.Drawing.Point(79, 52);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 13);
             this.label8.TabIndex = 15;
@@ -1036,7 +1042,7 @@
             // 
             this.groupEstoqque.Controls.Add(this.chkEmSeparacao);
             this.groupEstoqque.Controls.Add(this.chkSeparado);
-            this.groupEstoqque.Location = new System.Drawing.Point(488, 536);
+            this.groupEstoqque.Location = new System.Drawing.Point(274, 499);
             this.groupEstoqque.Name = "groupEstoqque";
             this.groupEstoqque.Size = new System.Drawing.Size(233, 92);
             this.groupEstoqque.TabIndex = 29;
@@ -1079,18 +1085,12 @@
             this.groupFiltroProduto.Controls.Add(this.txtMarca);
             this.groupFiltroProduto.Controls.Add(this.label8);
             this.groupFiltroProduto.Controls.Add(this.button3);
-            this.groupFiltroProduto.Controls.Add(this.txtGrupoProduto);
-            this.groupFiltroProduto.Controls.Add(this.label9);
-            this.groupFiltroProduto.Controls.Add(this.button4);
             this.groupFiltroProduto.Controls.Add(this.txtSubGrupo);
             this.groupFiltroProduto.Controls.Add(this.label12);
             this.groupFiltroProduto.Controls.Add(this.button7);
             this.groupFiltroProduto.Controls.Add(this.txtTipoEmbalagem);
             this.groupFiltroProduto.Controls.Add(this.label20);
             this.groupFiltroProduto.Controls.Add(this.button15);
-            this.groupFiltroProduto.Controls.Add(this.txtServico);
-            this.groupFiltroProduto.Controls.Add(this.label13);
-            this.groupFiltroProduto.Controls.Add(this.button8);
             this.groupFiltroProduto.Controls.Add(this.txtTipoProduto);
             this.groupFiltroProduto.Controls.Add(this.label7);
             this.groupFiltroProduto.Controls.Add(this.button2);
@@ -1120,9 +1120,9 @@
             this.groupPedido.Controls.Add(this.txtObra);
             this.groupPedido.Controls.Add(this.label24);
             this.groupPedido.Controls.Add(this.label4);
-            this.groupPedido.Controls.Add(this.btnCliente);
             this.groupPedido.Controls.Add(this.button18);
             this.groupPedido.Controls.Add(this.txtTipoEntidade);
+            this.groupPedido.Controls.Add(this.btnCliente);
             this.groupPedido.Controls.Add(this.txtIndicadorVenda);
             this.groupPedido.Controls.Add(this.button13);
             this.groupPedido.Controls.Add(this.button14);
@@ -1185,7 +1185,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(875, 619);
+            this.ClientSize = new System.Drawing.Size(875, 626);
             this.Controls.Add(this.lblAviso);
             this.Controls.Add(this.chkDatas);
             this.Controls.Add(this.groupPedido);
@@ -1194,16 +1194,25 @@
             this.Controls.Add(this.lblFilial);
             this.Controls.Add(this.lblEmpresa);
             this.Controls.Add(this.groupData);
+            this.Controls.Add(this.txtGrupoProduto);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.txtEmpresa);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btmEmpresa);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtFilial);
             this.Controls.Add(this.btnFilial);
+            this.Controls.Add(this.txtServico);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.label13);
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "frmRelatorio";
             this.WindowState = System.Windows.Forms.FormWindowState.Normal;
             this.Load += new System.EventHandler(this.frmRelatorio_Load);
+            this.Controls.SetChildIndex(this.label13, 0);
+            this.Controls.SetChildIndex(this.button8, 0);
+            this.Controls.SetChildIndex(this.txtServico, 0);
             this.Controls.SetChildIndex(this.btnFilial, 0);
             this.Controls.SetChildIndex(this.txtFilial, 0);
             this.Controls.SetChildIndex(this.label3, 0);
@@ -1211,7 +1220,10 @@
             this.Controls.SetChildIndex(this.label2, 0);
             this.Controls.SetChildIndex(this.txtEmpresa, 0);
             this.Controls.SetChildIndex(this.usBarraTitulo1, 0);
+            this.Controls.SetChildIndex(this.button4, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
+            this.Controls.SetChildIndex(this.label9, 0);
+            this.Controls.SetChildIndex(this.txtGrupoProduto, 0);
             this.Controls.SetChildIndex(this.usMenu1, 0);
             this.Controls.SetChildIndex(this.groupData, 0);
             this.Controls.SetChildIndex(this.lblEmpresa, 0);

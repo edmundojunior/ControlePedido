@@ -121,6 +121,7 @@
             this.btnFechar.Size = new System.Drawing.Size(25, 23);
             this.btnFechar.TabIndex = 30;
             this.btnFechar.UseVisualStyleBackColor = true;
+            this.btnFechar.Click += new System.EventHandler(this.btnFechar_Click);
             // 
             // webBrowser1
             // 
@@ -130,6 +131,7 @@
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(1336, 689);
             this.webBrowser1.TabIndex = 2;
+            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
             // usBarraTitulo1
             // 

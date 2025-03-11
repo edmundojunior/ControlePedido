@@ -68,7 +68,7 @@ namespace ControlePedido
                         }
                         else sql += " WHERE ";
                         
-                            sql += chave +  " BETWEEN ";                        
+                            sql += " P.DT_EMISSAO " +  " BETWEEN ";                        
 
                         if (Convert.ToDateTime(valor) is DateTime data)
                         {
@@ -107,17 +107,19 @@ namespace ControlePedido
             DataTable dt = new DataTable();
             var bco = new BancoDeDados().lerXMLConfiguracao();
 
-            string sql = @"SELECT TOP (50)
+            string sql = @"SELECT 
                             PI.CD_MATERIAL
                             FROM 
                             TBL_PEDIDOS_ITENS PI
+                            LEFT JOIN TBL_MATERIAIS M
+                            ON M.CD_MATERIAL = PI.CD_MATERIAL 
                             LEFT JOIN  TBL_PEDIDOS P
                             ON P.CD_PEDIDO = PI.CD_PEDIDO 
                             LEFT JOIN TBL_EMPRESAS E
                             ON E.CD_EMPRESA = P.CD_EMPRESA
                             LEFT JOIN TBL_EMPRESAS_FILIAIS F
                             ON F.CD_FILIAL = P.CD_FILIAL
-                            WHERE P.CD_STATUS IN (1,7)                              
+                            WHERE P.CD_STATUS IN (1,10,11)                              
                             ";
 
             sql = retornaSQlComFiltro(sql, filtros);
@@ -241,7 +243,7 @@ namespace ControlePedido
             DataTable dt = new DataTable();
             var bco = new BancoDeDados().lerXMLConfiguracao();
 
-            string sql = @"SELECT TOP (50)
+            string sql = @"SELECT 
                         E.CD_EMPRESA
                         , EP.DS_EMPRESA
                         , E.CD_FILIAL
@@ -397,7 +399,7 @@ namespace ControlePedido
 
         }
 
-        public void impressaoRelatorioEstoque(DateTime dt_inicial, DateTime dt_final,  DataTable dt_Empresa, System.Windows.Forms.Label lblProcesso,  string cd_filial = "1")
+        public void impressaoRelatorioEstoque(DateTime dt_inicial, DateTime dt_final,  DataTable dt_Empresa, System.Windows.Forms.Label lblProcesso,  string cd_filial = "1", Dictionary<string, object> filtros = null)
         {
             List<RelEstoque> lista = new List<RelEstoque>();
             List<RelEstoque> listaItens = new List<RelEstoque>();
@@ -412,7 +414,7 @@ namespace ControlePedido
             DataTable dt_EmSeparaca = new DataTable();
             DataTable dt_Separado = new DataTable();
 
-            var filtros = new Dictionary<string, object>();
+            var filtrosItens = new Dictionary<string, object>();
 
             foreach (DataRow dr in dt_Empresa.Rows)
             {
@@ -454,14 +456,15 @@ namespace ControlePedido
                 foreach (DataRow dr in dt_Empresa.Rows)
                 {
 
-                    filtros.Clear();
+                    //filtros.Clear();
                     filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
                     filtros.Add("F.CD_FILIAL", cd_filial);
-                    //filtros.Add("DataInicio", dt_inicial);
-                    //filtros.Add("DataFim", dt_final);
+                    filtros.Add("DataInicio", dt_inicial);
+                    filtros.Add("DataFim", dt_final);
 
                     dt_Itens = retornaItens(filtros);
-                    dt_Pedido = retornaItensNosPedidos(filtros);
+
+                    //dt_Pedido = retornaItensNosPedidos(filtros);
 
                     if (dt_Itens.Rows.Count > 0)
                     {
@@ -469,11 +472,12 @@ namespace ControlePedido
                         {
                             
                             
-                            filtros.Clear();
-                            filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
-                            filtros.Add("E.CD_FILIAL", cd_filial);
-                            filtros.Add("E.CD_MATERIAL", dataRow["CD_MATERIAL"]);
-                            dt_Produto = retornaProduto(filtros);
+                            filtrosItens.Clear();
+                            filtrosItens.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
+                            filtrosItens.Add("E.CD_FILIAL", cd_filial);
+                            filtrosItens.Add("E.CD_MATERIAL", dataRow["CD_MATERIAL"]);
+                            
+                            dt_Produto = retornaProduto(filtrosItens);
 
                             if (dt_Produto.Rows.Count > 0)
                             {

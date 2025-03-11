@@ -173,5 +173,15 @@ namespace ControlePedido
             SalvarXlxs(caminhoPDF);
 
         }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
+
+        private void btnFechar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
