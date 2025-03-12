@@ -130,7 +130,9 @@ namespace ControlePedido
 
             //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , txtFilial.Text, filtros);
+            string filial = !chkFilial.Checked ? "" : txtFilial.Text;
+
+            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , filial, filtros);
 
             //impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
 
@@ -252,6 +254,8 @@ namespace ControlePedido
 
             }
 
+            txtFilial.Enabled = chkFilial.Checked;
+            btnFilial.Enabled = chkFilial.Checked;
 
             groupData.Enabled = chkDatas.Checked;
 
@@ -499,7 +503,7 @@ namespace ControlePedido
             if (!string.IsNullOrWhiteSpace(txtEmpresa.Text))
                 filtros.Add("PEDIDO.CD_EMPRESA", txtEmpresa.Text);
 
-            if (!string.IsNullOrWhiteSpace(txtFilial.Text))
+            if (!string.IsNullOrWhiteSpace(txtFilial.Text) && chkFilial.Checked)
                 filtros.Add("PEDIDO.CD_FILIAL", txtFilial.Text);
 
             if (!string.IsNullOrWhiteSpace(txtCliente.Text))
@@ -543,6 +547,9 @@ namespace ControlePedido
 
             if (!string.IsNullOrWhiteSpace(txtFrete.Text))
                 filtros.Add("PEDIDO.CD_TRANSPORTADOR", txtTransporte.Text);
+
+            if (!string.IsNullOrWhiteSpace(txtProduto.Text))
+                filtros.Add("I.CD_MATERIAL", txtProduto.Text);
 
             return filtros;
 
@@ -614,6 +621,13 @@ namespace ControlePedido
 
         private void usMenu1_Load(object sender, EventArgs e)
         {
+
+        }
+
+        private void chkFilial_CheckedChanged(object sender, EventArgs e)
+        {
+            txtFilial.Enabled = chkFilial.Checked;
+            btnFilial.Enabled = chkFilial.Checked;
 
         }
     }

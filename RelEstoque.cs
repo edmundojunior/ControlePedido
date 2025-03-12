@@ -109,6 +109,7 @@ namespace ControlePedido
 
             string sql = @"SELECT 
                             PI.CD_MATERIAL
+                            ,F.CD_FILIAL
                             FROM 
                             TBL_PEDIDOS_ITENS PI
                             LEFT JOIN TBL_MATERIAIS M
@@ -118,13 +119,12 @@ namespace ControlePedido
                             LEFT JOIN TBL_EMPRESAS E
                             ON E.CD_EMPRESA = P.CD_EMPRESA
                             LEFT JOIN TBL_EMPRESAS_FILIAIS F
-                            ON F.CD_FILIAL = P.CD_FILIAL
-                            WHERE P.CD_STATUS IN (1,10,11)                              
+                            ON F.CD_FILIAL = P.CD_FILIAL                                                         
                             ";
 
             sql = retornaSQlComFiltro(sql, filtros);
 
-            sql += " GROUP BY PI.CD_MATERIAL ";                           
+            sql += " GROUP BY PI.CD_MATERIAL,F.CD_FILIAL ";                           
             sql += " ORDER BY PI.CD_MATERIAL ASC ";
 
             try
@@ -182,18 +182,19 @@ namespace ControlePedido
                             left join TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA PIE
                             ON PIE.CD_MATERIAL = PI.CD_MATERIAL
                             AND PIE.CD_PEDIDO = PI.CD_PEDIDO
-                            AND PIE.X_ENTREGUE = 0
+                            AND PIE.X_ENTREGUE = 1
+                            AND P.CD_STATUS = 10
                             left join TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA PIE2
                             ON PIE2.CD_MATERIAL = PI.CD_MATERIAL
                             AND PIE2.CD_PEDIDO = PI.CD_PEDIDO
                             AND PIE2.X_ENTREGUE = 1
+                            AND P.CD_STATUS = 11
                             LEFT JOIN TBL_ENTIDADES C
                             ON C.CD_ENTIDADE = P.CD_CLIENTE
                             LEFT JOIN TBL_EMPRESAS E
                             ON E.CD_EMPRESA = P.CD_EMPRESA
                             LEFT JOIN TBL_EMPRESAS_FILIAIS F
                             ON F.CD_FILIAL = P.CD_FILIAL
-                            WHERE P.CD_STATUS IN (1,7) 
                             ";
             
             sql = retornaSQlComFiltro(sql, filtros);
@@ -204,7 +205,7 @@ namespace ControlePedido
                             ,P.CD_CLIENTE
                             , C.DS_ENTIDADE
                             ,PI.CD_MATERIAL
-                            ORDER BY PI.CD_MATERIAL ASC  ";
+                            ORDER BY PI.CD_MATERIAL, F.CD_FILIAL ASC  ";
 
             try
             {
@@ -399,7 +400,7 @@ namespace ControlePedido
 
         }
 
-        public void impressaoRelatorioEstoque(DateTime dt_inicial, DateTime dt_final,  DataTable dt_Empresa, System.Windows.Forms.Label lblProcesso,  string cd_filial = "1", Dictionary<string, object> filtros = null)
+        public void impressaoRelatorioEstoque(DateTime dt_inicial, DateTime dt_final,  DataTable dt_Empresa, System.Windows.Forms.Label lblProcesso,  string cd_filial = "", Dictionary<string, object> filtros = null)
         {
             List<RelEstoque> lista = new List<RelEstoque>();
             List<RelEstoque> listaItens = new List<RelEstoque>();
@@ -458,7 +459,10 @@ namespace ControlePedido
 
                     //filtros.Clear();
                     filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
-                    filtros.Add("F.CD_FILIAL", cd_filial);
+                    if (cd_filial != "")
+                    {
+                        filtros.Add("F.CD_FILIAL", cd_filial);
+                    }                    
                     filtros.Add("DataInicio", dt_inicial);
                     filtros.Add("DataFim", dt_final);
 
@@ -473,8 +477,8 @@ namespace ControlePedido
                             
                             
                             filtrosItens.Clear();
-                            filtrosItens.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
-                            filtrosItens.Add("E.CD_FILIAL", cd_filial);
+                            filtrosItens.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);                            
+                            filtrosItens.Add("E.CD_FILIAL", dataRow["CD_FILIAL"]);                                                      
                             filtrosItens.Add("E.CD_MATERIAL", dataRow["CD_MATERIAL"]);
                             
                             dt_Produto = retornaProduto(filtrosItens);
@@ -525,15 +529,8 @@ namespace ControlePedido
 
                             PdfPTable tabela = new PdfPTable(10);
                             tabela.WidthPercentage = 100;
-                            tabela.SetWidths(new float[] { 2f, 3f, 15f, 2f, 5f, 3f, 3f, 3f, 3f, 3f });
+                            tabela.SetWidths(new float[] { 3f, 15f, 3f, 5f, 3f,5f, 2f, 2f, 3f, 2f });
                             tabela.HorizontalAlignment = Element.ALIGN_LEFT;
-
-                            tabela.AddCell(new PdfPCell(new Phrase(lista[item].cd_filial.ToString(), fonteNormal))
-                            {
-                                HorizontalAlignment = Element.ALIGN_RIGHT,
-                                Border = Rectangle.NO_BORDER
-                            });
-
 
                             tabela.AddCell(new PdfPCell(new Phrase(lista[item].cd_material.ToString(), fonteNormal))
                             {
@@ -558,36 +555,41 @@ namespace ControlePedido
                                 HorizontalAlignment = Element.ALIGN_RIGHT,
                                 Border = Rectangle.NO_BORDER
                             });
-                            tabela.AddCell(new PdfPCell(new Phrase(Convert.ToDouble(lista[item].qtdeEstoque).ToString("N4"), fonteNormal))
-                            {
-                                HorizontalAlignment = Element.ALIGN_RIGHT,
-                                Border = Rectangle.NO_BORDER
-                            }); tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            
                             tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
 
+                            tabela.AddCell(new PdfPCell(new Phrase(Convert.ToDouble(lista[item].qtdeEstoque).ToString("N4"), fonteNormal))
+                            {
+                                HorizontalAlignment = Element.ALIGN_CENTER,
+                                Border = Rectangle.NO_BORDER
+                            }); 
+                            
+                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
 
                             double totais = Convert.ToDouble(lista[item].qtdeEstoque);
 
 
                             doc.Add(tabela);
                             
-                            PdfPTable tabelaEstoque = new PdfPTable(10);
+                            PdfPTable tabelaEstoque = new PdfPTable(11);
                             tabelaEstoque.WidthPercentage = 100;
-                            tabelaEstoque.SetWidths(new float[] { 3f, 3f, 17f,1f, 1f, 3f, 3f, 3f, 3f, 3f });
+                            tabelaEstoque.SetWidths(new float[] {3f, 3f, 3f, 14f,1f, 1f, 3f, 3f, 3f, 3f, 3f });
 
 
                             //Cabçalho
 
                             // Adicionar os títulos das colunas ao cabeçalho
+                            tabelaEstoque.AddCell(new PdfPCell(new Phrase("Filial", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Pedido", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Cod", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Cliente", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. Pedido", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                            tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. Em Separação", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. Separado", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Total", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
@@ -596,8 +598,9 @@ namespace ControlePedido
 
                             //Itens Pedidos
                             filtros.Clear();
-                            filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
-                            filtros.Add("F.CD_FILIAL", cd_filial);
+                            filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);                            
+                            filtros.Add("F.CD_FILIAL", lista[item].cd_filial);                          
+                            
                             filtros.Add("PI.CD_MATERIAL", lista[item].cd_material);
 
                             dt_Itens = retornaItensNosPedidos(filtros);
@@ -622,6 +625,12 @@ namespace ControlePedido
                                             iProduto.qtdeEmSeparacao = Convert.ToDouble(drItens["EMSEPARACAO"]);
                                             iProduto.qtdeSeparacao = Convert.ToDouble(drItens["SEPARADO"]);
 
+                                            tabelaEstoque.AddCell(new PdfPCell(new Phrase(drItens["CD_FILIAL"].ToString(), fonteNormal2))
+                                            {
+                                                HorizontalAlignment = Element.ALIGN_RIGHT,
+                                                Border = Rectangle.NO_BORDER
+                                            });
+
                                             tabelaEstoque.AddCell(new PdfPCell(new Phrase(drItens["CD_PEDIDO"].ToString(), fonteNormal2))
                                             {
                                                 HorizontalAlignment = Element.ALIGN_RIGHT,
@@ -636,7 +645,7 @@ namespace ControlePedido
 
                                             tabelaEstoque.AddCell(new PdfPCell(new Phrase(drItens["DS_ENTIDADE"].ToString(), fonteNormal2))
                                             {
-                                                HorizontalAlignment = Element.ALIGN_RIGHT,
+                                                HorizontalAlignment = Element.ALIGN_LEFT,
                                                 Border = Rectangle.NO_BORDER
                                             });
 
@@ -761,15 +770,15 @@ namespace ControlePedido
                 // 🟢 TÍTULOS DAS COLUNAS (Mantendo na mesma posição em cada página)
                 PdfPTable tabela = new PdfPTable(10);
                 tabela.TotalWidth = larguraUtil;
-                tabela.SetWidths(new float[] { 2f, 3f, 15f, 2f, 5f,3f, 3f, 3f, 3f, 3f });
+                tabela.SetWidths(new float[] { 3f,  15f, 3f, 5f,3f, 5f, 3f, 3f, 3f, 2f });
 
                 // Adicionar os títulos das colunas ao cabeçalho
-                tabela.AddCell(new PdfPCell(new Phrase("Filial", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("Cód.", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                tabela.AddCell(new PdfPCell(new Phrase("Descrição", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT });
+                tabela.AddCell(new PdfPCell(new Phrase("Descrição", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                 tabela.AddCell(new PdfPCell(new Phrase("Unid.", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                 tabela.AddCell(new PdfPCell(new Phrase("Identific", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                tabela.AddCell(new PdfPCell(new Phrase("Disponivel", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
+                tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
+                tabela.AddCell(new PdfPCell(new Phrase("Disponivel", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });                
                 tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                 tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                 tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });

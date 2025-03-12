@@ -122,6 +122,7 @@
             this.groupPedido = new System.Windows.Forms.GroupBox();
             this.lblAviso = new System.Windows.Forms.Label();
             this.lbltotais = new System.Windows.Forms.Label();
+            this.chkFilial = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupData.SuspendLayout();
             this.groupEstoqque.SuspendLayout();
@@ -236,7 +237,6 @@
             this.btnStatus.TabIndex = 74;
             this.btnStatus.Text = "...";
             this.btnStatus.UseVisualStyleBackColor = true;
-            this.btnStatus.Visible = false;
             this.btnStatus.Click += new System.EventHandler(this.btnStatus_Click);
             // 
             // txtStatus
@@ -246,7 +246,6 @@
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.Size = new System.Drawing.Size(63, 22);
             this.txtStatus.TabIndex = 73;
-            this.txtStatus.Visible = false;
             this.txtStatus.TextChanged += new System.EventHandler(this.txtStatus_TextChanged);
             // 
             // lblStatus
@@ -259,7 +258,6 @@
             this.lblStatus.TabIndex = 72;
             this.lblStatus.Text = "Status:";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.lblStatus.Visible = false;
             this.lblStatus.Click += new System.EventHandler(this.lblStatus_Click);
             // 
             // button21
@@ -973,7 +971,6 @@
             // txtFilial
             // 
             this.txtFilial.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtFilial.Enabled = false;
             this.txtFilial.Location = new System.Drawing.Point(75, 136);
             this.txtFilial.Name = "txtFilial";
             this.txtFilial.Size = new System.Drawing.Size(63, 22);
@@ -1004,7 +1001,6 @@
             // txtEmpresa
             // 
             this.txtEmpresa.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtEmpresa.Enabled = false;
             this.txtEmpresa.Location = new System.Drawing.Point(75, 112);
             this.txtEmpresa.Name = "txtEmpresa";
             this.txtEmpresa.Size = new System.Drawing.Size(63, 22);
@@ -1181,11 +1177,22 @@
             this.lbltotais.Text = "0 de 0";
             this.lbltotais.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // chkFilial
+            // 
+            this.chkFilial.AutoSize = true;
+            this.chkFilial.Location = new System.Drawing.Point(25, 141);
+            this.chkFilial.Name = "chkFilial";
+            this.chkFilial.Size = new System.Drawing.Size(15, 14);
+            this.chkFilial.TabIndex = 33;
+            this.chkFilial.UseVisualStyleBackColor = true;
+            this.chkFilial.CheckedChanged += new System.EventHandler(this.chkFilial_CheckedChanged);
+            // 
             // frmRelatorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(875, 626);
+            this.Controls.Add(this.chkFilial);
             this.Controls.Add(this.lblAviso);
             this.Controls.Add(this.chkDatas);
             this.Controls.Add(this.groupPedido);
@@ -1233,6 +1240,7 @@
             this.Controls.SetChildIndex(this.groupPedido, 0);
             this.Controls.SetChildIndex(this.chkDatas, 0);
             this.Controls.SetChildIndex(this.lblAviso, 0);
+            this.Controls.SetChildIndex(this.chkFilial, 0);
             this.panel1.ResumeLayout(false);
             this.groupData.ResumeLayout(false);
             this.groupData.PerformLayout();
@@ -1343,5 +1351,6 @@
         private System.Windows.Forms.CheckBox chkDataEntrega;
         private System.Windows.Forms.CheckBox chkEmSeparacao;
         private System.Windows.Forms.Label lbltotais;
+        private System.Windows.Forms.CheckBox chkFilial;
     }
 }

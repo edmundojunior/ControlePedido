@@ -360,6 +360,8 @@ namespace ControlePedido
                                     , PEDIDO.CD_TRANSPORTADOR
                                     , PEDIDO.CD_FRETE
                                     from TBL_PEDIDOS PEDIDO
+                                    left join TBL_PEDIDOS_ITENS I ON
+                                    I.CD_PEDIDO = PEDIDO.CD_PEDIDO
                                     LEFT JOIN  TBL_EMPRESAS EMPRESA 
                                     ON EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA
                                     LEFT JOIN TBL_EMPRESAS_FILIAIS FILIAL
@@ -368,8 +370,7 @@ namespace ControlePedido
                                     ON CLIENTE.CD_ENTIDADE = PEDIDO.CD_CLIENTE
                                     AND CLIENTE.X_CLIENTE = 1
                                     LEFT JOIN TBL_ENDERECO_CIDADES CIDADE
-                                    ON CIDADE.CD_CIDADE = CLIENTE.CD_CIDADE
-                                    WHERE PEDIDO.CD_STATUS IN (7)                                    
+                                    ON CIDADE.CD_CIDADE = CLIENTE.CD_CIDADE                                   
                                 ";
 
 
@@ -428,7 +429,28 @@ namespace ControlePedido
 
                 }
                 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-                sqlPedido += " ORDER BY  PEDIDO.CD_CLIENTE, PEDIDO.CD_PEDIDO";
+                sqlPedido += @" GROUP BY PEDIDO.CD_PEDIDO
+                                , PEDIDO.CD_EMPRESA
+                                , EMPRESA.DS_EMPRESA
+                                , PEDIDO.CD_FILIAL
+                                , FILIAL.DS_FILIAL
+                                , CLIENTE.CD_ENTIDADE
+                                , CLIENTE.DS_ENTIDADE
+                                , CLIENTE.CD_REGIAO
+                                , CLIENTE.CD_CIDADE
+                                , CIDADE.DS_UF
+                                , PEDIDO.DT_EMISSAO
+                                , PEDIDO.DT_ENTREGA
+                                , PEDIDO.CD_TIPO_PEDIDO
+                                , PEDIDO.CD_CARTEIRA
+                                , PEDIDO.CD_FORMA_PAGAMENTO
+                                , CLIENTE.CD_CLASSIFICACAO
+                                , PEDIDO.CD_VENDEDOR
+                                , PEDIDO.CD_OBRA
+                                , PEDIDO.CD_TRANSPORTADOR
+                                , PEDIDO.CD_FRETE";
+
+                sqlPedido += " ORDER BY  CLIENTE.CD_ENTIDADE, PEDIDO.CD_PEDIDO";
 
                 //Itens
                 string sqlItens = @"select 
@@ -441,9 +463,9 @@ namespace ControlePedido
                                     , MATERIAIS.CD_TIPO_EMBALAGEM
                                     , MATERIAIS.CD_FORNECEDOR
                                     , MATERIAIS.CD_TIPO
-                                    , ITENSPEDIDO.NR_QUANTIDADE AS QUANTPEDIDA
-                                    , IIF(PEDIDO.CD_STATUS = 8,(IIF(CONTROLEENTREGA.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA.NR_QUANTIDADE)) ,0) AS EMSEPARACAO                               
-                                    ,IIF(PEDIDO.CD_STATUS = 9,(IIF(CONTROLEENTREGA2.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA2.NR_QUANTIDADE)) ,0) AS SEPARADO
+                                    , SUM(ITENSPEDIDO.NR_QUANTIDADE) AS QUANTPEDIDA
+                                    , SUM(IIF(PEDIDO.CD_STATUS = 10,(IIF(CONTROLEENTREGA.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA.NR_QUANTIDADE)) ,0)) AS EMSEPARACAO                               
+                                    , SUM(IIF(PEDIDO.CD_STATUS = 11,(IIF(CONTROLEENTREGA2.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA2.NR_QUANTIDADE)) ,0)) AS SEPARADO
                                     from TBL_PEDIDOS PEDIDO
                                     LEFT JOIN TBL_PEDIDOS_ITENS ITENSPEDIDO ON
                                     ITENSPEDIDO.CD_PEDIDO = PEDIDO.CD_PEDIDO
@@ -459,9 +481,7 @@ namespace ControlePedido
                                     AND CONTROLEENTREGA2.X_ENTREGUE = 1								
                                     LEFT JOIN TBL_EMPRESAS_FILIAIS FILIAL
                                     ON FILIAL.CD_FILIAL = PEDIDO.CD_FILIAL
-                                    WHERE PEDIDO.CD_STATUS IN (7)
-                                AND PEDIDO.CD_PEDIDO IN ({0})
-                                AND ITENSPEDIDO.CD_MATERIAL IS NOT NULL
+                                    WHERE  ITENSPEDIDO.CD_MATERIAL IS NOT NULL
                                  ";
 
                 if (filtrosItens != null && filtrosItens.Count > 0)
@@ -576,9 +596,20 @@ namespace ControlePedido
                         return (null, null);
                     }
 
-                    sqlItens += " ORDER BY PEDIDO.CD_PEDIDO, PEDIDO.CD_CLIENTE, ITENSPEDIDO.CD_MATERIAL";
 
-                    sqlItens = String.Format(sqlItens, pedidosListados);
+                    sqlItens += @"GROUP BY PEDIDO.CD_PEDIDO
+                                    ,PEDIDO.CD_FILIAL
+                                    , ITENSPEDIDO.CD_MATERIAL
+                                    , MATERIAIS.DS_MATERIAL
+                                    , MATERIAIS.CD_MARCA
+                                    , MATERIAIS.CD_SUBGRUPO
+                                    , MATERIAIS.CD_TIPO_EMBALAGEM
+                                    , MATERIAIS.CD_FORNECEDOR
+                                    , MATERIAIS.CD_TIPO";
+
+                    sqlItens += " ORDER BY PEDIDO.CD_PEDIDO, ITENSPEDIDO.CD_MATERIAL";
+
+                    //sqlItens = String.Format(sqlItens, pedidosListados);
 
                     using (SqlConnection cnn = new BancoDeDados().conectar(bco))
                     {
