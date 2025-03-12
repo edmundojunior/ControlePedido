@@ -329,7 +329,7 @@ namespace ControlePedido
                             "  		,0 AS EmSeparacao" +
                             "  	FROM TBL_PEDIDOS_ITENS TPI " +
                             " 	LEFT JOIN TBL_MATERIAIS TM ON TPI.CD_MATERIAL = TM.CD_MATERIAL " +
-                            "  	LEFT JOIN TBL_PEDIDOS TP ON  TP.CD_PEDIDO = TPI.CD_PEDIDO AND  TP.CD_STATUS in (1,7) " +
+                            "  	LEFT JOIN TBL_PEDIDOS TP ON  TP.CD_PEDIDO = TPI.CD_PEDIDO " +
                             "  	LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL" +
                             " 	AND TP.CD_EMPRESA IS NOT NULL ");
 
@@ -530,8 +530,7 @@ namespace ControlePedido
                                                 " FROM TBL_COMPRAS_ORDEM_COMPRA_ITENS TCOCI " +
                                                 " LEFT JOIN TBL_COMPRAS_ORDEM_COMPRA TCOC ON TCOC.CD_ORDEM_COMPRA = TCOCI.CD_ORDEM_COMPRA " +
                                                 " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TCOC.CD_FILIAL " +
-                                                " WHERE TCOC.CD_STATUS IN (1) " +
-                                                " AND CD_MATERIAL = {0} " +
+                                                " WHERE CD_MATERIAL = {0} " +
                                                 " GROUP BY TCOC.CD_EMPRESA, TCOC.CD_FILIAL, TEF.DS_FILIAL, TCOCI.CD_MATERIAL ", CodProduto);
 
 
@@ -555,7 +554,7 @@ namespace ControlePedido
                                             " 		,0 AS Almoxarifado 	 " +
                                             " 		,0 AS EmSeparacao " +
                                             " 	FROM TBL_PEDIDOS_ITENS TPI   " +
-                                            " 	LEFT JOIN TBL_PEDIDOS TP ON  TP.CD_PEDIDO = TPI.CD_PEDIDO AND  TP.CD_STATUS in (1,7)  " +
+                                            " 	LEFT JOIN TBL_PEDIDOS TP ON  TP.CD_PEDIDO = TPI.CD_PEDIDO  " +
                                             " 	LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL	 " +
                                             "	WHERE TPI.CD_MATERIAL = {0} " +
                                             "	AND TP.CD_EMPRESA IS NOT NULL " +

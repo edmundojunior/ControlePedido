@@ -168,7 +168,7 @@ namespace ControlePedido
                     {
                         if (filtros != null && filtros.Count > 0)
                         {
-                            statusNao = geral ? " PED.CD_STATUS IN (1, 8 ,9) " : " PED.CD_STATUS NOT IN (4,5)";
+                            statusNao = geral ? " PED.CD_STATUS IN (1, 10 ,11) " : " PED.CD_STATUS NOT IN (4,5)";
 
                             if (!geral)
                             {
@@ -232,7 +232,7 @@ namespace ControlePedido
 
 
 
-                        statusNao = geral ? " PED.CD_STATUS IN (1, 8 ,9) " : " PED.CD_STATUS NOT IN (4,5)";
+                        statusNao = geral ? " PED.CD_STATUS IN (1, 10 ,11) " : " PED.CD_STATUS NOT IN (4,5)";
 
                         if (statusNao != "")
                         {
