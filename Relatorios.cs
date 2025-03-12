@@ -16,6 +16,7 @@ using FastReport;
 using FastReport.Export.PdfSimple;
 using FastReport.Data;
 using FastReport.Utils;
+using DocumentFormat.OpenXml.Bibliography;
 
 
 
@@ -25,109 +26,306 @@ namespace ControlePedido
     {
         Util caminho = new Util();
 
-        
-        public void imprimir(Dictionary<string, object> filtros = null, Dictionary<string, object> filtrosItens = null, bool estoque = false, bool dtemissao = true)
+        public class Pedido
         {
+            public string cd_pedido { get; set; }
+            public string cd_cliente { get; set; }
+            public string ds_cliente { get; set; }
+            public DateTime? dt_emissao { get; set; }
+            public DateTime? dt_entrega { get; set; }
+            public List<Item> Itens { get; set; }
 
-            BancoDeDados dadosBanco = new BancoDeDados();
-
-
-            DataTable retornoPedido = new DataTable();
-            DataTable retornoItens = new DataTable();
-            var bco = new BancoDeDados().lerXMLConfiguracao();
-
-            Report report = new Report();
-
-            string relPedidos = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\Pedidos.frx");
-            string relestoque = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\Estoque.frx");
-            string arqPedidosPdf = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\RelatorioPedidos_" + DateTime.Now.ToString("ddMMyyyy_HHmmss"));
-            string arqestoquePdf = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\RelatorioEstoque_" + DateTime.Now.ToString("ddMMyyyy_HHmmss"));
-
-            var sql = sqlPedidoEItens(filtros, filtrosItens, dtemissao);
-
-            string sqlPedido = sql.Item1;
-            string sqlItens = sql.Item2;
-
-
-            if (estoque)
-            {
-
-            }else
-            {
-
-                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
-                {
-                    if (cnn != null)
-                    {
-                        using (SqlCommand comando = new SqlCommand(sqlPedido, cnn))
-                        {
-                            using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
-                            {
-                                adaptador.Fill(retornoPedido);
-                            }
-                        }
-                    }
-                }
-
-                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
-                {
-                    if (cnn != null)
-                    {
-                        using (SqlCommand comando = new SqlCommand(sqlItens, cnn))
-                        {
-                            using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
-                            {
-                                adaptador.Fill(retornoItens);
-                            }
-                        }
-                    }
-                    
-                }
-
-                MsSqlDataConnection sqlConnection = new MsSqlDataConnection
-                {
-                    ConnectionString = dadosBanco.connectionString(bco)
-                };
-
-                sqlConnection.CreateAllTables();
-                // Adicionar a conexão ao relatório
-                report.Dictionary.Connections.Add(sqlConnection);
-
-
-                if (!File.Exists(relPedidos))
-                {
-                    MessageBox.Show("Arquivo de relatório não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                report.Load(relPedidos);
-
-                report.RegisterData(retornoPedido, "Pedido");
-                report.RegisterData(retornoItens, "Itens");
-
-                DataBand dataBandPedidos = report.FindObject("DataBandPedidos") as DataBand;
-                if (dataBandPedidos != null)
-                    dataBandPedidos.DataSource = report.GetDataSource("Pedido");
-
-                DataBand dataBandItens = report.FindObject("DataBandItens") as DataBand;
-                if (dataBandItens != null)
-                    dataBandItens.DataSource = report.GetDataSource("Itens");
-
-                // 6️⃣ Preparar e Exibir o Relatório
-                report.Prepare();
-
-                using (PDFSimpleExport export = new PDFSimpleExport())
-                {
-                    report.Export(export, arqPedidosPdf);
-                }
-
-                frmExibirRelatorio frm = new frmExibirRelatorio(arqPedidosPdf);
-                frm.ShowDialog();
-
-                report.Dictionary.Connections.Clear();
-            }
 
         }
+
+        public class Item
+        {
+            public string cd_pedido { get; set; }
+            public string cd_filial { get; set; }
+            public string cd_material { get; set; }
+            public string ds_material { get; set; }
+
+            public double nr_qtdepedida { get; set; }
+            public double nr_emseparacao { get; set; }
+            public double nr_separado { get; set; }
+
+        }
+
+
+
+        //public void imprimirSemDados()
+        //{
+        //    string relPedidos = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\PedidoVenda.frx");
+        //    string arqPedidosPdf = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\RelatorioPedidos.PDF");
+
+        //    DataTable table = new DataTable("Pedidos");
+        //    table.Columns.Add("cd_pedido", typeof(string));
+
+        //    DataTable dt = new DataTable();
+        //    DataTable dtItens = new DataTable();
+        //    var bco = new BancoDeDados().lerXMLConfiguracao();
+
+        //    List<Pedido> pedidos = new List<Pedido>();
+
+        //    string sqlPedido = @"select 
+        //                        PEDIDO.CD_PEDIDO
+        //                        , PEDIDO.CD_EMPRESA
+        //                        , EMPRESA.DS_EMPRESA
+        //                        , PEDIDO.CD_FILIAL
+        //                        , FILIAL.DS_FILIAL
+        //                        , CLIENTE.CD_ENTIDADE
+        //                        , CLIENTE.DS_ENTIDADE
+        //                        , CLIENTE.CD_REGIAO
+        //                        , CLIENTE.CD_CIDADE
+        //                        , CIDADE.DS_UF
+        //                        , PEDIDO.DT_EMISSAO
+        //                        , PEDIDO.DT_ENTREGA
+        //                        , PEDIDO.CD_TIPO_PEDIDO
+        //                        , PEDIDO.CD_CARTEIRA
+        //                        , PEDIDO.CD_FORMA_PAGAMENTO
+        //                        , CLIENTE.CD_CLASSIFICACAO
+        //                        , PEDIDO.CD_VENDEDOR
+        //                        , PEDIDO.CD_OBRA
+        //                        , PEDIDO.CD_TRANSPORTADOR
+        //                        , PEDIDO.CD_FRETE
+        //                        from TBL_PEDIDOS PEDIDO
+        //                        LEFT JOIN  TBL_EMPRESAS EMPRESA 
+        //                        ON EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA
+        //                        LEFT JOIN TBL_EMPRESAS_FILIAIS FILIAL
+        //                        ON FILIAL.CD_FILIAL = PEDIDO.CD_FILIAL
+        //                        LEFT JOIN TBL_ENTIDADES CLIENTE
+        //                        ON CLIENTE.CD_ENTIDADE = PEDIDO.CD_CLIENTE
+        //                        AND CLIENTE.X_CLIENTE = 1
+        //                        LEFT JOIN TBL_ENDERECO_CIDADES CIDADE
+        //                        ON CIDADE.CD_CIDADE = CLIENTE.CD_CIDADE
+        //                        Where PEDIDO.CD_STATUS IN (1,10,11)
+        //                        ORDER BY  PEDIDO.CD_CLIENTE, PEDIDO.CD_PEDIDO
+        //                        ";
+        //    try
+        //    {
+        //        using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+        //        {
+        //            if (cnn != null)
+        //            {
+        //                using (SqlCommand comando = new SqlCommand(sqlPedido, cnn))
+        //                {
+        //                    using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+        //                    {
+        //                        adaptador.Fill(dt);
+        //                    }
+        //                }
+        //            }
+
+        //            foreach (DataRow row in dt.Rows)
+        //            {
+        //                Pedido pedido = new Pedido()
+        //                {
+        //                    cd_pedido = row["CD_PEDIDO"].ToString(),
+        //                    cd_cliente = row["CD_ENTIDADE"].ToString(),
+        //                    ds_cliente = row["DS_ENTIDADE"].ToString(),
+        //                    dt_emissao = Convert.ToDateTime(row["DT_EMISSAO"]),
+        //                    dt_entrega = Convert.ToDateTime(row["DT_ENTREGA"]),
+        //                    Itens = new List<Item>()
+
+        //                };
+
+        //                string sqlItens = String.Format(@"select 
+        //                        PEDIDO.CD_PEDIDO
+        //                        , ITENSPEDIDO.CD_MATERIAL
+        //                        , MATERIAIS.DS_MATERIAL
+        //                        , MATERIAIS.CD_MARCA
+        //                        , MATERIAIS.CD_SUBGRUPO
+        //                        , MATERIAIS.CD_TIPO_EMBALAGEM
+        //                        , MATERIAIS.CD_FORNECEDOR
+        //                        , MATERIAIS.CD_TIPO
+        //                        , ITENSPEDIDO.NR_QUANTIDADE AS QUANTPEDIDA
+        //                        , IIF(CONTROLEENTREGA.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA.NR_QUANTIDADE)  AS EMSEPARACAO
+        //                        , IIF(CONTROLEENTREGA2.NR_QUANTIDADE IS NULL , 0 , CONTROLEENTREGA2.NR_QUANTIDADE) AS SEPARADO
+        //                        from TBL_PEDIDOS PEDIDO
+        //                        LEFT JOIN TBL_PEDIDOS_ITENS ITENSPEDIDO ON
+        //                        ITENSPEDIDO.CD_PEDIDO = PEDIDO.CD_PEDIDO
+        //                        LEFT JOIN TBL_MATERIAIS MATERIAIS ON 
+        //                        MATERIAIS.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL
+        //                        LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA CONTROLEENTREGA
+        //                        ON CONTROLEENTREGA.CD_PEDIDO = PEDIDO.CD_PEDIDO
+        //                        AND CONTROLEENTREGA.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL
+        //                        AND CONTROLEENTREGA.X_ENTREGUE = 0
+        //                        LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA CONTROLEENTREGA2
+        //                        ON CONTROLEENTREGA2.CD_PEDIDO = PEDIDO.CD_PEDIDO
+        //                        AND CONTROLEENTREGA2.CD_MATERIAL = ITENSPEDIDO.CD_MATERIAL
+        //                        AND CONTROLEENTREGA2.X_ENTREGUE = 1
+        //                        Where PEDIDO.CD_STATUS IN (1,10,11)
+        //                        AND PEDIDO.CD_PEDIDO = {0}
+        //                        AND ITENSPEDIDO.CD_MATERIAL IS NOT NULL
+        //                        ORDER BY PEDIDO.CD_PEDIDO, PEDIDO.CD_CLIENTE, ITENSPEDIDO.CD_MATERIAL
+        //                        ", row["CD_PEDIDO"].ToString());
+
+        //                using (SqlConnection cnn1 = new BancoDeDados().conectar(bco))
+        //                {
+        //                    if (cnn1 != null)
+        //                    {
+        //                        using (SqlCommand comando = new SqlCommand(sqlItens, cnn1))
+        //                        {
+        //                            using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+        //                            {
+        //                                adaptador.Fill(dtItens);
+        //                            }
+        //                        }
+        //                    }
+
+        //                    foreach (DataRow rowItens in dtItens.Rows)
+        //                    {
+        //                        Item item = new Item
+        //                        {
+
+        //                            cd_filial = row["CD_FILIAL"].ToString(),
+        //                            cd_pedido = rowItens["CD_PEDIDO"].ToString(),
+        //                            cd_material = rowItens["CD_MATERIAL"].ToString(),
+        //                            ds_material = rowItens["DS_MATERIAL"].ToString(),
+        //                            nr_qtdepedida = Convert.ToDouble(rowItens["QUANTPEDIDA"]),
+        //                            nr_emseparacao = Convert.ToDouble(rowItens["CD_PEDIDO"]),
+        //                            nr_separado = Convert.ToDouble(rowItens["CD_PEDIDO"]),
+        //                        };
+
+        //                        pedido.Itens.Add(item);
+        //                    }
+        //                }
+
+        //                pedidos.Add(pedido);
+        //            }
+        //        }
+
+        //        Report relatorio = new Report();
+
+        //        // Carregar o arquivo .frx (relatório pré-configurado)
+        //        relatorio.Load(relPedidos);
+
+        //        // Registrar os dados no relatório
+        //        //relatorio.RegisterData(pedidos, "Pedidos");
+        //        //relatorio.GetDataSource("Pedidos").Enabled = true;
+        //        DataBand dataBandPedidos = new DataBand();
+        //        dataBandPedidos.DataSource = relatorio.GetDataSource("Pedidos");
+
+
+        //        // Preparar o relatório
+        //        relatorio.Prepare();
+
+        //        using (PDFSimpleExport export = new PDFSimpleExport())
+        //        {
+        //            relatorio.Export(export, arqPedidosPdf);
+        //        }
+
+        //        frmExibirRelatorio frm = new frmExibirRelatorio(arqPedidosPdf);
+        //        frm.ShowDialog();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+        //public void imprimir(Dictionary<string, object> filtros = null, Dictionary<string, object> filtrosItens = null, bool estoque = false, bool dtemissao = true)
+        //{
+
+        //    BancoDeDados dadosBanco = new BancoDeDados();
+
+
+        //    DataTable retornoPedido = new DataTable();
+        //    DataTable retornoItens = new DataTable();
+        //    var bco = new BancoDeDados().lerXMLConfiguracao();
+
+        //    Report report = new Report();
+
+        //    string relPedidos = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\Pedidos.frx");
+        //    string relestoque = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\Estoque.frx");
+        //    string arqPedidosPdf = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\RelatorioPedidos_" + DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+        //    string arqestoquePdf = caminho.retornaCaminhoRelatorioPadrao(@"Relatorio\RelatorioEstoque_" + DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+
+        //    var sql = sqlPedidoEItens(filtros, filtrosItens, dtemissao);
+
+        //    string sqlPedido = sql.Item1;
+        //    string sqlItens = sql.Item2;
+
+
+        //    if (estoque)
+        //    {
+
+        //    }else
+        //    {
+
+        //        using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+        //        {
+        //            if (cnn != null)
+        //            {
+        //                using (SqlCommand comando = new SqlCommand(sqlPedido, cnn))
+        //                {
+        //                    using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+        //                    {
+        //                        adaptador.Fill(retornoPedido);
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+        //        {
+        //            if (cnn != null)
+        //            {
+        //                using (SqlCommand comando = new SqlCommand(sqlItens, cnn))
+        //                {
+        //                    using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+        //                    {
+        //                        adaptador.Fill(retornoItens);
+        //                    }
+        //                }
+        //            }
+                    
+        //        }
+
+        //        MsSqlDataConnection sqlConnection = new MsSqlDataConnection
+        //        {
+        //            ConnectionString = dadosBanco.connectionString(bco)
+        //        };
+
+        //        sqlConnection.CreateAllTables();
+        //        // Adicionar a conexão ao relatório
+        //        report.Dictionary.Connections.Add(sqlConnection);
+
+
+        //        if (!File.Exists(relPedidos))
+        //        {
+        //            MessageBox.Show("Arquivo de relatório não encontrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //            return;
+        //        }
+
+        //        report.Load(relPedidos);
+
+        //        report.RegisterData(retornoPedido, "Pedido");
+        //        report.RegisterData(retornoItens, "Itens");
+
+        //        DataBand dataBandPedidos = report.FindObject("DataBandPedidos") as DataBand;
+        //        if (dataBandPedidos != null)
+        //            dataBandPedidos.DataSource = report.GetDataSource("Pedido");
+
+        //        DataBand dataBandItens = report.FindObject("DataBandItens") as DataBand;
+        //        if (dataBandItens != null)
+        //            dataBandItens.DataSource = report.GetDataSource("Itens");
+
+        //        // 6️⃣ Preparar e Exibir o Relatório
+        //        report.Prepare();
+
+        //        using (PDFSimpleExport export = new PDFSimpleExport())
+        //        {
+        //            report.Export(export, arqPedidosPdf);
+        //        }
+
+        //        frmExibirRelatorio frm = new frmExibirRelatorio(arqPedidosPdf);
+        //        frm.ShowDialog();
+
+        //        report.Dictionary.Connections.Clear();
+        //    }
+
+        //}
 
         public (string, string) sqlPedidoEItens(Dictionary<string, object> filtros = null
                                                 , Dictionary<string, object> filtrosItens = null

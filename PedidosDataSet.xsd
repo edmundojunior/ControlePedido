@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PedidosDataSet" targetNamespace="http://tempuri.org/PedidosDataSet.xsd" xmlns:mstns="http://tempuri.org/PedidosDataSet.xsd" xmlns="http://tempuri.org/PedidosDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="PedidosDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="PedidosDataSet" msprop:Generator_DataSetName="PedidosDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Pedido" msprop:Generator_RowEvHandlerName="PedidoRowChangeEventHandler" msprop:Generator_RowDeletedName="PedidoRowDeleted" msprop:Generator_RowDeletingName="PedidoRowDeleting" msprop:Generator_RowEvArgName="PedidoRowChangeEvent" msprop:Generator_TablePropName="Pedido" msprop:Generator_RowChangedName="PedidoRowChanged" msprop:Generator_RowChangingName="PedidoRowChanging" msprop:Generator_TableClassName="PedidoDataTable" msprop:Generator_RowClassName="PedidoRow" msprop:Generator_TableVarName="tablePedido" msprop:Generator_UserTableName="Pedido">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CD_PEDIDO" msprop:Generator_ColumnPropNameInRow="CD_PEDIDO" msprop:Generator_ColumnPropNameInTable="CD_PEDIDOColumn" msprop:Generator_ColumnVarNameInTable="columnCD_PEDIDO" msprop:Generator_UserColumnName="CD_PEDIDO" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_EMPRESA" msprop:Generator_ColumnPropNameInRow="CD_EMPRESA" msprop:Generator_ColumnPropNameInTable="CD_EMPRESAColumn" msprop:Generator_ColumnVarNameInTable="columnCD_EMPRESA" msprop:Generator_UserColumnName="CD_EMPRESA" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_EMPRESA" msprop:Generator_ColumnPropNameInRow="DS_EMPRESA" msprop:Generator_ColumnPropNameInTable="DS_EMPRESAColumn" msprop:Generator_ColumnVarNameInTable="columnDS_EMPRESA" msprop:Generator_UserColumnName="DS_EMPRESA" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_FILIAL" msprop:Generator_ColumnPropNameInRow="CD_FILIAL" msprop:Generator_ColumnPropNameInTable="CD_FILIALColumn" msprop:Generator_ColumnVarNameInTable="columnCD_FILIAL" msprop:Generator_UserColumnName="CD_FILIAL" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_FILIAL" msprop:Generator_ColumnPropNameInRow="DS_FILIAL" msprop:Generator_ColumnPropNameInTable="DS_FILIALColumn" msprop:Generator_ColumnVarNameInTable="columnDS_FILIAL" msprop:Generator_UserColumnName="DS_FILIAL" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_ENTIDADE" msprop:Generator_ColumnPropNameInRow="CD_ENTIDADE" msprop:Generator_ColumnPropNameInTable="CD_ENTIDADEColumn" msprop:Generator_ColumnVarNameInTable="columnCD_ENTIDADE" msprop:Generator_UserColumnName="CD_ENTIDADE" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_ENTIDADE" msprop:Generator_ColumnPropNameInRow="DS_ENTIDADE" msprop:Generator_ColumnPropNameInTable="DS_ENTIDADEColumn" msprop:Generator_ColumnVarNameInTable="columnDS_ENTIDADE" msprop:Generator_UserColumnName="DS_ENTIDADE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Itens" msprop:Generator_RowEvHandlerName="ItensRowChangeEventHandler" msprop:Generator_RowDeletedName="ItensRowDeleted" msprop:Generator_RowDeletingName="ItensRowDeleting" msprop:Generator_RowEvArgName="ItensRowChangeEvent" msprop:Generator_TablePropName="Itens" msprop:Generator_RowChangedName="ItensRowChanged" msprop:Generator_RowChangingName="ItensRowChanging" msprop:Generator_TableClassName="ItensDataTable" msprop:Generator_RowClassName="ItensRow" msprop:Generator_TableVarName="tableItens" msprop:Generator_UserTableName="Itens">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CD_PEDIDO" msprop:Generator_ColumnPropNameInRow="CD_PEDIDO" msprop:Generator_ColumnPropNameInTable="CD_PEDIDOColumn" msprop:Generator_ColumnVarNameInTable="columnCD_PEDIDO" msprop:Generator_UserColumnName="CD_PEDIDO" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_MATERIAL" msprop:Generator_ColumnPropNameInRow="CD_MATERIAL" msprop:Generator_ColumnPropNameInTable="CD_MATERIALColumn" msprop:Generator_ColumnVarNameInTable="columnCD_MATERIAL" msprop:Generator_UserColumnName="CD_MATERIAL" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_MATERIAL" msprop:Generator_ColumnPropNameInRow="DS_MATERIAL" msprop:Generator_ColumnPropNameInTable="DS_MATERIALColumn" msprop:Generator_ColumnVarNameInTable="columnDS_MATERIAL" msprop:Generator_UserColumnName="DS_MATERIAL" type="xs:string" minOccurs="0" />
+              <xs:element name="QUANTIDADE" msprop:Generator_ColumnPropNameInRow="QUANTIDADE" msprop:Generator_ColumnPropNameInTable="QUANTIDADEColumn" msprop:Generator_ColumnVarNameInTable="columnQUANTIDADE" msprop:Generator_UserColumnName="QUANTIDADE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="Pedido_Itens" msdata:parent="Pedido" msdata:child="Itens" msdata:parentkey="CD_PEDIDO" msdata:childkey="CD_PEDIDO" msprop:Generator_UserParentTable="Pedido" msprop:Generator_UserChildTable="Itens" msprop:Generator_RelationVarName="relationPedido_Itens" msprop:Generator_ChildPropName="GetItensRows" msprop:Generator_ParentPropName="PedidoRow" msprop:Generator_UserRelationName="Pedido_Itens" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

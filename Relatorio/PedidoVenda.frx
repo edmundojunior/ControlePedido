@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/11/2025 23:16:07" ReportInfo.Modified="03/12/2025 01:48:22" ReportInfo.CreatorVersion="2025.1.0.0">
+  <Dictionary>
+    <Parameter Name="Parameter" DataType="System.String" AsString=""/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2"/>
+    <DataBand Name="Data1" Top="4" Width="718.2" Height="132.3">
+      <TextObject Name="Cliente" Left="132.3" Top="75.6" Width="368.55" Height="18.9" Font="Arial, 10pt"/>
+      <TextObject Name="DataPedido" Left="510.3" Top="47.25" Width="94.5" Height="18.9" Font="Arial, 10pt"/>
+      <TextObject Name="Text2" Left="18.9" Top="9.45" Width="94.5" Height="18.9" Text="Pedido:" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text3" Left="132.3" Top="9.45" Width="368.55" Height="18.9" Text="Cliente" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="510.3" Top="9.45" Width="94.5" Height="18.9" Text="Data Emissão" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text5" Left="614.25" Top="9.45" Width="94.5" Height="18.9" Text="Data Entrega" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="DataEntega" Left="614.25" Top="47.25" Width="94.5" Height="18.9" Font="Arial, 10pt"/>
+      <TextObject Name="CodigoCliente" Left="132.3" Top="47.25" Width="368.55" Height="18.9" Font="Arial, 10pt"/>
+      <LineObject Name="Line1" Top="103.95" Width="718.2" Diagonal="true"/>
+      <TextObject Name="Text6" Top="113.4" Width="37.8" Height="18.9" Text="Item.cd_filial" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text7" Left="47.25" Top="113.4" Width="349.65" Height="18.9" Text="Produto" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="406.35" Top="113.4" Width="94.5" Height="18.9" Text="Qtde.Pedido" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text9" Left="510.3" Top="113.4" Width="94.5" Height="18.9" Text="Em Separação" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="614.25" Top="113.4" Width="94.5" Height="18.9" Text="Separado" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text11" Left="18.9" Top="47.25" Width="94.5" Height="47.25" Text="Pedidos.cd_pedido" HorzAlign="Center" VertAlign="Center" Font="Calibri, 10pt, style=Bold"/>
+    </DataBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="140.3" Width="718.2" Height="37.8"/>
+    <PageFooterBand Name="PageFooter1" Top="182.1" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

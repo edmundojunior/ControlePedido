@@ -182,6 +182,8 @@
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -289,6 +291,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -384,10 +387,23 @@
     </Compile>
     <Compile Include="Impressao.cs" />
     <Compile Include="Pedidos.cs" />
+    <Compile Include="PedidosDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PedidosDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relatorios.cs" />
     <Compile Include="RelEstoque.cs" />
+    <Compile Include="RelPedidoEstoque.cs" />
+    <Compile Include="Report\DadosRelatorioPedido.cs" />
+    <Compile Include="Report\frmReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\frmReportViewer.Designer.cs">
+      <DependentUpon>frmReportViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="usBarraTitulo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -455,6 +471,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Report\frmReportViewer.resx">
+      <DependentUpon>frmReportViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RelatorioDePedidos.rdlc" />
     <EmbeddedResource Include="usBarraTitulo.resx">
       <DependentUpon>usBarraTitulo.cs</DependentUpon>
     </EmbeddedResource>
@@ -464,8 +484,19 @@
     <EmbeddedResource Include="usPesquisa.resx">
       <DependentUpon>usPesquisa.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="CertificadoMAPFRE01.rpt" />
     <None Include="packages.config" />
+    <None Include="PedidosDataSet.xsc">
+      <DependentUpon>PedidosDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="PedidosDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PedidosDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="PedidosDataSet.xss">
+      <DependentUpon>PedidosDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\DataSources\ControlePedido.Report.DadosRelatorioPedido.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -520,6 +551,9 @@
     <None Include="img\png\cafe.png" />
     <None Include="img\png\binoculos2.png" />
     <EmbeddedResource Include="Relatorio\Pedidos.frx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Relatorio\PedidoVenda.frx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Resources\logoCommerceedm.png" />

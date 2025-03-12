@@ -47,15 +47,21 @@ namespace ControlePedido
 
         private void usMenu1_ImprimirButtonClicked(object sender, EventArgs e)
         {
-            if (_estoque)
-            {
-                imprimirEstoque();
-            }
-            else
-            {
-                imprimirPedido();
-            }
+
+            Relatorios rel = new Relatorios();
             
+
+            //if (_estoque)
+            //{
+
+
+            //    imprimirEstoque();
+            //}
+            //else
+            //{
+            //    imprimirPedido();
+            //}
+
         }
         private void frmRelatorio_Load(object sender, EventArgs e)
         {
