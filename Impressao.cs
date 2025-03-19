@@ -422,7 +422,16 @@ namespace ControlePedido
                             }
                             else sqlPedido += " WHERE ";
 
-                            sqlPedido += chave + " LIKE  '" + valor + "'";
+
+                            if (chave.Contains("CD_FILIAL"))
+                            {
+                                sqlPedido += chave + " IN  (" + valor + ")";
+                            }
+                            else
+                            {
+                                sqlPedido += chave + " LIKE  '" + valor + "'";
+                            }
+                            
                         }
 
                     }
@@ -530,7 +539,14 @@ namespace ControlePedido
                             }
                             else sqlItens += " WHERE ";
 
-                            sqlItens += chave + " LIKE  '" + valor + "'";
+                            if (chave.Contains("CD_FILIAL"))
+                            {
+                                sqlItens += chave + " IN  (" + valor + ")";
+                            }
+                            else {
+                                sqlItens += chave + " LIKE  '" + valor + "'";
+                            }
+                            
                         }
 
                         

@@ -246,6 +246,7 @@
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.Size = new System.Drawing.Size(63, 22);
             this.txtStatus.TabIndex = 73;
+            this.txtStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtStatus.TextChanged += new System.EventHandler(this.txtStatus_TextChanged);
             // 
             // lblStatus
@@ -311,6 +312,7 @@
             this.txtTipoPedido.Name = "txtTipoPedido";
             this.txtTipoPedido.Size = new System.Drawing.Size(63, 22);
             this.txtTipoPedido.TabIndex = 67;
+            this.txtTipoPedido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label25
             // 
@@ -341,6 +343,7 @@
             this.txtObra.Name = "txtObra";
             this.txtObra.Size = new System.Drawing.Size(63, 22);
             this.txtObra.TabIndex = 64;
+            this.txtObra.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label24
             // 
@@ -371,6 +374,7 @@
             this.txtIndicadorVenda.Name = "txtIndicadorVenda";
             this.txtIndicadorVenda.Size = new System.Drawing.Size(63, 22);
             this.txtIndicadorVenda.TabIndex = 61;
+            this.txtIndicadorVenda.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label23
             // 
@@ -401,6 +405,7 @@
             this.txtClassEntiade.Name = "txtClassEntiade";
             this.txtClassEntiade.Size = new System.Drawing.Size(63, 22);
             this.txtClassEntiade.TabIndex = 58;
+            this.txtClassEntiade.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label22
             // 
@@ -431,6 +436,7 @@
             this.txtFrete.Name = "txtFrete";
             this.txtFrete.Size = new System.Drawing.Size(63, 22);
             this.txtFrete.TabIndex = 55;
+            this.txtFrete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label21
             // 
@@ -461,6 +467,7 @@
             this.txtCarteira.Name = "txtCarteira";
             this.txtCarteira.Size = new System.Drawing.Size(63, 22);
             this.txtCarteira.TabIndex = 49;
+            this.txtCarteira.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label19
             // 
@@ -491,6 +498,7 @@
             this.txtFormaPagto.Name = "txtFormaPagto";
             this.txtFormaPagto.Size = new System.Drawing.Size(63, 22);
             this.txtFormaPagto.TabIndex = 46;
+            this.txtFormaPagto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label18
             // 
@@ -521,6 +529,7 @@
             this.txtTransporte.Name = "txtTransporte";
             this.txtTransporte.Size = new System.Drawing.Size(63, 22);
             this.txtTransporte.TabIndex = 43;
+            this.txtTransporte.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label17
             // 
@@ -551,6 +560,7 @@
             this.txtVendedor.Name = "txtVendedor";
             this.txtVendedor.Size = new System.Drawing.Size(63, 22);
             this.txtVendedor.TabIndex = 40;
+            this.txtVendedor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label16
             // 
@@ -581,6 +591,7 @@
             this.txtRegiao.Name = "txtRegiao";
             this.txtRegiao.Size = new System.Drawing.Size(63, 22);
             this.txtRegiao.TabIndex = 37;
+            this.txtRegiao.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label15
             // 
@@ -610,6 +621,7 @@
             this.txtCidade.Name = "txtCidade";
             this.txtCidade.Size = new System.Drawing.Size(63, 22);
             this.txtCidade.TabIndex = 25;
+            this.txtCidade.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label11
             // 
@@ -640,6 +652,7 @@
             this.txtEstado.Name = "txtEstado";
             this.txtEstado.Size = new System.Drawing.Size(63, 22);
             this.txtEstado.TabIndex = 22;
+            this.txtEstado.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label10
             // 
@@ -670,6 +683,7 @@
             this.txtTipoProduto.Name = "txtTipoProduto";
             this.txtTipoProduto.Size = new System.Drawing.Size(63, 22);
             this.txtTipoProduto.TabIndex = 13;
+            this.txtTipoProduto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label7
             // 
@@ -700,6 +714,7 @@
             this.txtTipoEntidade.Name = "txtTipoEntidade";
             this.txtTipoEntidade.Size = new System.Drawing.Size(63, 22);
             this.txtTipoEntidade.TabIndex = 10;
+            this.txtTipoEntidade.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label5
             // 
@@ -730,6 +745,7 @@
             this.txtCliente.Name = "txtCliente";
             this.txtCliente.Size = new System.Drawing.Size(63, 22);
             this.txtCliente.TabIndex = 7;
+            this.txtCliente.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label4
             // 
@@ -760,6 +776,7 @@
             this.txtFornecedor.Name = "txtFornecedor";
             this.txtFornecedor.Size = new System.Drawing.Size(63, 22);
             this.txtFornecedor.TabIndex = 76;
+            this.txtFornecedor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label27
             // 
@@ -790,6 +807,7 @@
             this.txtTipoEmbalagem.Name = "txtTipoEmbalagem";
             this.txtTipoEmbalagem.Size = new System.Drawing.Size(63, 22);
             this.txtTipoEmbalagem.TabIndex = 52;
+            this.txtTipoEmbalagem.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label20
             // 
@@ -820,6 +838,7 @@
             this.txtProduto.Name = "txtProduto";
             this.txtProduto.Size = new System.Drawing.Size(63, 22);
             this.txtProduto.TabIndex = 34;
+            this.txtProduto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label14
             // 
@@ -882,6 +901,7 @@
             this.txtSubGrupo.Name = "txtSubGrupo";
             this.txtSubGrupo.Size = new System.Drawing.Size(63, 22);
             this.txtSubGrupo.TabIndex = 28;
+            this.txtSubGrupo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label12
             // 
@@ -945,6 +965,7 @@
             this.txtMarca.Name = "txtMarca";
             this.txtMarca.Size = new System.Drawing.Size(63, 22);
             this.txtMarca.TabIndex = 16;
+            this.txtMarca.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label8
             // 
@@ -960,7 +981,7 @@
             // btnFilial
             // 
             this.btnFilial.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFilial.Location = new System.Drawing.Point(140, 136);
+            this.btnFilial.Location = new System.Drawing.Point(222, 136);
             this.btnFilial.Name = "btnFilial";
             this.btnFilial.Size = new System.Drawing.Size(25, 23);
             this.btnFilial.TabIndex = 5;
@@ -973,8 +994,9 @@
             this.txtFilial.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtFilial.Location = new System.Drawing.Point(75, 136);
             this.txtFilial.Name = "txtFilial";
-            this.txtFilial.Size = new System.Drawing.Size(63, 22);
+            this.txtFilial.Size = new System.Drawing.Size(146, 22);
             this.txtFilial.TabIndex = 4;
+            this.txtFilial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFilial_KeyPress);
             // 
             // label3
             // 
@@ -1024,15 +1046,17 @@
             this.lblEmpresa.Size = new System.Drawing.Size(16, 13);
             this.lblEmpresa.TabIndex = 27;
             this.lblEmpresa.Text = "...";
+            this.lblEmpresa.Visible = false;
             // 
             // lblFilial
             // 
             this.lblFilial.AutoSize = true;
-            this.lblFilial.Location = new System.Drawing.Point(175, 141);
+            this.lblFilial.Location = new System.Drawing.Point(257, 141);
             this.lblFilial.Name = "lblFilial";
             this.lblFilial.Size = new System.Drawing.Size(16, 13);
             this.lblFilial.TabIndex = 28;
             this.lblFilial.Text = "...";
+            this.lblFilial.Visible = false;
             // 
             // groupEstoqque
             // 
@@ -1180,11 +1204,14 @@
             // chkFilial
             // 
             this.chkFilial.AutoSize = true;
+            this.chkFilial.Checked = true;
+            this.chkFilial.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkFilial.Location = new System.Drawing.Point(25, 141);
             this.chkFilial.Name = "chkFilial";
             this.chkFilial.Size = new System.Drawing.Size(15, 14);
             this.chkFilial.TabIndex = 33;
             this.chkFilial.UseVisualStyleBackColor = true;
+            this.chkFilial.Visible = false;
             this.chkFilial.CheckedChanged += new System.EventHandler(this.chkFilial_CheckedChanged);
             // 
             // frmRelatorio

@@ -504,7 +504,7 @@ namespace ControlePedido
                 filtros.Add("PEDIDO.CD_EMPRESA", txtEmpresa.Text);
 
             if (!string.IsNullOrWhiteSpace(txtFilial.Text) && chkFilial.Checked)
-                filtros.Add("PEDIDO.CD_FILIAL", txtFilial.Text);
+                filtros.Add("PEDIDO.CD_FILIAL", txtFilial.Text.Replace(";",","));
 
             if (!string.IsNullOrWhiteSpace(txtCliente.Text))
                 filtros.Add("PEDIDO.CD_CLIENTE", txtCliente.Text);
@@ -629,6 +629,14 @@ namespace ControlePedido
             txtFilial.Enabled = chkFilial.Checked;
             btnFilial.Enabled = chkFilial.Checked;
 
+        }
+
+        private void txtFilial_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ';')
+            {
+                e.Handled = true; // Bloqueia a tecla
+            }
         }
     }
 }

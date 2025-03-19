@@ -92,7 +92,15 @@ namespace ControlePedido
                         }
                         else sql += " WHERE ";
 
-                        sql += chave + " LIKE  '" + valor + "'";
+                        if (chave.Contains("CD_FILIAL"))
+                        {
+                            sql += chave + " IN  (" + valor + ")";
+                        }
+                        else
+                        {
+                            sql += chave + " LIKE  '" + valor + "'";
+                        }
+                        
                     }
 
                 }
@@ -461,7 +469,7 @@ namespace ControlePedido
                     filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
                     if (cd_filial != "")
                     {
-                        filtros.Add("F.CD_FILIAL", cd_filial);
+                        filtros.Add("F.CD_FILIAL", cd_filial.Replace(";",","));
                     }                    
                     filtros.Add("DataInicio", dt_inicial);
                     filtros.Add("DataFim", dt_final);
@@ -478,7 +486,7 @@ namespace ControlePedido
                             
                             filtrosItens.Clear();
                             filtrosItens.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);                            
-                            filtrosItens.Add("E.CD_FILIAL", dataRow["CD_FILIAL"]);                                                      
+                            filtrosItens.Add("E.CD_FILIAL", cd_filial.Replace(";",","));                                                      
                             filtrosItens.Add("E.CD_MATERIAL", dataRow["CD_MATERIAL"]);
                             
                             dt_Produto = retornaProduto(filtrosItens);
