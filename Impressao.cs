@@ -246,7 +246,7 @@ namespace ControlePedido
                         Border = Rectangle.NO_BORDER
                     });
 
-                    tabela.AddCell(new PdfPCell(new Phrase("Em Separação", fonteNegrito))
+                    tabela.AddCell(new PdfPCell(new Phrase("À Separar", fonteNegrito))
                     {
                         HorizontalAlignment = Element.ALIGN_RIGHT,
                         Border = Rectangle.NO_BORDER
@@ -425,11 +425,11 @@ namespace ControlePedido
 
                             if (chave.Contains("CD_FILIAL"))
                             {
-                                sqlPedido += chave + " IN  (" + valor + ")";
+                                sqlPedido += chave + " IN  (" + valor.ToString().Replace(";", ",") + ")";
                             }
                             else
                             {
-                                sqlPedido += chave + " LIKE  '" + valor + "'";
+                                sqlPedido += chave + " IN  (" + valor.ToString().Replace(";", ",") + ")";
                             }
                             
                         }
@@ -473,8 +473,8 @@ namespace ControlePedido
                                     , MATERIAIS.CD_FORNECEDOR
                                     , MATERIAIS.CD_TIPO
                                     , SUM(ITENSPEDIDO.NR_QUANTIDADE) AS QUANTPEDIDA
-                                    , SUM(IIF(PEDIDO.CD_STATUS = 10,(IIF(CONTROLEENTREGA.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA.NR_QUANTIDADE)) ,0)) AS EMSEPARACAO                               
-                                    , SUM(IIF(PEDIDO.CD_STATUS = 11,(IIF(CONTROLEENTREGA2.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA2.NR_QUANTIDADE)) ,0)) AS SEPARADO
+                                    , SUM(ITENSPEDIDO.NR_QUANTIDADE - (IIF(CONTROLEENTREGA.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA.NR_QUANTIDADE))) AS EMSEPARACAO                               
+                                    , SUM(IIF(PEDIDO.CD_STATUS IN (10,11) ,(IIF(CONTROLEENTREGA2.NR_QUANTIDADE IS NULL, 0 , CONTROLEENTREGA2.NR_QUANTIDADE)) ,0)) AS SEPARADO
                                     from TBL_PEDIDOS PEDIDO
                                     LEFT JOIN TBL_PEDIDOS_ITENS ITENSPEDIDO ON
                                     ITENSPEDIDO.CD_PEDIDO = PEDIDO.CD_PEDIDO
@@ -541,10 +541,10 @@ namespace ControlePedido
 
                             if (chave.Contains("CD_FILIAL"))
                             {
-                                sqlItens += chave + " IN  (" + valor + ")";
+                                sqlItens += chave + " IN  (" + valor.ToString().Replace(";", ",") + ")";
                             }
                             else {
-                                sqlItens += chave + " LIKE  '" + valor + "'";
+                                sqlItens += chave + " IN  (" + valor.ToString().Replace(";",",") + ")";
                             }
                             
                         }
@@ -623,7 +623,7 @@ namespace ControlePedido
                                     , MATERIAIS.CD_FORNECEDOR
                                     , MATERIAIS.CD_TIPO";
 
-                    sqlItens += " ORDER BY PEDIDO.CD_PEDIDO, ITENSPEDIDO.CD_MATERIAL";
+                        sqlItens += " ORDER BY PEDIDO.CD_PEDIDO, ITENSPEDIDO.CD_MATERIAL";
 
                     //sqlItens = String.Format(sqlItens, pedidosListados);
 
@@ -827,7 +827,7 @@ namespace ControlePedido
                 tabela.AddCell(new PdfPCell(new Phrase("Identific", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("Pedido", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("Disponível", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                tabela.AddCell(new PdfPCell(new Phrase("Em Separação", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                tabela.AddCell(new PdfPCell(new Phrase("À Separar", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("Separado", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("Total", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
 

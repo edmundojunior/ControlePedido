@@ -59,7 +59,7 @@
             this.grade.Location = new System.Drawing.Point(12, 114);
             this.grade.Name = "grade";
             this.grade.RowHeadersVisible = false;
-            this.grade.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grade.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.grade.Size = new System.Drawing.Size(947, 387);
             this.grade.TabIndex = 4;
             this.grade.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grade_CellContentClick);

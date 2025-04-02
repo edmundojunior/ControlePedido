@@ -46,7 +46,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::ControlePedido.Properties.Resources.logoCommerceedm;
+            this.pictureBox1.Image = global::ControlePedido.Properties.Resources.hidrotam;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(68, 65);

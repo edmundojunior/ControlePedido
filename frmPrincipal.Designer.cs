@@ -31,16 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblHora = new System.Windows.Forms.Label();
+            this.lblData = new System.Windows.Forms.Label();
             this.lblVersao = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.pnlRodape = new System.Windows.Forms.Panel();
-            this.lblData = new System.Windows.Forms.Label();
-            this.lblHora = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pctLogo = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.movimentaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pedidosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,10 +46,14 @@
             this.peiddosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.estoqueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.encerrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnlRodape = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pctLogo = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctLogo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -70,6 +70,28 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1369, 80);
             this.panel1.TabIndex = 0;
+            // 
+            // lblHora
+            // 
+            this.lblHora.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblHora.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHora.Location = new System.Drawing.Point(1043, 35);
+            this.lblHora.Name = "lblHora";
+            this.lblHora.Size = new System.Drawing.Size(323, 21);
+            this.lblHora.TabIndex = 4;
+            this.lblHora.Text = "00:00:00";
+            this.lblHora.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblData
+            // 
+            this.lblData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblData.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblData.Location = new System.Drawing.Point(1043, 9);
+            this.lblData.Name = "lblData";
+            this.lblData.Size = new System.Drawing.Size(323, 21);
+            this.lblData.TabIndex = 3;
+            this.lblData.Text = "Segunda-feira, 28 de Fev, de 2025";
+            this.lblData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblVersao
             // 
@@ -91,6 +113,16 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Controle de Pedidos";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ControlePedido.Properties.Resources.hidrotam;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(68, 65);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -104,69 +136,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1369, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // pnlRodape
-            // 
-            this.pnlRodape.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.pnlRodape.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlRodape.Location = new System.Drawing.Point(0, 700);
-            this.pnlRodape.Name = "pnlRodape";
-            this.pnlRodape.Size = new System.Drawing.Size(1369, 40);
-            this.pnlRodape.TabIndex = 2;
-            // 
-            // lblData
-            // 
-            this.lblData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblData.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblData.Location = new System.Drawing.Point(1043, 9);
-            this.lblData.Name = "lblData";
-            this.lblData.Size = new System.Drawing.Size(323, 21);
-            this.lblData.TabIndex = 3;
-            this.lblData.Text = "Segunda-feira, 28 de Fev, de 2025";
-            this.lblData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblHora
-            // 
-            this.lblHora.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblHora.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHora.Location = new System.Drawing.Point(1043, 35);
-            this.lblHora.Name = "lblHora";
-            this.lblHora.Size = new System.Drawing.Size(323, 21);
-            this.lblHora.TabIndex = 4;
-            this.lblHora.Text = "00:00:00";
-            this.lblHora.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.BackColor = System.Drawing.Color.NavajoWhite;
-            this.toolTip1.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.toolTip1.IsBalloon = true;
-            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            // 
-            // pctLogo
-            // 
-            this.pctLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.pctLogo.Image = global::ControlePedido.Properties.Resources.logoHidotam;
-            this.pctLogo.Location = new System.Drawing.Point(498, 170);
-            this.pctLogo.Name = "pctLogo";
-            this.pctLogo.Size = new System.Drawing.Size(418, 418);
-            this.pctLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pctLogo.TabIndex = 3;
-            this.pctLogo.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::ControlePedido.Properties.Resources.logoCommerceedm;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 6);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(68, 65);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // movimentaçãoToolStripMenuItem
             // 
@@ -249,6 +218,37 @@
             this.encerrarToolStripMenuItem.ToolTipText = "Encerrar Sistema";
             this.encerrarToolStripMenuItem.Click += new System.EventHandler(this.encerrarToolStripMenuItem_Click);
             // 
+            // pnlRodape
+            // 
+            this.pnlRodape.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlRodape.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlRodape.Location = new System.Drawing.Point(0, 700);
+            this.pnlRodape.Name = "pnlRodape";
+            this.pnlRodape.Size = new System.Drawing.Size(1369, 40);
+            this.pnlRodape.TabIndex = 2;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.BackColor = System.Drawing.Color.NavajoWhite;
+            this.toolTip1.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // pctLogo
+            // 
+            this.pctLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.pctLogo.Image = global::ControlePedido.Properties.Resources.logoHidotam;
+            this.pctLogo.Location = new System.Drawing.Point(498, 170);
+            this.pctLogo.Name = "pctLogo";
+            this.pctLogo.Size = new System.Drawing.Size(418, 418);
+            this.pctLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pctLogo.TabIndex = 3;
+            this.pctLogo.TabStop = false;
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -272,10 +272,10 @@
             this.Resize += new System.EventHandler(this.frmPrincipal_Resize);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctLogo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

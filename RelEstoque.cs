@@ -29,7 +29,7 @@ namespace ControlePedido
 
         public string cd_cliente { get; set; } = null;
         public string ds_cliente { get; set; } = null;
-
+        public string cd_empresa { get; set; } = null;
         public string cd_filial { get; set; } = null;
         public string cd_material { get; set; } = null;
         public string ds_material { get; set; } = null;
@@ -45,8 +45,10 @@ namespace ControlePedido
 
         public double qtdeEmSeparacao { get; set; } = 0;
         public double qtdeSeparacao { get; set; } = 0;
-        
 
+        public double estoqueMin { get; set; } = 0;
+
+        public double estoqueMax { get; set; } = 0;
 
 
         public string retornaSQlComFiltro(string sql, Dictionary<string, object> filtros)
@@ -94,11 +96,11 @@ namespace ControlePedido
 
                         if (chave.Contains("CD_FILIAL"))
                         {
-                            sql += chave + " IN  (" + valor + ")";
+                            sql += chave + " IN  (" + valor.ToString().Replace(";", ",") + ")";
                         }
                         else
                         {
-                            sql += chave + " LIKE  '" + valor + "'";
+                            sql += chave + " IN  (" + valor.ToString().Replace(";", ",") + ")";
                         }
                         
                     }
@@ -115,8 +117,9 @@ namespace ControlePedido
             DataTable dt = new DataTable();
             var bco = new BancoDeDados().lerXMLConfiguracao();
 
-            string sql = @"SELECT 
+            string sql = @"SELECT                             
                             PI.CD_MATERIAL
+                            ,P.CD_EMPRESA
                             ,F.CD_FILIAL
                             FROM 
                             TBL_PEDIDOS_ITENS PI
@@ -132,7 +135,7 @@ namespace ControlePedido
 
             sql = retornaSQlComFiltro(sql, filtros);
 
-            sql += " GROUP BY PI.CD_MATERIAL,F.CD_FILIAL ";                           
+            sql += " GROUP BY  PI.CD_MATERIAL,P.CD_EMPRESA, F.CD_FILIAL ";                           
             sql += " ORDER BY PI.CD_MATERIAL ASC ";
 
             try
@@ -181,7 +184,7 @@ namespace ControlePedido
                             , C.DS_ENTIDADE
                             ,PI.CD_MATERIAL
                             , SUM(PI.NR_QUANTIDADE ) AS QTDEPEDIDO
-                            , SUM(IIF(PIE.NR_QUANTIDADE IS NULL , 0, PIE.NR_QUANTIDADE)) AS EMSEPARACAO
+                            , SUM(PI.NR_QUANTIDADE  - IIF(PIE.NR_QUANTIDADE IS NULL , 0, PIE.NR_QUANTIDADE)) AS EMSEPARACAO
                             , SUM(IIF(PIE2.NR_QUANTIDADE IS NULL , 0, PIE2.NR_QUANTIDADE)) AS SEPARADO
                             FROM 
                             TBL_PEDIDOS_ITENS PI
@@ -196,7 +199,7 @@ namespace ControlePedido
                             ON PIE2.CD_MATERIAL = PI.CD_MATERIAL
                             AND PIE2.CD_PEDIDO = PI.CD_PEDIDO
                             AND PIE2.X_ENTREGUE = 1
-                            AND P.CD_STATUS = 11
+                            AND P.CD_STATUS in (10,11)
                             LEFT JOIN TBL_ENTIDADES C
                             ON C.CD_ENTIDADE = P.CD_CLIENTE
                             LEFT JOIN TBL_EMPRESAS E
@@ -262,6 +265,8 @@ namespace ControlePedido
                         , U.DS_ABREVIATURA
                         , M.CD_IDENTIFICACAO
                         , E.NR_ESTOQUE_DISPONIVEL
+                        , M.NR_ESTOQUE_MINIMO
+                        , M.NR_ESTOQUE_MAXIMO   
                         FROM 
                         TBL_MATERIAIS_ESTOQUE E
                         left join TBL_MATERIAIS M
@@ -408,7 +413,7 @@ namespace ControlePedido
 
         }
 
-        public void impressaoRelatorioEstoque(DateTime dt_inicial, DateTime dt_final,  DataTable dt_Empresa, System.Windows.Forms.Label lblProcesso,  string cd_filial = "", Dictionary<string, object> filtros = null)
+        public void impressaoRelatorioEstoque(DateTime dt_inicial, DateTime dt_final,  DataTable dt_Empresa, System.Windows.Forms.Label lblProcesso,  string cd_empresa = "",string cd_filial = "", string cd_material = "",  Dictionary<string, object> filtros = null)
         {
             List<RelEstoque> lista = new List<RelEstoque>();
             List<RelEstoque> listaItens = new List<RelEstoque>();
@@ -462,11 +467,11 @@ namespace ControlePedido
             string processo = string.Empty;
             if (dt_Empresa.Rows.Count> 0)
             {
-                foreach (DataRow dr in dt_Empresa.Rows)
-                {
+                //foreach (DataRow dr in dt_Empresa.Rows)
+                //{
 
                     //filtros.Clear();
-                    filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);
+                    filtros.Add("E.CD_EMPRESA", cd_empresa.Replace(";", ","));
                     if (cd_filial != "")
                     {
                         filtros.Add("F.CD_FILIAL", cd_filial.Replace(";",","));
@@ -480,16 +485,18 @@ namespace ControlePedido
 
                     if (dt_Itens.Rows.Count > 0)
                     {
-                        foreach(DataRow dataRow in dt_Itens.Rows)
-                        {
+                        //foreach(DataRow dataRow in dt_Itens.Rows)
+                        //{
                             
                             
                             filtrosItens.Clear();
-                            filtrosItens.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);                            
-                            filtrosItens.Add("E.CD_FILIAL", cd_filial.Replace(";",","));                                                      
-                            filtrosItens.Add("E.CD_MATERIAL", dataRow["CD_MATERIAL"]);
-                            
-                            dt_Produto = retornaProduto(filtrosItens);
+                            filtrosItens.Add("E.CD_EMPRESA", cd_empresa.Replace(";",","));                            
+                            filtrosItens.Add("E.CD_FILIAL", cd_filial.Replace(";",","));
+                            if(cd_material != "") filtrosItens.Add("E.CD_MATERIAL", cd_material.Replace(";",","));
+
+
+
+                    dt_Produto = retornaProduto(filtrosItens);
 
                             if (dt_Produto.Rows.Count > 0)
                             {
@@ -502,28 +509,35 @@ namespace ControlePedido
 
                                     lista.Add(new RelEstoque()
                                     {
+                                        cd_empresa = drProduto["CD_EMPRESA"].ToString(),
                                         cd_filial = drProduto["CD_FILIAL"].ToString(),
                                         cd_material = drProduto["CD_MATERIAL"].ToString(),
                                         ds_material = drProduto["DS_MATERIAL"].ToString(),
                                         ds_unidade = drProduto["DS_ABREVIATURA"].ToString(),
                                         cd_identificacao = drProduto["CD_IDENTIFICACAO"].ToString(),
-                                        qtdeEstoque = Convert.ToDouble(drProduto["NR_ESTOQUE_DISPONIVEL"])
+                                        qtdeEstoque = Convert.ToDouble(drProduto["NR_ESTOQUE_DISPONIVEL"]),
+                                        estoqueMin = Convert.ToDouble(drProduto["NR_ESTOQUE_MINIMO"]),
+                                        estoqueMax = Convert.ToDouble(drProduto["NR_ESTOQUE_MAXIMO"])
+
 
                                     });
 
                                     listaItens.Add(new RelEstoque()
                                     {
+                                        cd_empresa = drProduto["CD_EMPRESA"].ToString(),
                                         cd_filial = drProduto["CD_FILIAL"].ToString(),
                                         cd_material = drProduto["CD_MATERIAL"].ToString(),
                                         ds_material = drProduto["DS_MATERIAL"].ToString(),
                                         ds_unidade = drProduto["DS_ABREVIATURA"].ToString(),
                                         cd_identificacao = drProduto["CD_IDENTIFICACAO"].ToString(),
-                                        qtdeEstoque = Convert.ToDouble(drProduto["NR_ESTOQUE_DISPONIVEL"])
+                                        qtdeEstoque = Convert.ToDouble(drProduto["NR_ESTOQUE_DISPONIVEL"]),
+                                        estoqueMin = Convert.ToDouble(drProduto["NR_ESTOQUE_MINIMO"]),
+                                        estoqueMax = Convert.ToDouble(drProduto["NR_ESTOQUE_MAXIMO"])
 
                                     });
                                 }
                             }
-                        }
+                        //}
                     }
 
                     if (lista.Count > 0)
@@ -537,7 +551,7 @@ namespace ControlePedido
 
                             PdfPTable tabela = new PdfPTable(10);
                             tabela.WidthPercentage = 100;
-                            tabela.SetWidths(new float[] { 3f, 15f, 3f, 5f, 3f,5f, 2f, 2f, 3f, 2f });
+                            tabela.SetWidths(new float[] { 3f, 15f, 3f, 5f, 3f,5f, 5f, 5f, 3f, 2f });
                             tabela.HorizontalAlignment = Element.ALIGN_LEFT;
 
                             tabela.AddCell(new PdfPCell(new Phrase(lista[item].cd_material.ToString(), fonteNormal))
@@ -568,13 +582,23 @@ namespace ControlePedido
 
                             tabela.AddCell(new PdfPCell(new Phrase(Convert.ToDouble(lista[item].qtdeEstoque).ToString("N4"), fonteNormal))
                             {
-                                HorizontalAlignment = Element.ALIGN_CENTER,
+                                HorizontalAlignment = Element.ALIGN_RIGHT,
                                 Border = Rectangle.NO_BORDER
-                            }); 
-                            
-                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                            tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            });
+
+                            tabela.AddCell(new PdfPCell(new Phrase(Convert.ToDouble(lista[item].estoqueMin).ToString("N4"), fonteNormal))
+                            {
+                                HorizontalAlignment = Element.ALIGN_RIGHT,
+                                Border = Rectangle.NO_BORDER
+                            });
+
+                            tabela.AddCell(new PdfPCell(new Phrase(Convert.ToDouble(lista[item].estoqueMax).ToString("N4"), fonteNormal))
+                            {
+                                HorizontalAlignment = Element.ALIGN_RIGHT,
+                                Border = Rectangle.NO_BORDER
+                            });
+
+                        tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
 
                             double totais = Convert.ToDouble(lista[item].qtdeEstoque);
@@ -597,7 +621,7 @@ namespace ControlePedido
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. Pedido", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
-                            tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. Em Separação", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                            tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. À Separar", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Qtde. Separado", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                             tabelaEstoque.AddCell(new PdfPCell(new Phrase("Total", fonteNegrito2)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
@@ -606,7 +630,7 @@ namespace ControlePedido
 
                             //Itens Pedidos
                             filtros.Clear();
-                            filtros.Add("E.CD_EMPRESA", dr["CD_EMPRESA"]);                            
+                            filtros.Add("E.CD_EMPRESA", lista[item].cd_empresa);                            
                             filtros.Add("F.CD_FILIAL", lista[item].cd_filial);                          
                             
                             filtros.Add("PI.CD_MATERIAL", lista[item].cd_material);
@@ -716,7 +740,7 @@ namespace ControlePedido
                         }
                     }
 
-                }
+                //}
             }            
            
 
@@ -778,7 +802,7 @@ namespace ControlePedido
                 // 🟢 TÍTULOS DAS COLUNAS (Mantendo na mesma posição em cada página)
                 PdfPTable tabela = new PdfPTable(10);
                 tabela.TotalWidth = larguraUtil;
-                tabela.SetWidths(new float[] { 3f,  15f, 3f, 5f,3f, 5f, 3f, 3f, 3f, 2f });
+                tabela.SetWidths(new float[] { 3f,  15f, 3f, 5f,3f, 5f, 5f, 5f, 3f, 2f });
 
                 // Adicionar os títulos das colunas ao cabeçalho
                 tabela.AddCell(new PdfPCell(new Phrase("Cód.", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
@@ -787,8 +811,8 @@ namespace ControlePedido
                 tabela.AddCell(new PdfPCell(new Phrase("Identific", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                 tabela.AddCell(new PdfPCell(new Phrase("Disponivel", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });                
-                tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
-                tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
+                tabela.AddCell(new PdfPCell(new Phrase("Estoque Min", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
+                tabela.AddCell(new PdfPCell(new Phrase("Estoque Max", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT });
                 tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
                 tabela.AddCell(new PdfPCell(new Phrase("", fonteNegrito)) { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER });
 

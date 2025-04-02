@@ -558,6 +558,7 @@ namespace ControlePedido
                                             " 	LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL	 " +
                                             "	WHERE TPI.CD_MATERIAL = {0} " +
                                             "	AND TP.CD_EMPRESA IS NOT NULL " +
+                                            "   AND TP.CD_STATUS = 1" +
                                             " 	GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL, TEF.DS_FILIAL, TPI.CD_MATERIAL ", CodProduto);
 
 
@@ -709,7 +710,7 @@ namespace ControlePedido
                                                 "  LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL   " +
                                                 "  WHERE TPI.CD_MATERIAL = {0}     " +
                                                 "  AND TP.CD_EMPRESA is not null   " +
-                                                "  AND TP.CD_STATUS = 7   " +
+                                                "  AND TP.CD_STATUS in (10,11)  " +
                                                 "  GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL,TEF.DS_FILIAL, TPI.CD_MATERIAL", CodProduto);
 
 
@@ -736,7 +737,7 @@ namespace ControlePedido
                                             " FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TIPCE " +
                                             " INNER JOIN TBL_PEDIDOS TP    " +
                                             " ON TIPCE.CD_PEDIDO = TP.CD_PEDIDO " +
-                                            " AND TP.CD_STATUS = 7  " +
+                                            " AND TP.CD_STATUS in (10,11)  " +
                                             " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA " +
                                             " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL " +
                                             " WHERE CD_MATERIAL = {0}  " +
@@ -883,7 +884,7 @@ namespace ControlePedido
                 " FROM TBL_MATERIAIS M " +
                 " LEFT JOIN TBL_MATERIAIS_MARCA MM ON MM.CD_MARCA = M.CD_MARCA " +
                 " WHERE M.X_ATIVO = 1 " +
-                " AND X_SERVICO = 0 ";
+                " AND M.X_SERVICO = 0 ";
 
                 if (filtros != null)
                 {

@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>iconAzul.ico</ApplicationIcon>
+    <ApplicationIcon>hidrotam.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -483,7 +483,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="hidrotam.ico" />
     <Content Include="iconAzul.ico" />
+    <None Include="img\png\hidrotam.png" />
     <None Include="img\png\lancamento.png" />
     <None Include="img\png\banco.png" />
     <None Include="img\png\engrenagem.png" />

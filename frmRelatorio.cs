@@ -131,8 +131,9 @@ namespace ControlePedido
             //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
             string filial = !chkFilial.Checked ? "" : txtFilial.Text;
-
-            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , filial, filtros);
+            string empresa_ = txtEmpresa.Text;
+            string produto = txtProduto.Text;   
+            rel_estoque.impressaoRelatorioEstoque(dt_inicial, dt_final,   dt, lbltotais , empresa_ , filial, produto, filtros);
 
             //impressao.impressaoRelEstoque(listas, dt_inicial, dt_final);
 
@@ -421,7 +422,7 @@ namespace ControlePedido
 
         private void btnStatus_Click(object sender, EventArgs e)
         {
-            frmLocalizarAll frm = new frmLocalizarAll(17);
+            frmLocalizarAll frm = new frmLocalizarAll(18);
             frm.ShowDialog();
             txtStatus.Text = frm.Codigo.ToString();
         }
@@ -551,6 +552,16 @@ namespace ControlePedido
             if (!string.IsNullOrWhiteSpace(txtProduto.Text))
                 filtros.Add("I.CD_MATERIAL", txtProduto.Text);
 
+            if (!string.IsNullOrWhiteSpace(txtStatus.Text))
+            {
+                filtros.Add("PEDIDO.CD_STATUS", txtStatus.Text);
+            }
+            else
+            {
+                filtros.Add("PEDIDO.CD_STATUS", "1,10,11");
+            }
+                
+
             return filtros;
 
         }
@@ -637,6 +648,11 @@ namespace ControlePedido
             {
                 e.Handled = true; // Bloqueia a tecla
             }
+        }
+
+        private void txtEmpresa_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

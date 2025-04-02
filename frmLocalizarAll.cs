@@ -17,7 +17,7 @@ namespace ControlePedido
 {
     public partial class frmLocalizarAll : frmBase
     {
-        public int Codigo;
+        public string Codigo;
         public string EstadoSelecionado;
         public string descricao;
         private int _oQueLocalizar;
@@ -84,7 +84,7 @@ namespace ControlePedido
                 // Verifica se o valor não é nulo
                 if (codPedidos != null)
                 {
-                    Codigo = Convert.ToInt32(codPedidos);
+                    Codigo = Convert.ToInt32(codPedidos).ToString();
 
                     if (_oQueLocalizar == 11)
                     {
@@ -92,7 +92,28 @@ namespace ControlePedido
                     }
                     else
                     {
-                        Codigo = Convert.ToInt32(grade.CurrentRow.Cells[0].Value);
+                        int totalLinhasSelecionadas = grade.SelectedCells.Cast<DataGridViewCell>()
+                        .Select(cell => cell.OwningRow.Index)
+                        .Distinct()
+                        .Count();
+
+                        if (totalLinhasSelecionadas > 1)
+                        {
+                            string valoresSelecionados = string.Join(";",
+                                        grade.SelectedCells.Cast<DataGridViewCell>()
+                                        .Where(cell => cell.ColumnIndex == 0) // Garante que está pegando apenas a primeira coluna (índice 0)
+                                        .Select(cell => cell.Value?.ToString())
+                                        .Where(valor => !string.IsNullOrEmpty(valor))
+                                    );
+
+                            Codigo = valoresSelecionados;
+                        }
+                        else
+                        {
+                            Codigo = Convert.ToInt32(grade.CurrentRow.Cells[0].Value).ToString();
+                        }
+
+                        
                     }
                     // Captura o valor da primeira coluna da linha clicada
 
@@ -1483,7 +1504,30 @@ namespace ControlePedido
                 }
                 else
                 {
-                    Codigo = Convert.ToInt32(grade.Rows[e.RowIndex].Cells[0].Value);
+
+                    int totalLinhasSelecionadas = grade.SelectedCells.Cast<DataGridViewCell>()
+                        .Select(cell => cell.OwningRow.Index)
+                        .Distinct()
+                        .Count();
+
+                    if (totalLinhasSelecionadas > 1)
+                    {
+                        string valoresSelecionados = string.Join(";",
+                                grade.SelectedRows.Cast<DataGridViewRow>()
+                                .Select(row => row.Cells[0].Value?.ToString())
+                                .Where(valor => !string.IsNullOrEmpty(valor))
+
+                                );
+
+                        Codigo = valoresSelecionados;
+                    }
+                    else
+                    {
+                        Codigo = Convert.ToInt32(grade.Rows[e.RowIndex].Cells[0].Value).ToString();
+                    }
+
+
+                    
                 }
                 // Captura o valor da primeira coluna da linha clicada
                 

@@ -996,6 +996,7 @@
             this.txtFilial.Name = "txtFilial";
             this.txtFilial.Size = new System.Drawing.Size(146, 22);
             this.txtFilial.TabIndex = 4;
+            this.txtFilial.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtFilial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFilial_KeyPress);
             // 
             // label3
@@ -1012,7 +1013,7 @@
             // btmEmpresa
             // 
             this.btmEmpresa.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btmEmpresa.Location = new System.Drawing.Point(140, 112);
+            this.btmEmpresa.Location = new System.Drawing.Point(222, 112);
             this.btmEmpresa.Name = "btmEmpresa";
             this.btmEmpresa.Size = new System.Drawing.Size(25, 23);
             this.btmEmpresa.TabIndex = 2;
@@ -1025,8 +1026,10 @@
             this.txtEmpresa.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmpresa.Location = new System.Drawing.Point(75, 112);
             this.txtEmpresa.Name = "txtEmpresa";
-            this.txtEmpresa.Size = new System.Drawing.Size(63, 22);
+            this.txtEmpresa.Size = new System.Drawing.Size(146, 22);
             this.txtEmpresa.TabIndex = 1;
+            this.txtEmpresa.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtEmpresa.TextChanged += new System.EventHandler(this.txtEmpresa_TextChanged);
             // 
             // label2
             // 
@@ -1041,7 +1044,7 @@
             // lblEmpresa
             // 
             this.lblEmpresa.AutoSize = true;
-            this.lblEmpresa.Location = new System.Drawing.Point(175, 120);
+            this.lblEmpresa.Location = new System.Drawing.Point(257, 120);
             this.lblEmpresa.Name = "lblEmpresa";
             this.lblEmpresa.Size = new System.Drawing.Size(16, 13);
             this.lblEmpresa.TabIndex = 27;

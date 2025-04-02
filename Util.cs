@@ -330,7 +330,7 @@ namespace ControlePedido
                 grade.Columns.Add("Orc", "Orçamento");//5
                 grade.Columns.Add("Servico", "Or. Serviço");//6
                 grade.Columns.Add("Pedidos", "Pedidos");//7
-                grade.Columns.Add("EmSeparacao", "Em Separação");//9
+                grade.Columns.Add("EmSeparacao", "À Separar");//9
                 grade.Columns.Add("Separado", "Separado");//10
                 grade.Columns.Add("Disponivel", "Disponível");//11
                 grade.Columns.Add("Total", "Total");//12
@@ -363,7 +363,7 @@ namespace ControlePedido
                 grade.Columns[7].Width = 70; //Pedidos
                 grade.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[8].Width = 70; //Em Separação
-                grade.Columns[8].Visible = false;
+                grade.Columns[8].Visible = true;
                 grade.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[9].Width = 70; //Separado
                 grade.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
