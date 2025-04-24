@@ -265,5 +265,17 @@ namespace ControlePedido
         {
             gradeEstoque();
         }
+
+        private void grade_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (grade.Rows.Count > 0)
+            {
+                int lastRowIndex = grade.Rows.Count - 1;
+                DataGridViewRow lastRow = grade.Rows[lastRowIndex];
+
+                lastRow.DefaultCellStyle.BackColor = Color.LightYellow;
+                lastRow.DefaultCellStyle.Font = new Font(grade.Font, FontStyle.Bold);
+            }
+        }
     }
 }

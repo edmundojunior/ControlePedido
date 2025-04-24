@@ -52,6 +52,199 @@ namespace ControlePedido
         public List<itemPedido> listaTemp = new List<itemPedido>();
         public List<itemPedido> listaEntregar = new List<itemPedido>();
 
+
+        public DataTable abrirPedido(string Pedido)
+        {
+
+            DataTable retorno = new DataTable();
+            string sql = string.Empty;        
+
+            try
+            {
+
+                sql = string.Format(@"Select P.CD_PEDIDO
+                                        ,P.DT_EMISSAO
+                                        ,P.CD_EMPRESA 
+                                        , E.DS_EMPRESA
+                                        , P.CD_FILIAL
+                                        , F.DS_FILIAL
+                                        , P.CD_STATUS
+                                        , S.DS_STATUS
+                                        , P.CD_CLIENTE
+                                        , C.DS_ENTIDADE
+                                        from TBL_PEDIDOS P
+                                        LEFT jOIN TBL_EMPRESAS E ON E.CD_EMPRESA = P.CD_EMPRESA
+                                        LEFT JOIN TBL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = P.CD_FILIAL
+                                        LEFT JOIN TBL_STATUS_GLOBAL S ON S.CD_STATUS = P.CD_STATUS
+                                        LEFT JOIN TBL_ENTIDADES C ON C.CD_ENTIDADE = P.CD_CLIENTE 
+                                        Where CD_PEDIDO = {0}", Pedido);
+
+                retorno = bco.abrirSql(sql);
+
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show($"Ops. Não foi possível encontrar o pedido {Pedido} \n" + ex.Message, "Aviso Importante ");
+
+                retorno = null;           
+            }
+
+            return retorno;
+
+        }
+
+        public void ajusteDeDados()
+        {
+            //Verificar os dados do pedido
+            Pedidos pedidos = new Pedidos();
+            BancoDeDados bco = new BancoDeDados();
+            string sql = @"Select CD_PEDIDO FROM TBL_PEDIDOS PEDIDO WHERE CD_STATUS IN (1,6,10,11,7)";
+
+            DataTable dt = new DataTable();
+
+            dt = bco.abrirSql(sql);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    pedidos.verItensPedidoExcluidos(row["CD_PEDIDO"].ToString());
+                    pedidos.verItensPedidoAlterados(row["CD_PEDIDO"].ToString());
+
+                }
+            }
+            //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        }
+
+
+        public void ajustePedidoFaturado()
+        {
+            //Verificar os dados do pedido
+            Pedidos pedidos = new Pedidos();
+            BancoDeDados bco = new BancoDeDados();
+            string sql = @"Select CD_PEDIDO FROM TBL_PEDIDOS  WHERE CD_STATUS IN (10,11)";
+
+            DataTable dt = new DataTable();
+            DataTable dtFaturado = new DataTable();
+
+            dt = bco.abrirSql(sql);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+
+
+                    string sqlFaturado = String.Format(@"select * from TBL_NOTAS_FATURAMENTO where CD_PEDIDO = {0}", row["CD_PEDIDO"]);
+
+                    dtFaturado = bco.abrirSql(sqlFaturado);
+
+                    if (dtFaturado.Rows.Count > 0)
+                    {
+                        string sqlUpdate = string.Format ( @"Update TBL_PEDIDOS set
+                                            CD_STATUS = 4
+                                            WHERE CD_PEDIDO = {0}", row["CD_PEDIDO"]);
+
+                        bco.ExecutarSql(sqlUpdate);
+
+                    }
+
+                }
+            }
+            //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        }
+
+        public void verItensPedidoExcluidos(string Pedido)
+        {
+            DataTable dtItensPedidos = new DataTable();
+            DataTable dtItensEntregues = new DataTable();
+
+            
+
+            try
+            {
+                string sql = String.Format(@"select CD_PEDIDO, CD_MATERIAL FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA WHERE CD_PEDIDO = {0}", Pedido);
+
+                dtItensEntregues = bco.abrirSql(sql);
+
+                if (dtItensEntregues.Rows.Count > 0) { 
+                
+                        
+                    foreach(DataRow row in dtItensEntregues.Rows)
+                    {
+                        string sqlItem = String.Format(@"select CD_PEDIDO, CD_MATERIAL FROM TBL_PEDIDOS_ITENS WHERE CD_PEDIDO = {0} and CD_MATERIAL = {1}
+                        ", Pedido, row["CD_MATERIAL"].ToString());
+
+                        dtItensPedidos = bco.abrirSql(sqlItem);
+
+                        if (dtItensPedidos.Rows.Count <= 0)
+                        {
+                            string sqlDelete = String.Format(@"DELETE FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA WHERE CD_PEDIDO = {0} and CD_MATERIAL = {1}
+                            ", Pedido, row["CD_MATERIAL"].ToString());
+
+                            bco.ExecutarSql(sqlDelete);
+                        }
+                    }
+                
+                }
+
+
+            }
+            catch (Exception ex) {
+                MessageBox.Show($"Ops. Não foi possível encontrar itens do pedido {Pedido} \n" + ex.Message, "Aviso Importante"); 
+            
+            }
+        }
+
+        public void verItensPedidoAlterados(string Pedido)
+        {
+            DataTable dtItensPedidos = new DataTable();
+            DataTable dtItensEntregues = new DataTable();
+
+
+
+            try
+            {
+                string sql = String.Format(@"select CD_PEDIDO, CD_MATERIAL, NR_QUANTIDADE FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA WHERE CD_PEDIDO = {0}", Pedido);
+
+                dtItensEntregues = bco.abrirSql(sql);
+
+                if (dtItensEntregues.Rows.Count > 0)
+                {
+
+
+                    foreach (DataRow row in dtItensEntregues.Rows)
+                    {
+                        string sqlItem = String.Format(@"select CD_PEDIDO, CD_MATERIAL, NR_QUANTIDADE FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA WHERE CD_PEDIDO = {0} and CD_MATERIAL = {1}
+                        ", Pedido, row["CD_MATERIAL"].ToString());
+
+                        dtItensPedidos = bco.abrirSql(sqlItem);
+
+                        if (dtItensPedidos.Rows.Count > 0)
+                        {
+
+                            if ((Convert.ToDouble(dtItensPedidos.Rows[0]["NR_QUANTIDADE"]) - Convert.ToDouble(row["NR_QUANTIDADE"]) < 0))
+                            {
+                                string sqlUpdate = String.Format(@"Update  TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA set 
+                                                                   NR_QUANTIDADE =  {2} 
+                                                                   WHERE CD_PEDIDO = {0} and CD_MATERIAL = {1}", Pedido, row["CD_MATERIAL"].ToString(), Convert.ToDouble(dtItensPedidos.Rows[0]["NR_QUANTIDADE"]));
+
+                                bco.ExecutarSql(sqlUpdate);
+                            }
+                        }
+                    }
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ops. Não foi possível encontrar itens do pedido {Pedido} \n" + ex.Message, "Aviso Importante");
+
+            }
+        }
         public class MovimentacaoPedido
         {
             private DataTable RetornaPedidoEntregues(Dictionary<string, object> filtros = null)
@@ -141,6 +334,14 @@ namespace ControlePedido
 
                 try
                 {
+                    //Verificando se a quantidade esta a mesma
+
+
+
+                    //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+
                     string sql = "select " +
                                 " PED.CD_PEDIDO AS CODIGO " +
                                 " , CL.CD_FILIAL AS FILIAL " +
@@ -285,6 +486,57 @@ namespace ControlePedido
 
             }
 
+            public string retornaStatus(string codPedido)
+            {
+                string descStatus = string.Empty;
+
+                DataTable dtStatus = new DataTable();
+
+                var bco = new BancoDeDados().lerXMLConfiguracao();
+
+                try
+                {
+
+                    string sql = string.Format(@" select S.DS_STATUS
+                                                from TBL_PEDIDOS P
+                                                LEFT JOIN TBL_STATUS_GLOBAL S ON S.CD_STATUS = P.CD_STATUS 
+                                                WHERE CD_PEDIDO ={0}", codPedido);
+
+                    using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                    {
+                        if (cnn != null)
+                        {
+                            using (SqlCommand comando = new SqlCommand(sql, cnn))
+                            {
+                                comando.CommandTimeout = 120; // Timeout aumentado
+                                                              // Executa o comando e preenche o DataTable
+                                using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+                                {
+                                    adaptador.Fill(dtStatus);
+                                }
+                            }
+                        }
+
+                        if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                    }
+
+                    if (dtStatus.Rows.Count > 0)
+                    {
+                        descStatus = dtStatus.Rows[0]["DS_STATUS"].ToString();
+                    }
+                    else descStatus = "STATUS NÃO DEFINIDO";
+
+
+                }
+                catch (Exception ex) {
+
+                    MessageBox.Show("Ops! Problema ao retornar a descrição do Status do pedido\n" + ex.Message, "Aviso Importante");
+                    descStatus = "STATUS NÃO DEFINIDO";
+                }
+
+                return descStatus;
+            }
+
             private DataTable RetornaPedidoEntregar(Dictionary<string, object> filtros = null, bool geral = true)
             {
                 DataTable retornado = new DataTable();
@@ -422,6 +674,36 @@ namespace ControlePedido
                                     nomeCliente = row["DS_ENTIDADE"].ToString(),
 
                                 });
+                            }
+                            else
+                            {
+                                if ((Convert.ToDouble(row["NR_QUANTIDADE"]) < Convert.ToDouble(row["QTDEENTREGUE"])))
+                                {
+                                    string sqlUpdate = string.Format (@" Update TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA set 
+                                                            NR_QUANTIDADE = {0}
+                                                            WHERE CD_PEDIDO = {1}
+                                                            AND CD_MATERIAL = {2}",
+                                                            Convert.ToDouble(row["NR_QUANTIDADE"]).ToString("N4").Replace(".","").Replace(",","."), 
+                                                            Convert.ToInt32(row["CD_PEDIDO"]).ToString(),
+                                                            Convert.ToInt32(row["CD_MATERIAL"]).ToString());
+
+
+                                    var bco = new BancoDeDados().lerXMLConfiguracao();
+
+                                    using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                                    {
+                                        using (SqlCommand cmd = new SqlCommand(sqlUpdate, cnn))
+                                        {
+                                            cmd.ExecuteNonQuery();
+                                        }
+
+                                        if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                                    }
+
+
+                                }
+
+
                             }
 
 

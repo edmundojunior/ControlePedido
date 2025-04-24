@@ -335,7 +335,6 @@ namespace ControlePedido
             try
             {
 
-
                 //Criar SQL
                 // - Peiddo
                 string sqlPedido = @"select 

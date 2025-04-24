@@ -70,11 +70,11 @@ namespace ControlePedido
         {
             var primeiroUltimoDia = datahora.ObterPrimeiroEUltimoDiaDoMes();
 
-            dtInicial.Value = primeiroUltimoDia.PrimeiroDia;
-            dtFinal.Value = primeiroUltimoDia.UltimoDia;
-
-            dtInicio = dtInicial.Value;
-            dtFim = dtFinal.Value;
+            dtInicial.Value = Convert.ToDateTime("01/01/2000");
+            dtFinal.Value = Convert.ToDateTime("31/12/2050");
+            // 01/01/2000 a 31/12/2050
+            dtInicio = Convert.ToDateTime("01/01/2000");
+            dtFim = Convert.ToDateTime("31/12/2050");
             campo = "";
             metodo = "";
             conteudo = "";

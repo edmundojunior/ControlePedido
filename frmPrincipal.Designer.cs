@@ -50,6 +50,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.pctLogo = new System.Windows.Forms.PictureBox();
+            this.lblAviso = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -249,12 +250,27 @@
             this.pctLogo.TabIndex = 3;
             this.pctLogo.TabStop = false;
             // 
+            // lblAviso
+            // 
+            this.lblAviso.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblAviso.AutoSize = true;
+            this.lblAviso.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.lblAviso.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAviso.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblAviso.Location = new System.Drawing.Point(1060, 121);
+            this.lblAviso.Name = "lblAviso";
+            this.lblAviso.Size = new System.Drawing.Size(286, 30);
+            this.lblAviso.TabIndex = 33;
+            this.lblAviso.Text = "Aguarde... Ajustando Dados ";
+            this.lblAviso.Visible = false;
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(1369, 740);
+            this.Controls.Add(this.lblAviso);
             this.Controls.Add(this.pctLogo);
             this.Controls.Add(this.pnlRodape);
             this.Controls.Add(this.panel1);
@@ -303,6 +319,7 @@
         private System.Windows.Forms.Label lblData;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label lblAviso;
     }
 }
 

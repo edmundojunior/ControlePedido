@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using Microsoft.Data.SqlClient;
 
 namespace ControlePedido
 {
@@ -23,6 +24,10 @@ namespace ControlePedido
 
         private bool liberar = false;
 
+        public bool temAEntregar = false;
+        public bool temEntregue = false;
+        public bool pedidoEncerrado = false;
+
         Util.FormatacaoGrade formatarGrade = new Util.FormatacaoGrade();
         public frmPedidos(string CodigoUsuario = null, string NomedoUsuario = null)
         {
@@ -34,7 +39,7 @@ namespace ControlePedido
             usMenu1.FiltroButtonClicked += UsMenu1_FiltroButtonClicked;
             usMenu1.CancelarButtonClicked += UsMenu1_CancelarButtonClicked;
 
-
+            ped.ajustePedidoFaturado();
 
         }
 
@@ -116,8 +121,12 @@ namespace ControlePedido
 
             txtPedido.Text = "";
             lblCliente.Text = "...";           
-
+            lblDadosPedido.Text = "...";
             txtPedido.Focus();
+
+            lblStatus.Visible = false;
+
+            btnEncerrarPedido.Enabled = false;
         }
 
         private void txtPedido_Enter(object sender, EventArgs e)
@@ -130,19 +139,138 @@ namespace ControlePedido
             if (e.KeyCode == Keys.Enter)
             {
                 if (txtPedido.Text != "")
-                {                    
-                    listarEntrega();
-                    listarEntregues();
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    lblAviso.Visible = true;
+                    lblAviso.Refresh();
+
+                    DataTable dtPedido = new DataTable();
+                    Pedidos pedidos = new Pedidos();
+
+                    pedidos.verItensPedidoExcluidos(txtPedido.Text);
+                    pedidos.verItensPedidoAlterados(txtPedido.Text);
+                    bool faturado = false;
+
+                    dtPedido = pedidos.abrirPedido(txtPedido.Text); 
+
+                    if (dtPedido.Rows.Count > 0)
+                    {
+                        foreach(DataRow dr in dtPedido.Rows)
+                        {
+                            lblCliente.Text = dr["CD_CLIENTE"].ToString() + " " + dr["DS_ENTIDADE"];
+                            lblDadosPedido.Text = $"Empresa: {dr["CD_EMPRESA"].ToString()} {dr["DS_EMPRESA"].ToString()} \n";
+                            lblDadosPedido.Text += $"Filial:  {dr["CD_FILIAL"].ToString()} {dr["DS_FILIAL"].ToString()} \n";
+                            lblDadosPedido.Text += $"Emissão:  {Convert.ToDateTime(dr["DT_EMISSAO"]).ToString("dd/MM/yyyy")}  \n" ;
+                            lblStatus.Visible = true;
+                            lblStatus.Text = dr["DS_STATUS"].ToString();
+
+                            if (dr["CD_STATUS"].ToString() == "4") faturado = true;
+                        }
+
+                        if (!faturado)
+                        {
+                            listarEntrega();
+                            listarEntregues();
+
+                        }
+
+
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Pedido {txtPedido.Text}, não foram encontrados seus dados, favor verifique sua solicitação", "Aviso Importante");
+                        txtPedido.Focus();
+                        txtPedido.SelectAll();
+
+                    }
+
+
+                    Cursor.Current = Cursors.Default;
+                    lblAviso.Visible = false;
+                    lblAviso.Refresh(); 
+
+                    
                 }
             }
+            
         }
 
-        private void listarEntrega()
+        private void ajusteQuantidade()
         {
             Cursor.Current = Cursors.WaitCursor;
             lblAviso.Visible = true;
             lblAviso.Refresh();
 
+
+            DataTable retornado = new DataTable();
+
+            DataTable retornadoEntregue = new DataTable();
+
+            var bco = new BancoDeDados().lerXMLConfiguracao();
+
+            string sqlItensAtual = string.Format("select * from TBL_PEDIDOS_ITENS where CD_PEDIDO = {0} ", txtPedido.Text);
+
+            
+
+            using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+            {
+                if (cnn != null)
+                {
+                    using (SqlCommand comando = new SqlCommand(sqlItensAtual, cnn))
+                    {
+                        comando.CommandTimeout = 120; // Timeout aumentado
+                                                      // Executa o comando e preenche o DataTable
+                        using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+                        {
+                            adaptador.Fill(retornado);
+                        }
+                    }
+                }
+
+                if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+            }
+
+            
+
+            foreach(DataRow row in retornado.Rows)
+            {
+                string sqlEntregueAtual = string.Format("select * from TBL_PEDIDOS_ITENS where CD_PEDIDO = {0} and CD_MATERIAL = {1}", txtPedido.Text, row["CD_MATERIAL"]);
+
+                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                {
+                    if (cnn != null)
+                    {
+                        using (SqlCommand comando = new SqlCommand(sqlEntregueAtual, cnn))
+                        {
+                            comando.CommandTimeout = 120; // Timeout aumentado
+                                                          // Executa o comando e preenche o DataTable
+                            using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+                            {
+                                adaptador.Fill(retornadoEntregue);
+                            }
+                        }
+                    }
+
+                    if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                }
+
+                foreach (DataRow row1 in retornadoEntregue.Rows)
+                {
+                    {
+                        
+                    }
+
+                }
+            }
+
+            Cursor.Current = Cursors.Default;
+            lblAviso.Visible = false;
+            lblAviso.Refresh();
+        }
+
+        private void listarEntrega()
+        {
+            
             grade.Columns.Clear();
 
             formatarGrade.formatargrade(grade);
@@ -153,7 +281,7 @@ namespace ControlePedido
 
             if (lista.Count > 0)
             {
-
+                temAEntregar = true;
                 btnMarcar.Enabled = true;
                 btnDesmarcar.Enabled = true;
                 bntEntregar.Enabled = true;
@@ -182,21 +310,14 @@ namespace ControlePedido
 
                 btnMarcar.Enabled = false;
                 btnDesmarcar.Enabled = false;
-                bntEntregar.Enabled = false;               
-
-            }
+                bntEntregar.Enabled = false;
+                temAEntregar = false;
+            }            
             
-            Cursor.Current = Cursors.Default;
-            lblAviso.Visible = false;
-            lblAviso.Refresh();
         }
 
         private void listarEntregues()
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            lblAviso.Visible = true;
-            lblAviso.Refresh();
-
+        {           
             gradeEntregue.Columns.Clear();
 
             formatarGrade.formatargradeEntregue(gradeEntregue);
@@ -208,7 +329,7 @@ namespace ControlePedido
 
             if (lista.Count > 0)
             {
-
+                temEntregue = true;
                 btnDesmarcarDevolver.Enabled = true;
                 btnMarcarDevolver.Enabled = true;
                 btnSubir.Enabled = true;
@@ -230,15 +351,13 @@ namespace ControlePedido
                 }
             }
             else {
+
+                temEntregue = false;
                 btnDesmarcarDevolver.Enabled = false;
                 btnMarcarDevolver.Enabled = false;
                 btnSubir.Enabled = false;
             }
 
-
-            Cursor.Current = Cursors.Default;
-            lblAviso.Visible = false;
-            lblAviso.Refresh();
         }
         private void txtPedido_Leave(object sender, EventArgs e)
         {
@@ -310,6 +429,10 @@ namespace ControlePedido
         private void bntEntregar_Click(object sender, EventArgs e)
         {
 
+
+
+
+
             produtoSelecionados();
 
             if (ped.listaEntregar.Count > 0)
@@ -338,6 +461,27 @@ namespace ControlePedido
                     listarEntregues();
 
                     ped.listaEntregar.Clear();
+
+                    Pedidos.MovimentacaoPedido ped1 = new Pedidos.MovimentacaoPedido();
+
+                lblStatus.Visible = true;
+                    lblStatus.Text = ped1.retornaStatus(txtPedido.Text);
+
+                if (lblStatus.Text == "EM SEPARAÇÃO" || lblStatus.Text == "SEPARADO")
+                {
+                    btnEncerrarPedido.Enabled = true;
+                    btnReabrir.Enabled = false;
+                }
+                else if (lblStatus.Text == "PARCIAL")
+                {
+                    btnEncerrarPedido.Enabled = false;
+                    btnReabrir.Enabled = true;
+                }
+                else
+                {
+                    btnReabrir.Enabled = false;
+                    btnEncerrarPedido.Enabled = false;
+                }
                 //}
 
             }
@@ -402,7 +546,7 @@ namespace ControlePedido
 
                 //if (!liberado)
                 //{
-                    MessageBox.Show("Usuário não liberado para realizar a Movimentação!", "Aviso Importante");
+                    //MessageBox.Show("Usuário não liberado para realizar a Movimentação!", "Aviso Importante");
                 //}
                 //else
                 //{
@@ -420,6 +564,26 @@ namespace ControlePedido
                     listarEntregues();
 
                     ped.listaEntregar.Clear();
+
+                    Pedidos.MovimentacaoPedido ped1 = new Pedidos.MovimentacaoPedido();
+                lblStatus.Visible = true;
+                lblStatus.Text = ped1.retornaStatus(txtPedido.Text);
+
+                if (lblStatus.Text == "EM SEPARAÇÃO" || lblStatus.Text == "SEPARADO")
+                {
+                    btnEncerrarPedido.Enabled = true;
+                    btnReabrir.Enabled = false;
+                }
+                else if (lblStatus.Text == "PARCIAL")
+                {
+                    btnEncerrarPedido.Enabled = false;
+                    btnReabrir.Enabled = true;
+                }
+                else
+                {
+                    btnReabrir.Enabled = false;
+                    btnEncerrarPedido.Enabled = false;
+                }
                 //}
 
             }
@@ -430,42 +594,7 @@ namespace ControlePedido
 
 
 
-            //produtoDevolver();
-
-            //if (ped.listaDevolucao.Count > 0)
-            //{
-            //    int usuario = 0 ;
-            //    bool liberado = false ;
-
-            //    frmLiberacao frmlib = new frmLiberacao();
-            //    frmlib.ShowDialog();
-            //    liberado = frmlib.liberado;
-
-            //    if (! liberado )
-            //    {
-            //        MessageBox.Show("Usuário não liberado para realizar a Movimentação!", "Aviso Importante");
-            //    }
-            //    else
-            //    {
-            //        frmMovimentacao frm = new frmMovimentacao(false, txtPedido.Text, ped.listaDevolucao, usuario);
-            //        frm.fechando = false;
-            //        frm.ShowDialog();
-
-            //        if (frm.fechando) return;
-
-            //        ped.listaTemp = frm.ListaAlterados;
-
-            //        preencherGradesDevolvendoProduto();
-
-            //    }
-
-
-
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Nenhum produto selecionado!", "Aviso Importante");
-            //}
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -481,10 +610,80 @@ namespace ControlePedido
 
             if (txtPedido.Text != "")
             {
-                
-                listarEntrega();
-                listarEntregues();
-               
+
+                Cursor.Current = Cursors.WaitCursor;
+                lblAviso.Visible = true;
+                lblAviso.Refresh();
+
+                DataTable dtPedido = new DataTable();
+                Pedidos pedidos = new Pedidos();
+
+                pedidos.verItensPedidoExcluidos(txtPedido.Text);
+                pedidos.verItensPedidoAlterados(txtPedido.Text);
+                bool faturado = false; 
+
+                dtPedido = pedidos.abrirPedido(txtPedido.Text);
+
+                if (dtPedido.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dtPedido.Rows)
+                    {
+                        lblCliente.Text = dr["CD_CLIENTE"].ToString() + " " + dr["DS_ENTIDADE"];
+                        lblDadosPedido.Text = $"Empresa: {dr["CD_EMPRESA"].ToString()} {dr["DS_EMPRESA"].ToString()} \n";
+                        lblDadosPedido.Text += $"Filial:  {dr["CD_FILIAL"].ToString()} {dr["DS_FILIAL"].ToString()} \n";
+                        lblDadosPedido.Text += $"Emissão:  {Convert.ToDateTime(dr["DT_EMISSAO"]).ToString("dd/MM/yyyy")}  \n";
+                        lblStatus.Visible = true;
+                        lblStatus.Text = dr["DS_STATUS"].ToString();
+
+                        if (dr["CD_STATUS"].ToString() == "4") faturado = true ;
+
+                    }
+
+                    if (! faturado)
+                    {
+                        listarEntrega();
+                        listarEntregues();
+
+
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show($"Pedido {txtPedido.Text}, não foram encontrados seus dados, favor verifique sua solicitação", "Aviso Importante");
+                    txtPedido.Focus();
+                    txtPedido.SelectAll();
+
+                }
+
+
+                Cursor.Current = Cursors.Default;
+                lblAviso.Visible = false;
+                lblAviso.Refresh();
+
+                //listarEntrega();
+                //listarEntregues();
+
+                //Pedidos.MovimentacaoPedido ped = new Pedidos.MovimentacaoPedido();
+                //lblStatus.Visible = true;
+                //lblStatus.Text = ped.retornaStatus(txtPedido.Text);
+
+                //if (lblStatus.Text == "EM SEPARAÇÃO" || lblStatus.Text == "SEPARADO")
+                //{
+                //    btnEncerrarPedido.Enabled = true;
+                //    btnReabrir.Enabled = false;
+                //}
+                //else if (lblStatus.Text == "PARCIAL")
+                //{
+                //    btnEncerrarPedido.Enabled = false;
+                //    btnReabrir.Enabled = true;
+                //}
+                //else
+                //{
+                //    btnReabrir.Enabled = false;
+                //    btnEncerrarPedido.Enabled = false;
+                //}
+
             }
         }
 
@@ -511,6 +710,188 @@ namespace ControlePedido
 
                 bool isChecked = Convert.ToBoolean(row.Cells["Devolver"].Value);
 
+            }
+        }
+
+        private void lblStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void frmPedidos_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            
+            //if (! pedidoEncerrado && temEntregue)
+            //{
+
+            //    DialogResult result = MessageBox.Show(
+            //                                          $"Pedido {txtPedido.Text} não entregue em sua totalidade \n deseja fechar o formulário sem encerrar o pedido? ",
+            //                                         "Confirmação",
+            //                                         MessageBoxButtons.YesNo,
+            //                                         MessageBoxIcon.Warning
+            //                                            );
+
+            //    if (result == DialogResult.No)
+            //    {
+            //        e.Cancel = true; // Cancela o fechamento do formulário
+            //    }
+
+
+            //}
+            
+            
+        }
+
+        private void btnEncerrarPedido_Click(object sender, EventArgs e)
+        {
+            string sqlUpdate = @" Update TBl_PEDIDOS set ";
+
+            if (temAEntregar && temEntregue)
+            {
+                sqlUpdate += " CD_STATUS = 7";
+            }
+            else if (!temAEntregar && temEntregue)
+            {
+                sqlUpdate += " CD_STATUS = 7";
+            }
+
+
+            sqlUpdate += string.Format(" where CD_PEDIDO = {0} ", txtPedido.Text);
+
+            var bco = new BancoDeDados().lerXMLConfiguracao();
+
+            try
+            {
+                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlUpdate, cnn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    pedidoEncerrado = true;
+
+                    if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                }
+
+                MessageBox.Show("Pedido Encerrado com Sucesso");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível encerrar o pedido!");
+
+            }
+
+            if (txtPedido.Text != "")
+            {
+                //Ajustar quantidade
+                //ajusteQuantidade();
+                //=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+                listarEntrega();
+                listarEntregues();
+
+                Pedidos.MovimentacaoPedido ped = new Pedidos.MovimentacaoPedido();
+                lblStatus.Visible = true;
+                lblStatus.Text = ped.retornaStatus(txtPedido.Text);
+
+                if (lblStatus.Text == "EM SEPARAÇÃO" || lblStatus.Text == "SEPARADO")
+                {
+                    btnEncerrarPedido.Enabled = true;
+                    btnReabrir.Enabled = false;
+                }
+                else if (lblStatus.Text == "PARCIAL")
+                {
+                    btnEncerrarPedido.Enabled = false;
+                    btnReabrir.Enabled = true;
+                }
+                else
+                {
+                    btnReabrir.Enabled = false;
+                    btnEncerrarPedido.Enabled = false;
+                }
+            }
+
+        }
+
+        private void btnReabrir_Click(object sender, EventArgs e)
+        {
+            string sqlUpdate = @" Update TBl_PEDIDOS set ";
+
+            if (temAEntregar && temEntregue)
+            {
+                sqlUpdate += " CD_STATUS = 10";
+            }
+            else if (! temAEntregar && temEntregue)
+            {
+                sqlUpdate += " CD_STATUS = 11";
+            }
+
+
+            sqlUpdate += string.Format(" where CD_PEDIDO = {0} ", txtPedido.Text);
+
+            var bco = new BancoDeDados().lerXMLConfiguracao();
+
+            try
+            {
+                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlUpdate, cnn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    pedidoEncerrado = true;
+
+                    if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                }
+
+                MessageBox.Show("Pedido Refatorado com Sucesso");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível encerrar o pedido!");
+
+            }
+
+            if (txtPedido.Text != "")
+            {
+                //Ajustar quantidade
+                //ajusteQuantidade();
+                //=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+                listarEntrega();
+                listarEntregues();
+
+                Pedidos.MovimentacaoPedido ped = new Pedidos.MovimentacaoPedido();
+                lblStatus.Visible = true;
+                lblStatus.Text = ped.retornaStatus(txtPedido.Text);
+
+                if (lblStatus.Text == "EM SEPARAÇÃO" || lblStatus.Text == "SEPARADO")
+                {
+                    btnEncerrarPedido.Enabled = true;
+                    btnReabrir.Enabled = false;
+                }
+                else if (lblStatus.Text == "PARCIAL")
+                {
+                    btnEncerrarPedido.Enabled = false;
+                    btnReabrir.Enabled = true;
+                }
+                else
+                {
+                    btnReabrir.Enabled = false;
+                    btnEncerrarPedido.Enabled = false;
+                }
             }
         }
     }

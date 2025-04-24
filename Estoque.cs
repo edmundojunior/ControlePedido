@@ -39,6 +39,7 @@ namespace ControlePedido
         public double Almoxarifado { get; set; } = 0;
         public double EmSeparacao { get; set; } = 0;
         public double Transferencia { get; set; } = 0;
+        public double Total { get; set; } = 0;
 
 
         List<Estoque> lista_estoque = new List<Estoque>();
@@ -160,10 +161,16 @@ namespace ControlePedido
 
             using (SqlConnection cnn = new BancoDeDados().conectar(bco))
             {
+
+                
+
                 if (cnn != null)
                 {
-                    using (SqlCommand comando = new SqlCommand(sql, cnn))
+                    using (SqlCommand comando = new SqlCommand(sql, cnn))                        
                     {
+
+                        comando.CommandTimeout = 120;
+
                         using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
                         {
                             adaptador.Fill(retornado);
@@ -178,7 +185,15 @@ namespace ControlePedido
 
         }
 
-        private List<Estoque> preenchendoALista(DataTable retornado, int qualEstoque, System.Windows.Forms.Label contar)
+        private List<Estoque> preenchendoALista(DataTable retornado, int qualEstoque, System.Windows.Forms.Label contar, ref double vlrCompra,
+ref double vlrConsumo,
+ref double vlrProducao,
+ref double vlrServico,
+ref double vlrOrcamento,
+ref double vlrPedido,
+ref double vlrEstoque,
+ref double vlrEmSeparacao,
+ref double vlrSeparacao, ref double vlrTotais)
         {
             //Legenda:
             //0 - Estoque Atual
@@ -202,10 +217,13 @@ namespace ControlePedido
                 contar.Text = $" Processados: {rodado} de {retornado.Rows.Count}";
                 contar.Refresh();
 
+                //var item = lista_estoque.FirstOrDefault(i => i.Empresa == Convert.ToInt32(row["CD_EMPRESA"])
+                //                                          && i.Filial == Convert.ToInt32(row["CD_FILIAL"])
+                //                                          && i.Produto == Convert.ToInt32(row["CODIGO"])
+                //                                          );
 
 
-                var item = lista_estoque.FirstOrDefault(i => i.Empresa == Convert.ToInt32(row["CD_EMPRESA"])
-                                                          && i.Filial == Convert.ToInt32(row["CD_FILIAL"])
+                var item = lista_estoque.FirstOrDefault(i =>  i.Filial == Convert.ToInt32(row["CD_FILIAL"])
                                                           && i.Produto == Convert.ToInt32(row["CODIGO"])
                                                           );
 
@@ -215,33 +233,44 @@ namespace ControlePedido
                     {
                         case 0:
                             item.EstoqueAtual = Convert.ToDouble(row["EstoqueAtual"]);
+                            item.Total = Convert.ToDouble(row["Total"]);
+                            vlrEstoque += Convert.ToDouble(row["EstoqueAtual"]);
+                            vlrTotais += Convert.ToDouble(row["Total"]);
                             break;
                         case 1:
                             item.OrdemCompra = Convert.ToDouble(row["OrdemCompra"]);
+                            vlrCompra += Convert.ToDouble(row["OrdemCompra"]);
                             break;
                         case 2:
                             item.Pedidos = Convert.ToDouble(row["Pedidos"]);
+                            vlrPedido += Convert.ToDouble(row["Pedidos"]);
                             break;
                         case 3:
                             item.Almoxarifado = Convert.ToDouble(row["Almoxarifado"]);
                             break;
                         case 4:
                             item.OrdemProducaoConsumo = Convert.ToDouble(row["OrdemProducaoConsumo"]);
+                            vlrConsumo += Convert.ToDouble(row["OrdemProducaoConsumo"]);
                             break;
                         case 5:
                             item.OrdemProducao = Convert.ToDouble(row["OrdemProducao"]);
+                            vlrProducao += Convert.ToDouble(row["OrdemProducao"]);
                             break;
                         case 6:
                             item.Orcamento = Convert.ToDouble(row["Orcamento"]);
+                            vlrOrcamento += Convert.ToDouble(row["Orcamento"]);
                             break;
                         case 7:
                             item.OrdemServico = Convert.ToDouble(row["OrdemServico"]);
+                            vlrServico += Convert.ToDouble(row["OrdemServico"]);
                             break;
                         case 8:
                             item.Separado = Convert.ToDouble(row["Separado"]);
+                            vlrSeparacao += Convert.ToDouble(row["Separado"]);
                             break;
                         case 9:
                             item.EmSeparacao = Convert.ToDouble(row["EmSeparacao"]);
+                            vlrEmSeparacao += Convert.ToDouble(row["EmSeparacao"]);
                             break;
                         default:
                             MessageBox.Show("Estoque informado não encontrado");
@@ -252,38 +281,49 @@ namespace ControlePedido
                 else
                 {
 
-                    
-                                           
 
-                        lista_estoque.Add(new Estoque
-                        {
-                            Empresa = Convert.IsDBNull(row["CD_EMPRESA"])  ? 0 : Convert.ToInt32(row["CD_EMPRESA"]),
-                            Filial = Convert.IsDBNull(row["CD_FILIAL"]) ? 0 :  Convert.ToInt32(row["CD_FILIAL"]),
-                            RazaoFilial = Convert.IsDBNull(row["DS_FILIAL"]) ? "" : row["DS_FILIAL"].ToString(),
-                            Produto = Convert.ToInt32(row["CODIGO"]),
-                            DescricaoProduto = row["Descricao"].ToString(),
-                            CodIdentificao = row["Idenfiticadao"].ToString(),
-                            OrdemCompra = Convert.ToDouble(row["OrdemCompra"]),
-                            OrdemProducao = Convert.ToDouble(row["OrdemProducao"]),
-                            OrdemProducaoConsumo = Convert.ToDouble(row["OrdemProducaoConsumo"]),
-                            Orcamento = Convert.ToDouble(row["Orcamento"]),
-                            OrdemServico = Convert.ToDouble(row["OrdemServico"]),
-                            Pedidos = Convert.ToDouble(row["Pedidos"]),
-                            EmSeparacao = Convert.ToDouble(row["EmSeparacao"]),
-                            Separado = Convert.ToDouble(row["Separado"]),
-                            Requisicao = Convert.ToDouble(row["Requisicao"]),
-                            EstoqueAtual = Convert.ToDouble(row["EstoqueAtual"]),                        
-                            Disponivel = Convert.ToDouble(row["Disponivel"]),
-                            Transferencia = Convert.ToDouble(0),
-                            Almoxarifado = Convert.ToDouble(row["Almoxarifado"])
 
-                        });
 
-                    
+                    lista_estoque.Add(new Estoque
+                    {
+                        Empresa = 0 , //Convert.IsDBNull(row["CD_EMPRESA"]) ? 0 : Convert.ToInt32(row["CD_EMPRESA"]),
+                        Filial = Convert.IsDBNull(row["CD_FILIAL"]) ? 0 : Convert.ToInt32(row["CD_FILIAL"]),
+                        RazaoFilial = Convert.IsDBNull(row["DS_FILIAL"]) ? "" : row["DS_FILIAL"].ToString(),
+                        Produto = Convert.ToInt32(row["CODIGO"]),
+                        DescricaoProduto = row["Descricao"].ToString(),
+                        CodIdentificao = row["Idenfiticadao"].ToString(),
+                        OrdemCompra = Convert.ToDouble(row["OrdemCompra"]),
+                        OrdemProducao = Convert.ToDouble(row["OrdemProducao"]),
+                        OrdemProducaoConsumo = Convert.ToDouble(row["OrdemProducaoConsumo"]),
+                        Orcamento = Convert.ToDouble(row["Orcamento"]),
+                        OrdemServico = Convert.ToDouble(row["OrdemServico"]),
+                        Pedidos = Convert.ToDouble(row["Pedidos"]),
+                        EmSeparacao = Convert.ToDouble(row["EmSeparacao"]),
+                        Separado = Convert.ToDouble(row["Separado"]),
+                        Requisicao = Convert.ToDouble(row["Requisicao"]),
+                        EstoqueAtual = Convert.ToDouble(row["EstoqueAtual"]),
+                        Disponivel = Convert.ToDouble(row["Disponivel"]),
+                        Transferencia = Convert.ToDouble(0),
+                        Almoxarifado = Convert.ToDouble(row["Almoxarifado"]),
+                        Total = Convert.ToDouble(row["Total"])
+                    });
+
+                    vlrEstoque += Convert.ToDouble(row["EstoqueAtual"]);
+                    vlrCompra += Convert.ToDouble(row["OrdemCompra"]);
+                    vlrPedido += Convert.ToDouble(row["Pedidos"]);
+                    vlrConsumo += Convert.ToDouble(row["OrdemProducaoConsumo"]);
+                    vlrProducao += Convert.ToDouble(row["OrdemProducao"]);
+                    vlrOrcamento += Convert.ToDouble(row["Orcamento"]);
+                    vlrServico += Convert.ToDouble(row["OrdemServico"]);
+                    vlrSeparacao += Convert.ToDouble(row["Separado"]);
+                    vlrEmSeparacao += Convert.ToDouble(row["EmSeparacao"]);
+                    vlrTotais += Convert.ToDouble(row["Total"]);
                 }
             }
-
             lista_estoque = lista_estoque.OrderBy(e => e.Filial).ToList();
+
+            
+
 
             return lista_estoque;
         }
@@ -303,6 +343,17 @@ namespace ControlePedido
             string sqlSeparado = string.Empty;
             string sqlEmSeparacao = string.Empty;
             string sqlDisponivel = string.Empty;
+            //Totais
+            double vlrCompra = 0;
+            double vlrConsumo = 0;
+            double vlrProducao = 0;
+            double vlrServico = 0;
+            double vlrOrcamento = 0;
+            double vlrPedido = 0;
+            double vlrEstoque = 0;
+            double vlrEmSeparacao = 0;
+            double vlrSeparacao = 0;
+            double vltTotais = 0;
 
             try
             {
@@ -432,13 +483,37 @@ namespace ControlePedido
                 }
                 
 
-                lista_estoque = preenchendoALista(dadosEstoque(sqlPedidos, filtroEstoque, Ehemseparacao, Ehseparado,2), 2, contar);
+                lista_estoque = preenchendoALista(dadosEstoque(sqlPedidos, filtroEstoque, Ehemseparacao, Ehseparado,2), 2, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vltTotais);
                                 
-                lista_estoque = preenchendoALista(dadosEstoque(sqlSeparado, filtroEstoque, Ehemseparacao, Ehseparado,8), 8, contar);
+                lista_estoque = preenchendoALista(dadosEstoque(sqlSeparado, filtroEstoque, Ehemseparacao, Ehseparado,8), 8, contar, ref vlrCompra,
+ref  vlrConsumo,
+ref  vlrProducao,
+ref  vlrServico,
+ref  vlrOrcamento,
+ref  vlrPedido,
+ref  vlrEstoque,
+ref  vlrEmSeparacao,
+ref  vlrSeparacao, ref vltTotais);
 
                 //lista_estoque = preenchendoALista(dadosEstoque(sqlEmSeparacao, filtroEstoque, Ehemseparacao, Ehseparado,9), 9, contar);
 
-                lista_estoque = preenchendoALista(dadosEstoque(sqlEstoqueAtual, filtroEstoque, Ehemseparacao, Ehseparado, 0), 0, contar);
+                lista_estoque = preenchendoALista(dadosEstoque(sqlEstoqueAtual, filtroEstoque, Ehemseparacao, Ehseparado, 0), 0, contar, ref  vlrCompra,
+ref  vlrConsumo,
+ref  vlrProducao,
+ref  vlrServico,
+ref  vlrOrcamento,
+ref  vlrPedido,
+ref  vlrEstoque,
+ref  vlrEmSeparacao,
+ref  vlrSeparacao, ref vltTotais);
 
             }
             catch (Exception ex)
@@ -478,88 +553,94 @@ namespace ControlePedido
             string sqlEmSeparacao = string.Empty;
             string sqlDisponivel = string.Empty;
             string sqlAlmoxarifado = string.Empty;
+            //Totais
+            double vlrCompra = 0;
+            double vlrConsumo =0;
+            double vlrProducao = 0;
+            double vlrServico = 0;
+            double vlrOrcamento = 0;
+            double vlrPedido = 0;
+            double vlrEstoque = 0;
+            double vlrEmSeparacao = 0;
+            double vlrSeparacao = 0;
+            double vlrTotais = 0;
 
             try
             {
 
-                sqlEstoqueAtual = String.Format(" SELECT " +
-                                                "       TME.CD_EMPRESA, " +
-                                                "       TME.CD_FILIAL,  " +
-                                                "       TEF.DS_FILIAL,  " +
-                                                "       TME.CD_MATERIAL AS CODIGO , " +
-                                                " 		TM.DS_MATERIAL AS Descricao, " +
-                                                " 		TM.CD_IDENTIFICACAO as Idenfiticadao, " +
-                                                " 		SUM(0) AS OrdemCompra  " +
-                                                " 		,0 AS OrdemProducao " +
-                                                "       ,0 AS OrdemProducaoConsumo " +
-                                                " 		,0 AS Orcamento " +
-                                                " 		,0 AS OrdemServico " +
-                                                " 		,0 AS Pedidos " +
-                                                " 		,0 AS Requisicao " +
-                                                " 		,SUM(TME.NR_ESTOQUE_DISPONIVEL) AS EstoqueAtual " +
-                                                " 		,0 AS Separado " +
-                                                " 		,0 AS Disponivel " +
-                                                " 		,0 AS Almoxarifado " +
-                                                " 		,0 AS EmSeparacao " +
-                                                "    FROM TBL_MATERIAIS_ESTOQUE TME	 " +
-                                                " 	LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TME.CD_FILIAL  " +
-                                                " 	LEFT JOIN TBL_MATERIAIS TM ON TME.CD_MATERIAL = TM.CD_MATERIAL " +
-                                                " 	WHERE TME.CD_MATERIAL = {0} " +
-                                                "    GROUP BY TME.CD_EMPRESA, TME.CD_FILIAL, TEF.DS_FILIAL, TME.CD_MATERIAL, TM.DS_MATERIAL, TM.CD_IDENTIFICACAO ", CodProduto);
+                sqlEstoqueAtual = String.Format(@"SELECT                                                 
+                                                    F.CD_FILIAL, 
+                                                    F.DS_FILIAL,
+                                                    CD_MATERIAL AS CODIGO , 
+                                                    DS_MATERIAL AS Descricao, 
+                                                    CD_IDENTIFICACAO as Idenfiticadao, 
+                                                    0 AS OrdemCompra  
+                                                    ,0 AS OrdemProducao 
+                                                    ,0 AS OrdemProducaoConsumo 
+                                                    ,0 AS Orcamento 
+                                                    ,0 AS OrdemServico 
+                                                    ,0 AS Pedidos 
+                                                    ,0 AS Requisicao 
+                                                    ,SUM(NR_ESTOQUE_DISPONIVEL) AS EstoqueAtual 
+                                                    ,0 AS Separado 
+                                                    ,0 AS Disponivel 
+                                                    ,0 AS Almoxarifado 
+                                                    ,0 AS EmSeparacao 
+                                                    ,SUM(NR_ESTOQUE_LIBERADO)  AS Total
+                                                    FROM SEL_MATERIAIS_PESQUISA M
+                                                    LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                    WHERE CD_MATERIAL = {0} 
+                                                    GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL, DS_MATERIAL, CD_IDENTIFICACAO ", CodProduto);
 
 
-                sqlOrdemCompra = String.Format( " SELECT " +
-                                                " 	TCOC.CD_EMPRESA,  " +
-                                                " 	TCOC.CD_FILIAL,  " +
-                                                " 	TEF.DS_FILIAL,  " +
-                                                " 	TCOCI.CD_MATERIAL AS CODIGO,  " +
-                                                "   '' AS Descricao, " +
-                                                "   '' as Idenfiticadao, " +
-                                                " 	SUM(TCOCI.NR_QUANTIDADE) AS OrdemCompra   " +
-                                                " 	,0 AS OrdemProducao " +
-                                                "   ,0 AS OrdemProducaoConsumo " +
-                                                " 	,0 AS Orcamento " +
-                                                " 	,0 AS OrdemServico " +
-                                                " 	,0 AS Pedidos " +
-                                                " 	,0 AS Requisicao " +
-                                                " 	,0 AS EstoqueAtual " +
-                                                " 	,0 AS Separado " +
-                                                " 	,0 AS Disponivel " +
-                                                " 	,0 AS Almoxarifado " +
-                                                " 	,0 AS EmSeparacao " +
-                                                " FROM TBL_COMPRAS_ORDEM_COMPRA_ITENS TCOCI " +
-                                                " LEFT JOIN TBL_COMPRAS_ORDEM_COMPRA TCOC ON TCOC.CD_ORDEM_COMPRA = TCOCI.CD_ORDEM_COMPRA " +
-                                                " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TCOC.CD_FILIAL " +
-                                                " WHERE CD_MATERIAL = {0} " +
-                                                " GROUP BY TCOC.CD_EMPRESA, TCOC.CD_FILIAL, TEF.DS_FILIAL, TCOCI.CD_MATERIAL ", CodProduto);
+                sqlOrdemCompra = String.Format(@" SELECT                                                 
+                                                F.CD_FILIAL, 
+                                                F.DS_FILIAL,
+                                                CD_MATERIAL AS CODIGO , 
+                                                '' AS Descricao, 
+                                                '' as Idenfiticadao, 
+                                                SUM(NR_QUANTIDADE_ORDEM_COMPRA) AS OrdemCompra  
+                                                ,0 AS OrdemProducao 
+                                                ,0 AS OrdemProducaoConsumo 
+                                                ,0 AS Orcamento 
+                                                ,0 AS OrdemServico 
+                                                ,0 AS Pedidos 
+                                                ,0 AS Requisicao 
+                                                ,0 AS EstoqueAtual 
+                                                ,0 AS Separado 
+                                                ,0 AS Disponivel 
+                                                ,0 AS Almoxarifado 
+                                                ,0 AS EmSeparacao 
+                                                , 0  AS Total
+                                                FROM SEL_CONSULTA_ESTOQUE_ORDEM_COMPRA M
+                                                LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                WHERE CD_MATERIAL = {0} 
+                                                GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL", CodProduto);
 
 
-                sqlPedidos = String.Format( " SELECT " +
-                                            "		TP.CD_EMPRESA,  " +
-                                            "		TP.CD_FILIAL,  " +
-                                            "		TEF.DS_FILIAL,  " +
-                                            "		TPI.CD_MATERIAL AS CODIGO,  " +
-                                            "		'' AS Descricao,  " +
-                                            " 		'' as Idenfiticadao,  " +
-                                            "		SUM(0) AS OrdemCompra    " +
-                                            " 		,0 AS OrdemProducao  " +
-                                            "       ,0 AS OrdemProducaoConsumo " +
-                                            " 		,0 AS Orcamento  " +
-                                            " 		,0 AS OrdemServico  " +
-                                            " 		,sum(TPI.NR_QUANTIDADE) as Pedidos " +
-                                            " 		,0 AS Requisicao  " +
-                                            " 		,0 AS EstoqueAtual  " +
-                                            " 		,0 AS Separado  " +
-                                            " 		,0 AS Disponivel  " +
-                                            " 		,0 AS Almoxarifado 	 " +
-                                            " 		,0 AS EmSeparacao " +
-                                            " 	FROM TBL_PEDIDOS_ITENS TPI   " +
-                                            " 	LEFT JOIN TBL_PEDIDOS TP ON  TP.CD_PEDIDO = TPI.CD_PEDIDO  " +
-                                            " 	LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL	 " +
-                                            "	WHERE TPI.CD_MATERIAL = {0} " +
-                                            "	AND TP.CD_EMPRESA IS NOT NULL " +
-                                            "   AND TP.CD_STATUS = 1" +
-                                            " 	GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL, TEF.DS_FILIAL, TPI.CD_MATERIAL ", CodProduto);
+                sqlPedidos = String.Format(@" SELECT                                                 
+                                                F.CD_FILIAL, 
+                                                F.DS_FILIAL,
+                                                CD_MATERIAL AS CODIGO , 
+                                                '' AS Descricao, 
+                                                '' as Idenfiticadao, 
+                                                0 AS OrdemCompra  
+                                                ,0 AS OrdemProducao 
+                                                ,0 AS OrdemProducaoConsumo 
+                                                ,0 AS Orcamento 
+                                                ,0 AS OrdemServico 
+                                                ,SUM(NR_QUANTIDADE_PEDIDOS) AS Pedidos 
+                                                ,0 AS Requisicao 
+                                                ,0 AS EstoqueAtual 
+                                                ,0 AS Separado 
+                                                ,0 AS Disponivel 
+                                                ,0 AS Almoxarifado 
+                                                ,0 AS EmSeparacao 
+                                                , 0  AS Total
+                                                FROM SEL_CONSULTA_ESTOQUE_PEDIDOS M
+                                                LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                WHERE CD_MATERIAL ={0}
+                                                GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL ", CodProduto);
 
 
                 sqlAlmoxarifado = string.Format(" SELECT " +
@@ -581,6 +662,7 @@ namespace ControlePedido
                                                 "  	,0 AS Disponivel  " +
                                                 " 		,0 AS EmSeparacao " +
                                                 "  	,SUM(TMEA.NR_ESTOQUE) AS Almoxarifado  " +
+                                                " , 0 AS Total" +
                                                 "  FROM TBL_MATERIAIS_ESTOQUE_ALMOXARIFADO TMEA " +
                                                 "  LEFT JOIN TBL_MATERIAIS_ALMOXARIFADO TMA  " +
                                                 "  ON TMA.CD_ALMOXARIFADO = TMEA.CD_ALMOXARIFADO  " +
@@ -589,184 +671,251 @@ namespace ControlePedido
                                                 "  whERE CD_MATERIAL = {0} " +
                                                 "  GROUP BY TMA.CD_EMPRESA, TMA.CD_FILIAL,TEF.DS_FILIAL, TMEA.CD_MATERIAL ", CodProduto);
 
-                sqlOrdemProducaoConsumo = String.Format(" SELECT " +
-                                                        " 	TOPR.CD_EMPRESA, " +
-                                                        " 	TOPR.CD_FILIAL,   " +
-                                                        " 	TEF.DS_FILIAL,   " +
-                                                        " 	TOPC.CD_MATERIAL AS CODIGO " +
-                                                        " 	,'' AS Descricao  " +
-                                                        " 	, '' As Idenfiticadao " +
-                                                        " 	,0 AS OrdemCompra  " +
-                                                        " 	,0 AS OrdemProducao " +
-                                                        " 	,sum(TOPC.NR_QUANTIDADE_APONTADA) AS OrdemProducaoConsumo " +
-                                                        " 	,0 AS Orcamento  " +
-                                                        " 	,0 AS OrdemServico  " +
-                                                        " 	,0 AS Pedidos  " +
-                                                        " 	,0 AS Requisicao  " +
-                                                        " 	,0 AS EstoqueAtual  " +
-                                                        " 	,0 AS Separado  " +
-                                                        " 	,0 AS Disponivel  " +
-                                                        " 	,0 AS Almoxarifado  " +
-                                                        " 		,0 AS EmSeparacao " +
-                                                        " FROM TBL_ORDEM_PRODUCAO_CONSUMO TOPC " +
-                                                        " LEFT JOIN TBL_ORDEM_PRODUCAO TOPR  " +
-                                                        " ON TOPR.CD_ENTRADA = TOPC.CD_ENTRADA  " +
-                                                        " AND TOPR.CD_STATUS = 1 " +
-                                                        " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TOPR.CD_EMPRESA " +
-                                                        " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TOPR.CD_FILIAL " +
-                                                        " whERE CD_MATERIAL = {0} " +
-                                                        " AND TOPR.CD_EMPRESA is not null " +
-                                                        " GROUP BY TOPR.CD_EMPRESA, TOPR.CD_FILIAL,TEF.DS_FILIAL, TOPC.CD_MATERIAL ", CodProduto);
+                sqlOrdemProducaoConsumo = String.Format(@" SELECT                                                 
+                                                            F.CD_FILIAL, 
+                                                            F.DS_FILIAL,
+                                                            CD_MATERIAL AS CODIGO , 
+                                                            '' AS Descricao, 
+                                                            '' as Idenfiticadao, 
+                                                            0 AS OrdemCompra  
+                                                            ,0 AS OrdemProducao 
+                                                            ,SUM(NR_QUANTIDADE_ORDEM_PRODUCAO_CONSUMO) AS OrdemProducaoConsumo 
+                                                            ,0 AS Orcamento 
+                                                            ,0 AS OrdemServico 
+                                                            ,0 AS Pedidos 
+                                                            ,0 AS Requisicao 
+                                                            ,0 AS EstoqueAtual 
+                                                            ,0 AS Separado 
+                                                            ,0 AS Disponivel 
+                                                            ,0 AS Almoxarifado 
+                                                            ,0 AS EmSeparacao 
+                                                            , 0  AS Total
+                                                            FROM SEL_CONSULTA_ESTOQUE_ORDEM_PRODUCAO_CONSUMO M
+                                                            LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                            WHERE CD_MATERIAL = {0} 
+                                                            GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL ", CodProduto);
 
 
-                sqlOrdemProducao = String.Format(" SELECT " +
-                                                " 	TOPR.CD_EMPRESA, " +
-                                                " 	TOPR.CD_FILIAL,   " +
-                                                " 	TEF.DS_FILIAL,   " +
-                                                " 	TOPC.CD_MATERIAL AS CODIGO " +
-                                                " 	,'' AS Descricao  " +
-                                                " 	, '' As Idenfiticadao " +
-                                                " 	,0 AS OrdemCompra  " +
-                                                " 	,SUM(NR_QUANTIDADE_PRODUZIDA) AS OrdemProducao" +
-                                                " 	,0 AS OrdemProducaoConsumo " +
-                                                " 	,0 AS Orcamento  " +
-                                                " 	,0 AS OrdemServico  " +
-                                                " 	,0 AS Pedidos  " +
-                                                " 	,0 AS Requisicao  " +
-                                                " 	,0 AS EstoqueAtual  " +
-                                                " 	,0 AS Separado  " +
-                                                " 	,0 AS Disponivel  " +
-                                                " 	,0 AS Almoxarifado  " +
-                                                " 		,0 AS EmSeparacao " +
-                                                " FROM TBL_ORDEM_PRODUCAO_PRODUTO_PRODUZIDO TOPC " +
-                                                " LEFT JOIN TBL_ORDEM_PRODUCAO TOPR  " +
-                                                " ON TOPR.CD_ENTRADA = TOPC.CD_ENTRADA  " +
-                                                " AND TOPR.CD_STATUS = 1 " +
-                                                " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TOPR.CD_EMPRESA " +
-                                                " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TOPR.CD_FILIAL " +
-                                                " whERE CD_MATERIAL = {0} " +
-                                                " AND TOPR.CD_EMPRESA is not null " +
-                                                " GROUP BY TOPR.CD_EMPRESA, TOPR.CD_FILIAL,TEF.DS_FILIAL, TOPC.CD_MATERIAL "
+                sqlOrdemProducao = String.Format(@"SELECT                                                 
+                                                    F.CD_FILIAL, 
+                                                    F.DS_FILIAL,
+                                                    CD_MATERIAL AS CODIGO , 
+                                                    '' AS Descricao, 
+                                                    '' as Idenfiticadao, 
+                                                    0 AS OrdemCompra  
+                                                    ,SUM(NR_QUANTIDADE_ORDEM_PRODUCAO_PRODUZIDO) AS OrdemProducao 
+                                                    ,0 AS OrdemProducaoConsumo 
+                                                    ,0 AS Orcamento 
+                                                    ,0 AS OrdemServico 
+                                                    ,0 AS Pedidos 
+                                                    ,0 AS Requisicao 
+                                                    ,0 AS EstoqueAtual 
+                                                    ,0 AS Separado 
+                                                    ,0 AS Disponivel 
+                                                    ,0 AS Almoxarifado 
+                                                    ,0 AS EmSeparacao 
+                                                    , 0  AS Total
+                                                    FROM SEL_CONSULTA_ESTOQUE_ORDEM_PRODUCAO_PRODUZIDO M
+                                                    LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                    WHERE CD_MATERIAL = {0}
+                                                    GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL "
                                                 , CodProduto);
 
-                sqlOrcamento = String.Format(" SELECT " +
-                                            " 	TOPR.CD_EMPRESA, " +
-                                            " 	TOPR.CD_FILIAL,   " +
-                                            " 	TEF.DS_FILIAL,   " +
-                                            " 	TOPC.CD_MATERIAL AS CODIGO " +
-                                            " 	,'' AS Descricao  " +
-                                            " 	, '' As Idenfiticadao " +
-                                            " 	,0 AS OrdemCompra  " +
-                                            " 	,0 AS OrdemProducaoo " +
-                                            " 	,0 AS OrdemProducaoConsumo " +
-                                            " 	,SUM(TOPC.NR_QUANTIDADE) AS Orcamento   " +
-                                            " 	,0 AS OrdemServico  " +
-                                            " 	,0 AS Pedidos  " +
-                                            " 	,0 AS Requisicao  " +
-                                            " 	,0 AS EstoqueAtual  " +
-                                            " 	,0 AS Separado  " +
-                                            " 	,0 AS Disponivel  " +
-                                            " 	,0 AS Almoxarifado  " +
-                                            " 		,0 AS EmSeparacao " +
-                                            " FROM TBL_ORCAMENTOS_ITENS TOPC " +
-                                            " LEFT JOIN TBL_ORCAMENTOS TOPR  " +
-                                            " ON TOPR.CD_ORCAMENTO = TOPC.CD_ORCAMENTO  " +
-                                            " AND TOPR.CD_STATUS = 1 " +
-                                            " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TOPR.CD_EMPRESA " +
-                                            " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TOPR.CD_FILIAL " +
-                                            " whERE CD_MATERIAL = {0} " +
-                                            " AND TOPR.CD_EMPRESA is not null " +
-                                            " GROUP BY TOPR.CD_EMPRESA, TOPR.CD_FILIAL,TEF.DS_FILIAL, TOPC.CD_MATERIAL ", CodProduto);
+                sqlOrcamento = String.Format(@" SELECT                                                 
+                                                F.CD_FILIAL, 
+                                                F.DS_FILIAL,
+                                                CD_MATERIAL AS CODIGO , 
+                                                '' AS Descricao, 
+                                                '' as Idenfiticadao, 
+                                                0 AS OrdemCompra  
+                                                ,0 AS OrdemProducao 
+                                                ,0 AS OrdemProducaoConsumo 
+                                                ,SUM(NR_QUANTIDADE_ORCAMENTO) AS Orcamento 
+                                                ,0 AS OrdemServico 
+                                                ,0 AS Pedidos 
+                                                ,0 AS Requisicao 
+                                                ,0 AS EstoqueAtual 
+                                                ,0 AS Separado 
+                                                ,0 AS Disponivel 
+                                                ,0 AS Almoxarifado 
+                                                ,0 AS EmSeparacao 
+                                                , 0  AS Total
+                                                FROM SEL_CONSULTA_ESTOQUE_ORCAMENTOS M
+                                                LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                WHERE CD_MATERIAL = {0}
+                                                GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL ", CodProduto);
 
-                sqlOrdemServico = String.Format("", CodProduto);
+                sqlOrdemServico = String.Format(@"SELECT                                                 
+                                                    F.CD_FILIAL, 
+                                                    F.DS_FILIAL,
+                                                    CD_MATERIAL AS CODIGO , 
+                                                    '' AS Descricao, 
+                                                    '' as Idenfiticadao, 
+                                                    0 AS OrdemCompra  
+                                                    ,0 AS OrdemProducao 
+                                                    ,0 AS OrdemProducaoConsumo 
+                                                    ,0 AS Orcamento 
+                                                    ,SUM (NR_QUANTIDADE_ORDEM_SERVICO) AS OrdemServico 
+                                                    ,0 AS Pedidos 
+                                                    ,0 AS Requisicao 
+                                                    ,0 AS EstoqueAtual 
+                                                    ,0 AS Separado 
+                                                    ,0 AS Disponivel 
+                                                    ,0 AS Almoxarifado 
+                                                    ,0 AS EmSeparacao 
+                                                    , 0  AS Total
+                                                    FROM SEL_CONSULTA_ESTOQUE_ORDEM_SERVICO M
+                                                    LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                    WHERE CD_MATERIAL = {0}
+                                                    GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL", CodProduto);
 
-                sqlEmSeparacao = String.Format(" SELECT  " +
-                                                " TP.CD_EMPRESA,  " +
-                                                "  TP.CD_FILIAL,  " +
-                                                "  TEF.DS_FILIAL,  " +
-                                                "  TPI.CD_MATERIAL  AS CODIGO  " +
-                                                "  ,'' AS Descricao  " +
-                                                "  , '' As Idenfiticadao   " +
-                                                "  ,0 AS OrdemCompra    " +
-                                                "  ,0 AS OrdemProducao   " +
-                                                "  ,0 AS OrdemProducaoConsumo  " +
-                                                "  ,0 AS Orcamento  " +
-                                                "  ,0 AS OrdemServico  " +
-                                                "  ,0 AS Pedidos  " +
-                                                "  ,0 AS Requisicao   " +
-                                                "  ,0 AS EstoqueAtual    " +
-                                                "  ,0 AS Separado   " +
-                                                "  ,0 AS Disponivel  "+ 
-                                                "  ,0 AS Almoxarifado  " +
-                                                "  , 0 AS Separaco   " +
-                                                "  ,SUM(TPI.NR_QUANTIDADE-(IIF(TIPCE.NR_QUANTIDADE IS NULL, 0 , TIPCE.NR_QUANTIDADE))) AS EmSeparacao   " +
-                                                "  FROM TBL_PEDIDOS_ITENS TPI   " +
-                                                "  LEFT JOIN TBL_PEDIDOS TP    " +
-                                                "  ON TPI.CD_PEDIDO = TP.CD_PEDIDO    " +
-                                                "  LEFT JOIN TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TIPCE  " +
-                                                "  ON TIPCE.CD_PEDIDO = TPI.CD_PEDIDO  " +
-                                                "  AND TIPCE.CD_MATERIAL = TPI.CD_MATERIAL  " +
-                                                "  LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA  " +
-                                                "  LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL   " +
-                                                "  WHERE TPI.CD_MATERIAL = {0}     " +
-                                                "  AND TP.CD_EMPRESA is not null   " +
-                                                "  AND TP.CD_STATUS in (10,11)  " +
-                                                "  GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL,TEF.DS_FILIAL, TPI.CD_MATERIAL", CodProduto);
+                sqlEmSeparacao = String.Format(@"SELECT                                                 
+                                                    F.CD_FILIAL, 
+                                                    F.DS_FILIAL,
+                                                    CD_MATERIAL AS CODIGO , 
+                                                    '' AS Descricao, 
+                                                    '' as Idenfiticadao, 
+                                                    0 AS OrdemCompra  
+                                                    ,0 AS OrdemProducao 
+                                                    ,0 AS OrdemProducaoConsumo 
+                                                    ,0 AS Orcamento 
+                                                    ,0 AS OrdemServico 
+                                                    ,0 AS Pedidos 
+                                                    ,0 AS Requisicao 
+                                                    ,0 AS EstoqueAtual 
+                                                    ,0 AS Separado 
+                                                    ,0 AS Disponivel 
+                                                    ,0 AS Almoxarifado 
+                                                    ,SUM(M.NR_QUANTIDADE) AS EmSeparacao 
+                                                    , 0  AS Total
+                                                    FROM [SEL_PEDIDOS_ITENS] M
+                                                    LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                                    LEFT JOIN SEL_PEDIDOS P ON P.CD_PEDIDO = M.CD_PEDIDO
+                                                    WHERE CD_MATERIAL = {0}
+                                                    AND P.CD_STATUS = 10
+                                                    GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL", CodProduto);
 
 
-                sqlSeparado = String.Format("SELECT " +
-                                            " TP.CD_EMPRESA, " +
-                                            " TP.CD_FILIAL, " +
-                                            " TEF.DS_FILIAL, " +
-                                            " TIPCE.CD_MATERIAL  AS CODIGO " +
-                                            " ,'' AS Descricao " +
-                                            " , '' As Idenfiticadao " +
-                                            " ,0 AS OrdemCompra " +
-                                            " ,0 AS OrdemProducaoo  " +
-                                            " ,0 AS OrdemProducaoConsumo " +
-                                            " ,0 AS Orcamento  " +
-                                            " ,0 AS OrdemServico  " +
-                                            " ,0 AS Pedidos  " +
-                                            " ,0 AS Requisicao  " +
-                                            " ,0 AS EstoqueAtual " +
-                                            " ,0 AS Separa  " +
-                                            " ,0 AS Disponivel  " +
-                                            " ,0 AS Almoxarifado   " +
-                                            " 		,0 AS EmSeparacao " +
-                                            " ,SUM(TIPCE.NR_QUANTIDADE) AS Separado " +
-                                            " FROM TBL_PEDIDOS_ITENS_CONTROLE_ENTREGA TIPCE " +
-                                            " INNER JOIN TBL_PEDIDOS TP    " +
-                                            " ON TIPCE.CD_PEDIDO = TP.CD_PEDIDO " +
-                                            " AND TP.CD_STATUS in (10,11)  " +
-                                            " LEFT JOIN TBL_EMPRESAS TE ON TE.CD_EMPRESA = TP.CD_EMPRESA " +
-                                            " LEFT JOIN TBL_EMPRESAS_FILIAIS TEF ON TEF.CD_FILIAL = TP.CD_FILIAL " +
-                                            " WHERE CD_MATERIAL = {0}  " +
-                                            " AND TP.CD_EMPRESA is not null  " +
-                                            " AND TIPCE.X_ENTREGUE = 1 " +
-                                            " GROUP BY TP.CD_EMPRESA, TP.CD_FILIAL,TEF.DS_FILIAL, TIPCE.CD_MATERIAL ", CodProduto);
+                sqlSeparado = String.Format(@"SELECT                                                 
+                                            F.CD_FILIAL, 
+                                            F.DS_FILIAL,
+                                            CD_MATERIAL AS CODIGO , 
+                                            '' AS Descricao, 
+                                            '' as Idenfiticadao, 
+                                            0 AS OrdemCompra  
+                                            ,0 AS OrdemProducao 
+                                            ,0 AS OrdemProducaoConsumo 
+                                            ,0 AS Orcamento 
+                                            ,0 AS OrdemServico 
+                                            ,0 AS Pedidos 
+                                            ,0 AS Requisicao 
+                                            ,0 AS EstoqueAtual 
+                                            ,SUM(M.NR_QUANTIDADE) AS Separado 
+                                            ,0 AS Disponivel 
+                                            ,0 AS Almoxarifado 
+                                            ,0 AS EmSeparacao 
+                                            , 0  AS Total
+                                            FROM [SEL_PEDIDOS_ITENS] M
+                                            LEFT JOIN SEL_EMPRESAS_FILIAIS F ON F.CD_FILIAL = M.CD_FILIAL
+                                            LEFT JOIN SEL_PEDIDOS P ON P.CD_PEDIDO = M.CD_PEDIDO
+                                            WHERE CD_MATERIAL = {0}
+                                            AND P.CD_STATUS = 11
+                                            GROUP BY  F.CD_FILIAL, F.DS_FILIAL, CD_MATERIAL", CodProduto);
 
                 
                 
                 
-                lista_estoque = preenchendoALista(dados(sqlEstoqueAtual), 0, contar);
+                lista_estoque = preenchendoALista(dados(sqlEstoqueAtual), 0, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlOrdemCompra), 1, contar);
+                lista_estoque = preenchendoALista(dados(sqlOrdemCompra), 1, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlPedidos), 2, contar);
+                lista_estoque = preenchendoALista(dados(sqlPedidos), 2, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlAlmoxarifado), 3, contar);
+                //lista_estoque = preenchendoALista(dados(sqlAlmoxarifado), 3, contar);
 
-                lista_estoque = preenchendoALista(dados(sqlOrdemProducaoConsumo), 4, contar);
+                lista_estoque = preenchendoALista(dados(sqlOrdemProducaoConsumo), 4, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlOrdemProducao), 5, contar    );
+                lista_estoque = preenchendoALista(dados(sqlOrdemProducao), 5, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlOrcamento), 6, contar    );
+                lista_estoque = preenchendoALista(dados(sqlOrcamento), 6, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                //lista_estoque = preenchendoALista(dados(sqlOrdemServico), 7);
+                lista_estoque = preenchendoALista(dados(sqlOrdemServico), 7, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlSeparado), 8, contar);
+                lista_estoque = preenchendoALista(dados(sqlSeparado), 8, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
-                lista_estoque = preenchendoALista(dados(sqlEmSeparacao), 9, contar);
+                lista_estoque = preenchendoALista(dados(sqlEmSeparacao), 9, contar, ref vlrCompra,
+ref vlrConsumo,
+ref vlrProducao,
+ref vlrServico,
+ref vlrOrcamento,
+ref vlrPedido,
+ref vlrEstoque,
+ref vlrEmSeparacao,
+ref vlrSeparacao, ref vlrTotais);
 
             }
             catch (Exception ex) {
@@ -775,6 +924,33 @@ namespace ControlePedido
                 lista_estoque.Clear();
 
             }
+
+            //preencher totais
+            lista_estoque.Add(new Estoque
+            {
+                Empresa = 0, //Convert.IsDBNull(row["CD_EMPRESA"]) ? 0 : Convert.ToInt32(row["CD_EMPRESA"]),
+                Filial = 0,
+                RazaoFilial = "T O T A I S:",
+                Produto = 0,
+                DescricaoProduto = "",
+                CodIdentificao = "",
+                OrdemCompra = vlrCompra,
+                OrdemProducao = vlrProducao,
+                OrdemProducaoConsumo = vlrConsumo,
+                Orcamento = vlrOrcamento,
+                OrdemServico = vlrServico,
+                Pedidos = vlrPedido ,
+                EmSeparacao = vlrEmSeparacao,
+                Separado = vlrSeparacao,
+                Requisicao = 0,
+                EstoqueAtual = vlrEstoque,
+                Disponivel = 0,
+                Transferencia = Convert.ToDouble(0),
+                Almoxarifado = 0,
+                Total = vlrTotais
+            });
+
+
 
             return lista_estoque;
             
@@ -807,32 +983,12 @@ namespace ControlePedido
                                        , Convert.ToDouble(lista[item].OrdemProducao).ToString("N4")
                                        , Convert.ToDouble(lista[item].Orcamento).ToString("N4")
                                        , Convert.ToDouble(lista[item].OrdemServico).ToString("N4")
-                                       , Convert.ToDouble(lista[item].Pedidos).ToString("N4")
+                                       , Convert.ToDouble(lista[item].Pedidos - (lista[item].EmSeparacao + lista[item].Separado)).ToString("N4")
                                        , Convert.ToDouble(lista[item].EmSeparacao).ToString("N4")
                                        , Convert.ToDouble(lista[item].Separado).ToString("N4")
                                        , Convert.ToDouble(lista[item].EstoqueAtual).ToString("N4")
-                                       , Convert.ToDouble((lista[item].OrdemCompra +
-                                                          lista[item].EstoqueAtual +
-                                                          lista[item].OrdemProducao + lista[item].Separado + 
-                                                          (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
-                                                         -
-                                                         (
-                                                          lista[item].Pedidos +
-                                                          (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0) +
-                                                          lista[item].OrdemProducaoConsumo +
-                                                          lista[item].Orcamento
-                                                         )).ToString("N4")
-                                        , Convert.ToDouble((lista[item].OrdemCompra +
-                                                          lista[item].EstoqueAtual +
-                                                          lista[item].OrdemProducao + lista[item].Separado +
-                                                          (lista[item].Almoxarifado < 0 ? 0 : (lista[item].Almoxarifado * (-1))))
-                                                         -
-                                                         (
-                                                          lista[item].Pedidos +
-                                                          (lista[item].Almoxarifado < 0 ? (lista[item].Almoxarifado * (-1)) : 0) +
-                                                          lista[item].OrdemProducaoConsumo +
-                                                          lista[item].Orcamento
-                                                         )).ToString("N4")
+                                       , Convert.ToDouble(lista[item].Total).ToString("N4")
+                                       , (0).ToString("N4")
                                       );
 
                         
@@ -872,19 +1028,18 @@ namespace ControlePedido
 
             try
             {
-                string sql = " SELECT " +
-                " CD_MATERIAL " +
-                " , M.CD_IDENTIFICACAO " +
-                " , M.DS_MATERIAL_NF " +
-                " , MM.DS_MARCA " +
-                " ,NR_ESTOQUE_DISPONIVEL " +
-                " ,VL_VENDA " +
-                " ,VL_CUSTO_REPOSICAO " +
-                " ,CD_CEST " +
-                " FROM TBL_MATERIAIS M " +
-                " LEFT JOIN TBL_MATERIAIS_MARCA MM ON MM.CD_MARCA = M.CD_MARCA " +
-                " WHERE M.X_ATIVO = 1 " +
-                " AND M.X_SERVICO = 0 ";
+                string sql = @"SELECT
+                            CD_MATERIAL
+                            , CD_IDENTIFICACAO
+                            , DS_MATERIAL_NF
+                            ,DS_MARCA
+                            ,NR_ESTOQUE_DISPONIVEL
+                            ,VL_VENDA
+                            ,VL_CUSTO_REPOSICAO
+                            ,CD_CEST
+                            FROM SEL_MATERIAIS
+                            WHERE X_ATIVO = 1
+                            AND X_SERVICO = 0";
 
                 if (filtros != null)
                 {

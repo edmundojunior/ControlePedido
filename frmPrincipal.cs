@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,6 +23,26 @@ namespace ControlePedido
             this.Resize += frmPrincipal_Resize;
             AtualizarData(); // Define a data no formato correto
             IniciarRelogio(); // Inicia o relógio atualizado
+
+            Thread.Sleep(100);
+
+            ajusteDeDados();
+
+        }
+
+        private void ajusteDeDados()
+        {
+            Pedidos pedidos = new Pedidos();
+
+            Cursor.Current = Cursors.WaitCursor;
+            lblAviso.Visible = true;
+            lblAviso.Refresh();
+
+            pedidos.ajustePedidoFaturado();
+
+            Cursor.Current = Cursors.WaitCursor;
+            lblAviso.Visible = false;
+            lblAviso.Refresh();
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -102,7 +123,7 @@ namespace ControlePedido
         private void IniciarRelogio()
         {
             // Configura um Timer para atualizar a hora a cada segundo
-            timer1 = new Timer();
+            timer1 = new System.Windows.Forms.Timer();
             timer1.Interval = 1000; // Atualiza a cada 1 segundo
             timer1.Tick += (s, e) => lblHora.Text = DateTime.Now.ToString("HH:mm:ss");
             timer1.Start();

@@ -75,14 +75,15 @@
             this.grade.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grade.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clmPedido});
-            this.grade.Location = new System.Drawing.Point(13, 383);
+            this.grade.Location = new System.Drawing.Point(13, 318);
             this.grade.Name = "grade";
             this.grade.RowHeadersVisible = false;
             this.grade.RowHeadersWidth = 51;
             this.grade.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grade.Size = new System.Drawing.Size(1097, 250);
+            this.grade.Size = new System.Drawing.Size(1097, 335);
             this.grade.TabIndex = 5;
             this.grade.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grade_CellContentClick);
+            this.grade.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.grade_DataBindingComplete);
             // 
             // clmPedido
             // 
@@ -106,7 +107,7 @@
             this.gradeProdutos.RowHeadersVisible = false;
             this.gradeProdutos.RowHeadersWidth = 51;
             this.gradeProdutos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gradeProdutos.Size = new System.Drawing.Size(1097, 260);
+            this.gradeProdutos.Size = new System.Drawing.Size(1097, 198);
             this.gradeProdutos.TabIndex = 6;
             this.gradeProdutos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gradeProdutos_CellClick);
             this.gradeProdutos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gradeProdutos_CellContentClick);

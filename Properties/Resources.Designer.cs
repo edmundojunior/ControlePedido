@@ -83,6 +83,16 @@ namespace ControlePedido.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cadeado {
+            get {
+                object obj = ResourceManager.GetObject("cadeado", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cafe {
             get {
                 object obj = ResourceManager.GetObject("cafe", resourceCulture);
@@ -126,6 +136,16 @@ namespace ControlePedido.Properties {
         internal static System.Drawing.Bitmap casa {
             get {
                 object obj = ResourceManager.GetObject("casa", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap chave {
+            get {
+                object obj = ResourceManager.GetObject("chave", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

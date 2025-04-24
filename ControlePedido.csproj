@@ -485,6 +485,8 @@
   <ItemGroup>
     <Content Include="hidrotam.ico" />
     <Content Include="iconAzul.ico" />
+    <None Include="Resources\chave.png" />
+    <None Include="Resources\cadeado.png" />
     <None Include="img\png\hidrotam.png" />
     <None Include="img\png\lancamento.png" />
     <None Include="img\png\banco.png" />

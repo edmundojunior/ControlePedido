@@ -1185,9 +1185,10 @@
             // 
             this.lblAviso.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAviso.AutoSize = true;
+            this.lblAviso.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lblAviso.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAviso.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblAviso.Location = new System.Drawing.Point(627, 5);
+            this.lblAviso.Location = new System.Drawing.Point(615, 23);
             this.lblAviso.Name = "lblAviso";
             this.lblAviso.Size = new System.Drawing.Size(242, 30);
             this.lblAviso.TabIndex = 32;

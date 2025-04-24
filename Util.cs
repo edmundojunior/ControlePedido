@@ -355,9 +355,8 @@ namespace ControlePedido
                 grade.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[4].Width = 70; // Producao
                 grade.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[5].Width = 0; // Orcamento
-                grade.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                grade.Columns[5].Visible = false;
+                grade.Columns[5].Width = 70; // Orcamento
+                grade.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;                
                 grade.Columns[6].Width = 70; //Serviço
                 grade.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grade.Columns[7].Width = 70; //Pedidos

@@ -35,6 +35,7 @@ namespace ControlePedido
             reset();
         }
 
+        
         private void usMenu1_CancelarButtonClicked(object sender, EventArgs e)
         {
             reset();
@@ -47,6 +48,20 @@ namespace ControlePedido
 
         private void usMenu1_ImprimirButtonClicked(object sender, EventArgs e)
         {
+            Pedidos pedidos = new Pedidos();
+
+            Cursor.Current = Cursors.WaitCursor;
+            lblAviso.Visible = true;
+            lblAviso.Text = "Ajustando Dados... AGUARDE !";
+            lblAviso.Refresh();
+
+            pedidos.ajusteDeDados();
+            pedidos.ajustePedidoFaturado();
+
+            Cursor.Current = Cursors.Default;
+            lblAviso.Visible = false;
+            lblAviso.Refresh();
+
             if (_estoque)
             {
                 imprimirEstoque();

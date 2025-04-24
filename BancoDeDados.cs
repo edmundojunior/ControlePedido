@@ -216,6 +216,73 @@ namespace ControlePedido
             }
         }
 
+        public DataTable abrirSql(string sql)
+        {
+            DataTable retorno = new DataTable();
+
+            var bco = new BancoDeDados().lerXMLConfiguracao();
+
+            try
+            {
+                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                {
+                    if (cnn != null)
+                    {
+                        using (SqlCommand comando = new SqlCommand(sql, cnn))
+                        {
+                            comando.CommandTimeout = 120;
+                            // Executa o comando e preenche o DataTable
+                            using (SqlDataAdapter adaptador = new SqlDataAdapter(comando))
+                            {
+                                adaptador.Fill(retorno);
+                            }
+                        }
+                    }
+
+                    if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                }
+
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show($"Não foi possível atender o sql: \n {sql} \n" + ex.Message);
+                retorno = null;
+            }
+
+            return retorno;
+        }
+
+        public void ExecutarSql(string sql)
+        {           
+
+            var bco = new BancoDeDados().lerXMLConfiguracao();
+
+            try
+            {
+                using (SqlConnection cnn = new BancoDeDados().conectar(bco))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, cnn))
+                    {
+                        cmd.CommandTimeout = 120;
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    
+
+                    if (cnn.State == ConnectionState.Open) bco.desconectar(cnn);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show($"Não foi possível executar o sql: \n {sql} \n" + ex.Message);
+                
+            }            
+        }
+
+
 
         #endregion > SQL SERVER <
 
