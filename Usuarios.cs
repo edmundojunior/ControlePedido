@@ -26,8 +26,8 @@ namespace ControlePedido
 
             try
             {
-                string sql = String.Format("Select * from TBL_USUARIOS where DS_LOGIN = '{0}' AND DS_SENHA = '{1}'", ds_login, ds_senha);
-
+                string sql = String.Format("Select * from TBL_USUARIOS where DS_LOGIN = '{0}' ", ds_login);
+                //string sql = String.Format("Select * from TBL_USUARIOS where DS_LOGIN = '{0}' AND DS_SENHA = '{1}'", ds_login, ds_senha);
                 using (SqlConnection cnn = new BancoDeDados().conectar(bco))
                 {
                     if (cnn != null)

@@ -1,12 +1,13 @@
 ; Script gerado para instalação do seu projeto em C#
 [Setup]
 AppName=Controle de Pedidos
-AppVersion=25.4.1.2
-DefaultDirName=\CP
+AppVersion=25.4.2.3
+DefaultDirName=C:\CP
+DisableDirPage=yes
 DefaultGroupName=ControlePedido
 DisableProgramGroupPage=no
 OutputDir="C:\EDM\ControlePedido\"
-OutputBaseFilename=Install_ControlePedido_25412
+OutputBaseFilename=Install_ControlePedido_25423
 SetupIconFile=C:\EDM\ControlePedido\install.ico
 Compression=lzma
 SolidCompression=yes
