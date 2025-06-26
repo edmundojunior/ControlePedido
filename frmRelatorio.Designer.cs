@@ -161,6 +161,7 @@
             this.groupData.TabIndex = 25;
             this.groupData.TabStop = false;
             this.groupData.Text = "Período [DATA DE EMISSÃO]:";
+            this.groupData.Enter += new System.EventHandler(this.groupData_Enter);
             // 
             // chkDataEntrega
             // 
